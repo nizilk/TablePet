@@ -4,9 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TablePat_Win"
+        xmlns:gif="https://github.com/XamlAnimatedGif/XamlAnimatedGif"
         mc:Ignorable="d"
-        Title="MainWindow" Height="250" Width="250">
+        Title="MainWindow" Height="250" Width="250"
+        WindowStyle="None" ResizeMode="NoResize" 
+        Background="Transparent" AllowsTransparency="True" 
+        MouseMove="mainWin_MouseMove" MouseUp="mainWin_MouseUp">
     <Grid>
-        
+        <Image x:Name="pet" Visibility="Visible" Height="250" Width="250" Stretch="Uniform"
+               gif:AnimationBehavior.SourceUri="pack://application:,,,/Resources/relax.gif"
+               gif:AnimationBehavior.RepeatBehavior="Forever"
+               gif:AnimationBehavior.CacheFramesInMemory = "False" 
+               PreviewMouseLeftButtonDown="pet_PreviewMouseLeftButtonDown"/>
     </Grid>
 </Window>
