@@ -1,4 +1,4 @@
-﻿<Window x:Class="TablePat_Win.MainWindow"
+﻿<Window x:Name="mainWin" x:Class="TablePat_Win.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -9,7 +9,7 @@
         Title="MainWindow" Height="250" Width="250"
         WindowStyle="None" ResizeMode="NoResize" 
         Background="Transparent" AllowsTransparency="True" 
-        MouseMove="mainWin_MouseMove" MouseUp="mainWin_MouseUp">
+        MouseMove="mainWin_MouseMove" MouseLeftButtonUp="mainWin_MouseLeftButtonUp">
     <Grid>
         <Image x:Name="pet" Visibility="Visible" Height="250" Width="250" Stretch="Uniform"
                gif:AnimationBehavior.SourceUri="pack://application:,,,/Resources/relax.gif"

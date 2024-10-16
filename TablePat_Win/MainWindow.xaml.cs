@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.Windows.Forms;
 using XamlAnimatedGif;
 
 namespace TablePat_Win
@@ -24,8 +25,10 @@ namespace TablePat_Win
     /// </summary>
     public partial class MainWindow : Window
     {
-        public NotificationManager notificationManager = new NotificationManager();
+        private System.Windows.Forms.Screen screen = System.Windows.Forms.Screen.PrimaryScreen;
+        private NotificationManager notificationManager = new NotificationManager();
         private DispatcherTimer timer = new DispatcherTimer();
+        private DispatcherTimer timerMove = new DispatcherTimer();
 
         public Uri[] ResourceOnce = {
             new Uri("pack://application:,,,/Resources/headpicture.gif"),       // 0 headpicture
@@ -44,34 +47,59 @@ namespace TablePat_Win
             new Uri("pack://application:,,,/Resources/sleep.gif"),             // 8 sleep
             new Uri("pack://application:,,,/Resources/sleepl.gif"),            // 9 sleepl
         };
+
         public MainWindow()
         {
             InitializeComponent();
             timer.Interval = TimeSpan.FromSeconds(1);
+            timerMove.Interval = TimeSpan.FromMilliseconds(1);
             timer.Tick += timer_Tick;
+            timerMove.Tick += timerMove_Tick;
             timer.Start();
+            timerMove.Start();
         }
 
         private int threshold = 7;
-        private void timer_Tick(object sender, EventArgs e)
+        private void timer_Tick(object sender, EventArgs e)     // 1s时钟: 随机改变动画
         {
             if (Mouse.LeftButton == MouseButtonState.Pressed) return;
             if (Mouse.RightButton == MouseButtonState.Pressed) return;
             int ranTrigger = new Random().Next(0, 50);
-            int ranType = new Random().Next(0, 24);
+            int ranType = new Random().Next(0, 44);
+            int ranAdd = new Random().Next(0, 2);
             if (ranTrigger < threshold)
             {
-                AnimationBehavior.SetSourceUri(pet, Resource[ranType%10]);
-                threshold = threshold > 0 ? threshold - 3 : 0;
-                threshold = threshold < 8 ? threshold : 8;
+                AnimationBehavior.SetSourceUri(pet, Resource[ranType % 10]);
+                threshold = threshold > 0 ? threshold - 5 : 0;
+                threshold = threshold < 8 ? threshold : 7;
             }
             else
             {
-                threshold = threshold < 23 ? threshold + 1 : 23;
+                threshold = threshold < 23 ? threshold + ranAdd : 23;
             }
         }
 
-        private void mainWin_MouseMove(object sender, MouseEventArgs e)
+        private void timerMove_Tick(object sender,  EventArgs e)    // 1ms时钟: 移动窗口
+        {
+            Uri state = AnimationBehavior.GetSourceUri(pet);
+            if (state == null) return;
+
+            int width = screen.Bounds.Width;    // 获取屏幕的宽度     
+            int height = screen.Bounds.Height;  // 获取屏幕的高度
+            Point ptLeftUp = this.PointToScreen(new Point(0, 0));
+            Point ptRightDown = this.PointToScreen(new Point(this.ActualWidth, this.ActualHeight));
+
+            if (state == Resource[0])
+            {
+                if (ptLeftUp.X > -225)  this.Left -= 0.275;
+            }
+            if (state == Resource[1])
+            {
+                if (width - ptRightDown.X > -225) mainWin.Left += 0.275;
+            }
+        }
+
+        private void mainWin_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)    // 鼠标拖动
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
@@ -80,14 +108,14 @@ namespace TablePat_Win
             }
         }
 
-        private void mainWin_MouseUp(object sender, MouseButtonEventArgs e)
+        private void mainWin_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)     // 松开鼠标, 播放动画"start.gif"
         {
             AnimationBehavior.AddAnimationCompletedHandler(pet, animationCompleted);
             AnimationBehavior.SetRepeatBehavior(pet, new RepeatBehavior(1));
             AnimationBehavior.SetSourceUri(pet, ResourceOnce[2]);
         }
 
-        public void animationCompleted(object sender, AnimationCompletedEventArgs e)
+        public void animationCompleted(object sender, AnimationCompletedEventArgs e)    // 动画播放完毕时, 回到初始状态"relax.gif"
         {
 
             AnimationBehavior.SetSourceUri(pet, Resource[2]);
@@ -95,7 +123,7 @@ namespace TablePat_Win
             AnimationBehavior.RemoveAnimationCompletedHandler(pet, animationCompleted);
         }
 
-        private void pet_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void pet_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)  // 单击触发随机对话, 通过通知显示, 后续需改进
         {
             Random random = new Random();
             int randomNumber = random.Next(1, 7);
