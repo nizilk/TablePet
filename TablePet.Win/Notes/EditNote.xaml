@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TablePet.Win.Notes"
         mc:Ignorable="d"
-        Title="Note" Height="450" Width="300" WindowStyle="None">
+        Title="Note" Height="300" Width="250" WindowStyle="None">
     <Grid>
         <StackPanel>
             <StackPanel Height="50" Orientation="Horizontal">

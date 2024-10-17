@@ -9,15 +9,31 @@ namespace TablePet.Services
 {
     internal class NoteService
     {
-        public NoteService() { }
-
-        public void AddNote(string title, string content) 
+        private readonly NoteContext db;
+        public NoteService(NoteContext context)
         {
-            Note note = new Note();
+            db = context;
+        }
+
+        public List<Note> Notes
+        {
+            get
+            {
+                return db.Notes
+                       .ToList<Note>();
+            }
+        }
+
+        // 因为数据库这边还不太会，先用这个
+        public List<Note> NotesTestList { get; } = new List<Note>();
+
+        public void AddNote(Note note) 
+        {
             note.NoteId = Guid.NewGuid().ToString();
-            note.NoteTitle = title;
-            note.NoteContent = content;
-            // 这里需要存数据库
+            note.CreatedDate = DateTime.Now;
+            db.Notes .Add(note);
+            db.SaveChanges();
+            NotesTestList.Add(note);
         }
     }
 }
