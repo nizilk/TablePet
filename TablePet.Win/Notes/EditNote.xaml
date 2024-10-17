@@ -1,14 +1,20 @@
-﻿<Window x:Class="TablePet_Notes.Note"
+﻿<Window x:Class="TablePet.Win.Notes.EditNote"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TablePet_Notes"
+        xmlns:local="clr-namespace:TablePet.Win.Notes"
         mc:Ignorable="d"
         Title="Note" Height="450" Width="300" WindowStyle="None">
     <Grid>
         <StackPanel>
-            <TextBlock TextWrapping="Wrap" Text="标题..." Height="35"/>
+            <StackPanel Height="50" Orientation="Horizontal">
+                <Button Content="最小化"/>
+                <Button Name="bt_noteSave" Content="保存" Click="bt_noteSave_Click"/>
+                <TextBox Text="标题..." Width="100"/>
+                <Button Content="新建"/>
+                <Button Name="bt_noteClose" Content="关闭" Click="bt_noteClose_Click"/>
+            </StackPanel>
             <TextBox TextWrapping="Wrap" Text="内容..." Height="400" />
         </StackPanel>
 

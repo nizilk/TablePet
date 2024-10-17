@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace TablePet_Notes
+namespace TablePet.Win.Notes
 {
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MenuNote : Window
     {
-        public MainWindow()
+        public MenuNote()
         {
             InitializeComponent();
         }

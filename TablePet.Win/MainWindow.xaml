@@ -1,9 +1,9 @@
-﻿<Window x:Name="mainWin" x:Class="TablePat_Win.MainWindow"
+﻿<Window x:Name="mainWin" x:Class="TablePet.Win.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TablePat_Win"
+        xmlns:local="clr-namespace:TablePet.Win"
         xmlns:gif="https://github.com/XamlAnimatedGif/XamlAnimatedGif"
         mc:Ignorable="d"
         Title="MainWindow"
@@ -30,6 +30,11 @@
                         <MenuItem Name="stopMove" Header="禁止走动" Click="stopMove_Click"/>
                         <MenuItem Name="sit" Header="坐下" Click="sit_Click"/>
                         <MenuItem Name="sleep" Header="睡觉" Click="sleep_Click"/>
+                        <Separator/>
+                        <MenuItem Header="便签">
+                            <MenuItem Name="note_all" Header="菜单"/>
+                            <MenuItem Name="note_new" Header="新建" Click="note_new_Click"/>
+                        </MenuItem>
                         <Separator/>
                         <MenuItem Name="exit" Header="退出" Click="exit_Click"/>
                     </ContextMenu>

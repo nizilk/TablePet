@@ -11,17 +11,33 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using TablePet_Notes.Models;
 
-namespace TablePet_Notes
+namespace TablePet.Win.Notes
 {
     /// <summary>
     /// Note.xaml 的交互逻辑
     /// </summary>
-    public partial class Note : Window
+    public partial class EditNote : Window
     {
-        public Note()
+        public EditNote()
         {
             InitializeComponent();
+        }
+
+
+        // 保存按钮
+        private void bt_noteSave_Click(object sender, RoutedEventArgs e)
+        {
+            Note note = new Note();
+
+        }
+
+
+        // 关闭按钮
+        private void bt_noteClose_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35004.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TablePat_Win", "TablePat_Win\TablePat_Win.csproj", "{AC9F0D9B-5C52-4615-82FE-440F1FF6BB3F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TablePet.Win", "TablePet.Win\TablePet.Win.csproj", "{AC9F0D9B-5C52-4615-82FE-440F1FF6BB3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TablePet_Notes", "TablePet_Notes\TablePet_Notes.csproj", "{0365B331-A917-403C-8C11-DA6525658A41}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TablePet.Services", "TablePet.Services\TablePet.Services.csproj", "{4D8E4D5D-1145-4036-A69B-9104C7D398BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{AC9F0D9B-5C52-4615-82FE-440F1FF6BB3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC9F0D9B-5C52-4615-82FE-440F1FF6BB3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC9F0D9B-5C52-4615-82FE-440F1FF6BB3F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0365B331-A917-403C-8C11-DA6525658A41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0365B331-A917-403C-8C11-DA6525658A41}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0365B331-A917-403C-8C11-DA6525658A41}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0365B331-A917-403C-8C11-DA6525658A41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D8E4D5D-1145-4036-A69B-9104C7D398BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D8E4D5D-1145-4036-A69B-9104C7D398BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D8E4D5D-1145-4036-A69B-9104C7D398BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D8E4D5D-1145-4036-A69B-9104C7D398BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

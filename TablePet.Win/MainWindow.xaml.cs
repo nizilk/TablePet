@@ -17,8 +17,10 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Windows.Forms;
 using XamlAnimatedGif;
+using TablePet.Win.Notes;
+using TablePet.Services.Models;
 
-namespace TablePat_Win
+namespace TablePet.Win
 {
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
@@ -194,7 +196,7 @@ namespace TablePat_Win
         }
 
 
-        /*********************** 右键选单 ***********************/
+        /*==================== 右键选单 ====================*/
         // 置于顶层
         private void pinTop_Click(object sender, RoutedEventArgs e)
         {
@@ -283,6 +285,16 @@ namespace TablePat_Win
             System.Windows.Application.Current.Shutdown();
         }
 
-        /*********************** 右键选单 ***********************/
+
+        /*---------- 扩展功能入口 ----------*/
+        private void note_new_Click(object sender, RoutedEventArgs e)
+        {
+            EditNote note = new EditNote();
+            note.Show();
+        }
+        /*---------- 扩展功能入口 ----------*/
+
+
+        /*==================== 右键选单 ====================*/
     }
 }

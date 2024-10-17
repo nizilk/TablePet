@@ -1,7 +1,7 @@
-﻿<Application x:Class="TablePat_Win.App"
+﻿<Application x:Class="TablePet.Win.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:TablePat_Win"
+             xmlns:local="clr-namespace:TablePet.Win"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          
