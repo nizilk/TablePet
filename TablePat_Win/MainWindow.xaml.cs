@@ -25,10 +25,14 @@ namespace TablePat_Win
     /// </summary>
     public partial class MainWindow : Window
     {
-        private System.Windows.Forms.Screen screen = System.Windows.Forms.Screen.PrimaryScreen;     // 屏幕 暂未用到
+        private System.Windows.Forms.Screen screen = System.Windows.Forms.Screen.PrimaryScreen;
+        private int screenWidth = 0;
+        private int screenHeight = 0;
         private NotificationManager notificationManager = new NotificationManager();    // 通知
         private DispatcherTimer timer = new DispatcherTimer();
         private DispatcherTimer timerMove = new DispatcherTimer();
+        private double ratW = 1;
+        private double ratH = 1;
 
         // 全部动画资源的路径 -- 只用一次的
         public Uri[] ResourceOnce = {
@@ -54,6 +58,17 @@ namespace TablePat_Win
         public MainWindow()
         {
             InitializeComponent();
+
+            screenWidth = screen.Bounds.Width;    // 获取屏幕的宽度     
+            screenHeight = screen.Bounds.Height;  // 获取屏幕的高度
+            ratW = screenWidth / 2880;
+            ratH = screenHeight / 1800;
+
+            this.Width *= ratW;
+            this.Height *= ratH;
+            pet.Width *= ratW;
+            pet.Height *= ratH;
+
             timer.Interval = TimeSpan.FromSeconds(1);
             timerMove.Interval = TimeSpan.FromMilliseconds(1);
             timer.Tick += timer_Tick;
@@ -96,18 +111,16 @@ namespace TablePat_Win
             if (state == null) return;
             if (!moveable) return;
 
-            int width = screen.Bounds.Width;    // 获取屏幕的宽度     
-            int height = screen.Bounds.Height;  // 获取屏幕的高度
             Point ptLeftUp = this.PointToScreen(new Point(0, 0));   // 左上角屏幕坐标
             Point ptRightDown = this.PointToScreen(new Point(this.ActualWidth, this.ActualHeight));     // 右下角屏幕坐标
 
             if (state == Resource[0])
             {
-                if (ptLeftUp.X > -225)  this.Left -= step;
+                if (ptLeftUp.X > -225*ratW)  this.Left -= step*ratW;
             }
             if (state == Resource[1])
             {
-                if (width - ptRightDown.X > -225) mainWin.Left += step;
+                if (screenWidth - ptRightDown.X > -225*ratW) mainWin.Left += step*ratW;
             }
         }
 
@@ -196,10 +209,11 @@ namespace TablePat_Win
             small.IsChecked = true;
             mid.IsChecked = false;
             large.IsChecked = false;
-            pet.Width = 200;
-            pet.Height = 200;
-            this.Height = 200;
-            step = 0.25;
+            pet.Width = 200 * ratW;
+            pet.Height = 200 * ratH;
+            this.Width = pet.Width;
+            this.Height = pet.Height;
+            step = 0.25 * ratW;
         }
 
         // 调整大小 -- 中
@@ -208,10 +222,11 @@ namespace TablePat_Win
             small.IsChecked = false;
             mid.IsChecked = true;
             large.IsChecked = false;
-            pet.Width = 250;
-            pet.Height = 250;
-            this.Height = 250;
-            step = 0.275;
+            pet.Width = 250 * ratW;
+            pet.Height = 250 * ratH;
+            this.Width = pet.Width;
+            this.Height = pet.Height;
+            step = 0.275 * ratW;
         }
 
         // 调整大小 -- 大
@@ -220,10 +235,11 @@ namespace TablePat_Win
             small.IsChecked = false;
             mid.IsChecked = false;
             large.IsChecked = true;
-            pet.Width = 300;
-            pet.Height = 300;
-            this.Height = 300;
-            step = 0.3;
+            pet.Width = 300 * ratW;
+            pet.Height = 300 * ratH;
+            this.Width = pet.Width;
+            this.Height = pet.Height;
+            step = 0.3 * ratW;
         }
 
 

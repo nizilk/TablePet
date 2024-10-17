@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:TablePat_Win"
         xmlns:gif="https://github.com/XamlAnimatedGif/XamlAnimatedGif"
         mc:Ignorable="d"
-        Title="MainWindow" Height="250" Width="250" Topmost="True"
+        Title="MainWindow"
+        Height="250" Width="250" Topmost="True"
         WindowStyle="None" ResizeMode="NoResize" 
         Background="Transparent" AllowsTransparency="True" 
         MouseMove="mainWin_MouseMove" MouseLeftButtonUp="mainWin_MouseLeftButtonUp">
