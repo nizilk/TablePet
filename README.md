@@ -1,4 +1,4 @@
-# TablePat
+# TablePet
 ##### 功能：
 - [x] 透明窗口
 - [x] 鼠标任意拖拽：拖拽时显示sitl，松开鼠标播放一遍start，后默认回到relax
