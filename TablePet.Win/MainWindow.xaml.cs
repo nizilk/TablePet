@@ -18,6 +18,7 @@ using System.Windows.Threading;
 using System.Windows.Forms;
 using XamlAnimatedGif;
 using TablePet.Win.Notes;
+using TablePet.Services;
 using TablePet.Services.Models;
 
 namespace TablePet.Win
@@ -35,6 +36,7 @@ namespace TablePet.Win
         private DispatcherTimer timerMove = new DispatcherTimer();
         private double ratW = 1;
         private double ratH = 1;
+        public NoteContext db = new NoteContext();
 
         // 全部动画资源的路径 -- 只用一次的
         public Uri[] ResourceOnce = {
@@ -289,7 +291,7 @@ namespace TablePet.Win
         /*---------- 扩展功能入口 ----------*/
         private void note_new_Click(object sender, RoutedEventArgs e)
         {
-            EditNote note = new EditNote();
+            EditNote note = new EditNote(db);
             note.Show();
         }
         /*---------- 扩展功能入口 ----------*/

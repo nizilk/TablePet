@@ -7,7 +7,7 @@ using TablePet.Services.Models;
 
 namespace TablePet.Services
 {
-    internal class NoteService
+    public class NoteService
     {
         private readonly NoteContext db;
         public NoteService(NoteContext context)

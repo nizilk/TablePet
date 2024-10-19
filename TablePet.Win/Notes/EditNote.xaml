@@ -11,11 +11,11 @@
             <StackPanel Height="50" Orientation="Horizontal">
                 <Button Content="最小化"/>
                 <Button Name="bt_noteSave" Content="保存" Click="bt_noteSave_Click"/>
-                <TextBox Text="标题..." Width="100"/>
+                <TextBox Name="tb_noteTitle" Text="标题..." Width="100"/>
                 <Button Content="新建"/>
                 <Button Name="bt_noteClose" Content="关闭" Click="bt_noteClose_Click"/>
             </StackPanel>
-            <TextBox TextWrapping="Wrap" Text="内容..." Height="400" />
+            <TextBox Name="tb_noteContent" TextWrapping="Wrap" Text="内容..." Height="250" />
         </StackPanel>
 
     </Grid>
