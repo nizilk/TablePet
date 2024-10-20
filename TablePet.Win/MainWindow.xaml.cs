@@ -31,6 +31,8 @@ namespace TablePet.Win
         private System.Windows.Forms.Screen screen = System.Windows.Forms.Screen.PrimaryScreen;
         private int screenWidth = 0;
         private int screenHeight = 0;
+        private int standardW = 0;
+        private int standardH = 0;
         private NotificationManager notificationManager = new NotificationManager();    // 通知
         private DispatcherTimer timer = new DispatcherTimer();
         private DispatcherTimer timerMove = new DispatcherTimer();
@@ -65,8 +67,15 @@ namespace TablePet.Win
 
             screenWidth = screen.Bounds.Width;    // 获取屏幕的宽度     
             screenHeight = screen.Bounds.Height;  // 获取屏幕的高度
-            ratW = screenWidth / 2880;
-            ratH = screenHeight / 1800;
+            standardW = screenWidth / 1920;
+            standardH = screenHeight / 1080;
+
+            ratW = screenWidth / (standardW * 800);
+            ratH = screenHeight / (standardH * 500);
+
+
+
+            
 
             this.Width *= ratW;
             this.Height *= ratH;
@@ -120,11 +129,13 @@ namespace TablePet.Win
 
             if (state == Resource[0])
             {
-                if (ptLeftUp.X > -225*ratW)  this.Left -= step*ratW;
+                if (ptLeftUp.X < -300) return;
+                this.Left -= step*ratW;
             }
             if (state == Resource[1])
             {
-                if (screenWidth - ptRightDown.X > -225*ratW) mainWin.Left += step*ratW;
+                if (screenWidth - ptRightDown.X < -300) return;
+                mainWin.Left += step*ratW;
             }
         }
 
@@ -162,8 +173,14 @@ namespace TablePet.Win
         // 单击触发随机对话, 通过通知显示, 后续需改进
         private void pet_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)  
         {
+            Random random2 = new Random();
+            int messageProbability = random2.Next(1, 5);
+            if (messageProbability != 1) return;
+            
             Random random = new Random();
             int randomNumber = random.Next(1, 7);
+            
+            
 
             string title = "TablePet";
             string message = "";
