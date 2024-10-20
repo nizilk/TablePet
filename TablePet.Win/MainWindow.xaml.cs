@@ -15,7 +15,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-using System.Windows.Forms;
 using XamlAnimatedGif;
 using TablePet.Win.Notes;
 using TablePet.Services;
@@ -28,13 +27,10 @@ namespace TablePet.Win
     /// </summary>
     public partial class MainWindow : Window
     {
-        private System.Windows.Forms.Screen screen = System.Windows.Forms.Screen.PrimaryScreen;
-        private float screenWidth = 0;
-        private float screenHeight = 0;
+        private double screenWidth = SystemParameters.PrimaryScreenWidth;
+        private double screenHeight = SystemParameters.PrimaryScreenHeight;
         private double ratW;
         private double ratH;
-        private double curRight;
-        private double curDown;
         private NotificationManager notificationManager = new NotificationManager();    // 通知
         private DispatcherTimer timer = new DispatcherTimer();
         private DispatcherTimer timerMove = new DispatcherTimer();
@@ -65,9 +61,6 @@ namespace TablePet.Win
         {
             InitializeComponent();
 
-            screenWidth = screen.Bounds.Width;    // 获取屏幕的宽度     
-            screenHeight = screen.Bounds.Height;  // 获取屏幕的高度
-
             ratW = screenWidth / 1920.0;
             ratH = screenHeight / 1080.0;
 
@@ -75,6 +68,8 @@ namespace TablePet.Win
             pet.Height = pet.Width;
             this.Width *= ratW;
             this.Height *= ratH;
+
+            edge = -280 * ratW;
 
             timer.Interval = TimeSpan.FromSeconds(1);
             timerMove.Interval = TimeSpan.FromMilliseconds(1);
@@ -111,7 +106,8 @@ namespace TablePet.Win
 
 
         // 1ms时钟tick: 移动窗口
-        private double step = 0.185;
+        private double step = 0.335;
+        private double edge;
         private void timerMove_Tick(object sender,  EventArgs e)    
         {
             Uri state = AnimationBehavior.GetSourceUri(pet);
@@ -123,12 +119,12 @@ namespace TablePet.Win
 
             if (state == Resource[0])
             {
-                if (ptLeftUp.X < -145*ratW) return;
+                if (ptLeftUp.X < edge) return;
                 this.Left -= step*ratW;
             }
             if (state == Resource[1])
             {
-                if (screenWidth - ptRightDown.X < -145*ratW) return;
+                if (screenWidth - ptRightDown.X < edge) return;
                 mainWin.Left += step*ratW;
             }
         }
@@ -226,11 +222,16 @@ namespace TablePet.Win
                 large.Dispatcher.Invoke(new Action(delegate { large.IsChecked = false; } ) );
                 pet.Dispatcher.Invoke(new Action(delegate
                 {
-                    pet.Width = 133 * ratW;
+                    pet.Width = 266 * ratW;
                     pet.Height = pet.Width;
                 }));
-                this.Dispatcher.Invoke(new Action(delegate { this.Width = 165 * ratW; }));
-                step = 0.165 * ratW;
+                this.Dispatcher.Invoke(new Action(delegate 
+                { 
+                    this.Width = 266 * ratW;
+                    this.Height = this.Width;
+                }));
+                step = 0.32 * ratW;
+                edge = -220 * ratW;
             });
             
         }
@@ -245,11 +246,16 @@ namespace TablePet.Win
                 large.Dispatcher.Invoke(new Action(delegate { large.IsChecked = false; } ) );
                 pet.Dispatcher.Invoke(new Action(delegate
                 {
-                    pet.Width = 165 * ratW;
+                    pet.Width = 330 * ratW;
                     pet.Height = pet.Width;
                 }));
-                this.Dispatcher.Invoke(new Action(delegate { this.Width = 165 * ratW; }));
-                step = 0.185 * ratW;
+                this.Dispatcher.Invoke(new Action(delegate 
+                { 
+                    this.Width = 330 * ratW;
+                    this.Height = this.Width;
+                }));
+                step = 0.335 * ratW;
+                edge = -280 * ratW;
             });
         }
 
@@ -263,11 +269,16 @@ namespace TablePet.Win
                 large.Dispatcher.Invoke(new Action(delegate { large.IsChecked = true; }));
                 pet.Dispatcher.Invoke(new Action(delegate
                 {
-                    pet.Width = 200 * ratW;
+                    pet.Width = 400 * ratW;
                     pet.Height = pet.Width;
                 }));
-                this.Dispatcher.Invoke(new Action( delegate { this.Width = 200 * ratW; }));
-                step = 0.2 * ratW;
+                this.Dispatcher.Invoke(new Action( delegate 
+                { 
+                    this.Width = 400 * ratW; 
+                    this.Height = this.Width;
+                }));
+                step = 0.45 * ratW;
+                edge = -350 * ratW;
             });
         }
 

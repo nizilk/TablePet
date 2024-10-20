@@ -31,9 +31,24 @@ namespace TablePet.Services
         {
             note.NoteId = Guid.NewGuid().ToString();
             note.CreatedDate = DateTime.Now;
-            db.Notes .Add(note);
-            db.SaveChanges();
+            // db.Notes .Add(note);
+            // db.SaveChanges();
             NotesTestList.Add(note);
+        }
+
+        public void RemoveNote(string id) 
+        {
+            if (id == null || id == "") return;
+            NotesTestList.ForEach(n =>
+            {
+                if (n.NoteId == id) NotesTestList.Remove(n);
+            });
+        }
+
+        public void UpdateNote(Note note)
+        {
+            RemoveNote(note.NoteId);
+            AddNote(note);
         }
     }
 }

@@ -7,12 +7,12 @@
         xmlns:gif="https://github.com/XamlAnimatedGif/XamlAnimatedGif"
         mc:Ignorable="d"
         Title="MainWindow"
-        Height="200" Width="165" Topmost="True"
+        Height="330" Width="330" Topmost="True"
         WindowStyle="None" ResizeMode="NoResize" 
-        Background="White" AllowsTransparency="True" 
+        Background="Transparent" AllowsTransparency="True" 
         MouseMove="mainWin_MouseMove" MouseLeftButtonUp="mainWin_MouseLeftButtonUp">
     <Grid>
-        <Image x:Name="pet" Visibility="Visible" Height="165" Width="165" Stretch="Uniform"
+        <Image x:Name="pet" Visibility="Visible" Height="330" Width="330" Stretch="Uniform"
                    gif:AnimationBehavior.SourceUri="pack://application:,,,/Resources/relax.gif"
                    gif:AnimationBehavior.RepeatBehavior="Forever"
                    gif:AnimationBehavior.CacheFramesInMemory = "False" 
