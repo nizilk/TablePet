@@ -7,39 +7,37 @@
         xmlns:gif="https://github.com/XamlAnimatedGif/XamlAnimatedGif"
         mc:Ignorable="d"
         Title="MainWindow"
-        Height="250" Width="250" Topmost="True"
+        Height="200" Width="165" Topmost="True"
         WindowStyle="None" ResizeMode="NoResize" 
-        Background="Transparent" AllowsTransparency="True" 
+        Background="White" AllowsTransparency="True" 
         MouseMove="mainWin_MouseMove" MouseLeftButtonUp="mainWin_MouseLeftButtonUp">
-    <Viewbox>
-        <Grid>
-            <Image x:Name="pet" Visibility="Visible" Height="250" Width="250" Stretch="Uniform"
+    <Grid>
+        <Image x:Name="pet" Visibility="Visible" Height="165" Width="165" Stretch="Uniform"
                    gif:AnimationBehavior.SourceUri="pack://application:,,,/Resources/relax.gif"
                    gif:AnimationBehavior.RepeatBehavior="Forever"
                    gif:AnimationBehavior.CacheFramesInMemory = "False" 
                    PreviewMouseLeftButtonDown="pet_PreviewMouseLeftButtonDown">
-                <Image.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Name="pinTop" Header="置于顶层" Click="pinTop_Click" IsChecked="True"/>
-                        <MenuItem Name="resize" Header="调整大小">
-                            <MenuItem Name="small" Header="小" Click="small_Click"/>
-                            <MenuItem Name="mid" Header="中" Click="mid_Click" IsChecked="True"/>
-                            <MenuItem Name="large" Header="大" Click="large_Click"/>
-                        </MenuItem>
-                        <Separator/>
-                        <MenuItem Name="stopMove" Header="禁止走动" Click="stopMove_Click"/>
-                        <MenuItem Name="sit" Header="坐下" Click="sit_Click"/>
-                        <MenuItem Name="sleep" Header="睡觉" Click="sleep_Click"/>
-                        <Separator/>
-                        <MenuItem Header="便签">
-                            <MenuItem Name="note_all" Header="菜单"/>
-                            <MenuItem Name="note_new" Header="新建" Click="note_new_Click"/>
-                        </MenuItem>
-                        <Separator/>
-                        <MenuItem Name="exit" Header="退出" Click="exit_Click"/>
-                    </ContextMenu>
-                </Image.ContextMenu>
-            </Image>
-        </Grid>
-    </Viewbox>
+            <Image.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Name="pinTop" Header="置于顶层" Click="pinTop_Click" IsChecked="True"/>
+                    <MenuItem Name="resize" Header="调整大小">
+                        <MenuItem Name="small" Header="小" Click="small_Click"/>
+                        <MenuItem Name="mid" Header="中" Click="mid_Click" IsChecked="True"/>
+                        <MenuItem Name="large" Header="大" Click="large_Click"/>
+                    </MenuItem>
+                    <Separator/>
+                    <MenuItem Name="stopMove" Header="禁止走动" Click="stopMove_Click"/>
+                    <MenuItem Name="sit" Header="坐下" Click="sit_Click"/>
+                    <MenuItem Name="sleep" Header="睡觉" Click="sleep_Click"/>
+                    <Separator/>
+                    <MenuItem Header="便签">
+                        <MenuItem Name="note_all" Header="菜单"/>
+                        <MenuItem Name="note_new" Header="新建" Click="note_new_Click"/>
+                    </MenuItem>
+                    <Separator/>
+                    <MenuItem Name="exit" Header="退出" Click="exit_Click"/>
+                </ContextMenu>
+            </Image.ContextMenu>
+        </Image>
+    </Grid>
 </Window>

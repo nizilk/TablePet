@@ -29,15 +29,15 @@ namespace TablePet.Win
     public partial class MainWindow : Window
     {
         private System.Windows.Forms.Screen screen = System.Windows.Forms.Screen.PrimaryScreen;
-        private int screenWidth = 0;
-        private int screenHeight = 0;
-        private int standardW = 0;
-        private int standardH = 0;
+        private float screenWidth = 0;
+        private float screenHeight = 0;
+        private double ratW;
+        private double ratH;
+        private double curRight;
+        private double curDown;
         private NotificationManager notificationManager = new NotificationManager();    // 通知
         private DispatcherTimer timer = new DispatcherTimer();
         private DispatcherTimer timerMove = new DispatcherTimer();
-        private double ratW = 1;
-        private double ratH = 1;
         public NoteContext db = new NoteContext();
 
         // 全部动画资源的路径 -- 只用一次的
@@ -67,20 +67,14 @@ namespace TablePet.Win
 
             screenWidth = screen.Bounds.Width;    // 获取屏幕的宽度     
             screenHeight = screen.Bounds.Height;  // 获取屏幕的高度
-            standardW = screenWidth / 1920;
-            standardH = screenHeight / 1080;
 
-            ratW = screenWidth / (standardW * 800);
-            ratH = screenHeight / (standardH * 500);
+            ratW = screenWidth / 1920.0;
+            ratH = screenHeight / 1080.0;
 
-
-
-            
-
+            pet.Width *= ratW;
+            pet.Height = pet.Width;
             this.Width *= ratW;
             this.Height *= ratH;
-            pet.Width *= ratW;
-            pet.Height *= ratH;
 
             timer.Interval = TimeSpan.FromSeconds(1);
             timerMove.Interval = TimeSpan.FromMilliseconds(1);
@@ -117,7 +111,7 @@ namespace TablePet.Win
 
 
         // 1ms时钟tick: 移动窗口
-        private double step = 0.275;
+        private double step = 0.185;
         private void timerMove_Tick(object sender,  EventArgs e)    
         {
             Uri state = AnimationBehavior.GetSourceUri(pet);
@@ -129,12 +123,12 @@ namespace TablePet.Win
 
             if (state == Resource[0])
             {
-                if (ptLeftUp.X < -300) return;
+                if (ptLeftUp.X < -145*ratW) return;
                 this.Left -= step*ratW;
             }
             if (state == Resource[1])
             {
-                if (screenWidth - ptRightDown.X < -300) return;
+                if (screenWidth - ptRightDown.X < -145*ratW) return;
                 mainWin.Left += step*ratW;
             }
         }
@@ -178,9 +172,7 @@ namespace TablePet.Win
             if (messageProbability != 1) return;
             
             Random random = new Random();
-            int randomNumber = random.Next(1, 7);
-            
-            
+            int randomNumber = random.Next(1, 7);       
 
             string title = "TablePet";
             string message = "";
@@ -225,42 +217,58 @@ namespace TablePet.Win
 
 
         // 调整大小 -- 小
-        private void small_Click(object sender, RoutedEventArgs e)
+        private async void small_Click(object sender, RoutedEventArgs e)
         {
-            small.IsChecked = true;
-            mid.IsChecked = false;
-            large.IsChecked = false;
-            pet.Width = 200 * ratW;
-            pet.Height = 200 * ratH;
-            this.Width = pet.Width;
-            this.Height = pet.Height;
-            step = 0.25 * ratW;
+            await Task.Run(() =>
+            {
+                small.Dispatcher.Invoke(new Action(delegate { small.IsChecked = true; } ) );
+                mid.Dispatcher.Invoke(new Action(delegate { mid.IsChecked = false; } ) );
+                large.Dispatcher.Invoke(new Action(delegate { large.IsChecked = false; } ) );
+                pet.Dispatcher.Invoke(new Action(delegate
+                {
+                    pet.Width = 133 * ratW;
+                    pet.Height = pet.Width;
+                }));
+                this.Dispatcher.Invoke(new Action(delegate { this.Width = 165 * ratW; }));
+                step = 0.165 * ratW;
+            });
+            
         }
 
         // 调整大小 -- 中
-        private void mid_Click(object sender, RoutedEventArgs e)
+        private async void mid_Click(object sender, RoutedEventArgs e)
         {
-            small.IsChecked = false;
-            mid.IsChecked = true;
-            large.IsChecked = false;
-            pet.Width = 250 * ratW;
-            pet.Height = 250 * ratH;
-            this.Width = pet.Width;
-            this.Height = pet.Height;
-            step = 0.275 * ratW;
+            await Task.Run(() =>
+            {
+                small.Dispatcher.Invoke(new Action(delegate { small.IsChecked = false; } ) );
+                mid.Dispatcher.Invoke(new Action(delegate { mid.IsChecked = true; } ) );
+                large.Dispatcher.Invoke(new Action(delegate { large.IsChecked = false; } ) );
+                pet.Dispatcher.Invoke(new Action(delegate
+                {
+                    pet.Width = 165 * ratW;
+                    pet.Height = pet.Width;
+                }));
+                this.Dispatcher.Invoke(new Action(delegate { this.Width = 165 * ratW; }));
+                step = 0.185 * ratW;
+            });
         }
 
         // 调整大小 -- 大
-        private void large_Click(object sender, RoutedEventArgs e)
+        private async void large_Click(object sender, RoutedEventArgs e)
         {
-            small.IsChecked = false;
-            mid.IsChecked = false;
-            large.IsChecked = true;
-            pet.Width = 300 * ratW;
-            pet.Height = 300 * ratH;
-            this.Width = pet.Width;
-            this.Height = pet.Height;
-            step = 0.3 * ratW;
+            await Task.Run(() =>
+            {
+                small.Dispatcher.Invoke(new Action(delegate { small.IsChecked = false; }));
+                mid.Dispatcher.Invoke(new Action(delegate { mid.IsChecked = false; }));
+                large.Dispatcher.Invoke(new Action(delegate { large.IsChecked = true; }));
+                pet.Dispatcher.Invoke(new Action(delegate
+                {
+                    pet.Width = 200 * ratW;
+                    pet.Height = pet.Width;
+                }));
+                this.Dispatcher.Invoke(new Action( delegate { this.Width = 200 * ratW; }));
+                step = 0.2 * ratW;
+            });
         }
 
 
