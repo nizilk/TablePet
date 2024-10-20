@@ -20,6 +20,8 @@ using XamlAnimatedGif;
 using TablePet.Win.Notes;
 using TablePet.Services;
 using TablePet.Services.Models;
+using System.Diagnostics;
+using System.Threading;
 
 namespace TablePet.Win
 {
@@ -31,6 +33,8 @@ namespace TablePet.Win
         private System.Windows.Forms.Screen screen = System.Windows.Forms.Screen.PrimaryScreen;
         private float screenWidth = 0;
         private float screenHeight = 0;
+        private double standardWidth;
+        private double standardHeight;
         private double ratW;
         private double ratH;
         private double curRight;
@@ -38,6 +42,7 @@ namespace TablePet.Win
         private NotificationManager notificationManager = new NotificationManager();    // 通知
         private DispatcherTimer timer = new DispatcherTimer();
         private DispatcherTimer timerMove = new DispatcherTimer();
+        private DispatcherTimer timerinfo = new DispatcherTimer();
         public NoteContext db = new NoteContext();
 
         // 全部动画资源的路径 -- 只用一次的
@@ -67,9 +72,12 @@ namespace TablePet.Win
 
             screenWidth = screen.Bounds.Width;    // 获取屏幕的宽度     
             screenHeight = screen.Bounds.Height;  // 获取屏幕的高度
+            
+            standardWidth = screenWidth / 1920.0;
+            standardHeight = screenHeight / 1080.0;
 
-            ratW = screenWidth / 1920.0;
-            ratH = screenHeight / 1080.0;
+            ratW = 2 * standardWidth;
+            ratH = 2 * standardHeight;
 
             pet.Width *= ratW;
             pet.Height = pet.Width;
@@ -78,10 +86,13 @@ namespace TablePet.Win
 
             timer.Interval = TimeSpan.FromSeconds(1);
             timerMove.Interval = TimeSpan.FromMilliseconds(1);
+            timerinfo.Interval = TimeSpan.FromSeconds(10);
             timer.Tick += timer_Tick;
-            timerMove.Tick += timerMove_Tick;
+            timerMove.Tick += timerMove_Tick;  
+            timerinfo.Tick += timerinfo_Tick;
             timer.Start();
             timerMove.Start();
+            timerinfo.Start();
         }
 
 
@@ -133,6 +144,28 @@ namespace TablePet.Win
             }
         }
 
+        private void timerinfo_Tick(object sender, EventArgs e)
+        {
+
+            Task infoTask = Task.Run(() =>
+            {
+                var cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+                // 创建内存占用字节数的性能计数器
+                var ramCounter = new PerformanceCounter("Memory", "Available MBytes");
+                
+                float cpu = cpuCounter.NextValue();
+                Thread.Sleep(1000);
+                cpu = cpuCounter.NextValue();
+                float ram = ramCounter.NextValue();
+                
+                showNotification("性能使用提示", $"CPU: {cpu}%\nRAM: {ram}MB", NotificationType.Information);
+            });
+            
+
+            
+            
+        }
+
 
         // 鼠标拖动
         private void mainWin_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)    
@@ -167,12 +200,11 @@ namespace TablePet.Win
         // 单击触发随机对话, 通过通知显示, 后续需改进
         private void pet_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)  
         {
-            Random random2 = new Random();
-            int messageProbability = random2.Next(1, 5);
-            if (messageProbability != 1) return;
-            
             Random random = new Random();
-            int randomNumber = random.Next(1, 7);       
+            int messageProbability = random.Next(1, 5);
+            if (messageProbability != 1) return;
+
+            int randomNumber = random.Next(1, 7);    
 
             string title = "TablePet";
             string message = "";
@@ -198,12 +230,20 @@ namespace TablePet.Win
                     message = "你似乎更加适应自己的工作和职责了，更像一个领导者了。";
                     break;
             }
+            
+            showNotification(title, message);
+
+        }
+        
+        private void showNotification(string title, string message, NotificationType type = NotificationType.Information)
+        {
             notificationManager.Show(new NotificationContent
             {
                 Title = title,
                 Message = message,
-                Type = NotificationType.Information
+                Type = type
             });
+        
         }
 
 
