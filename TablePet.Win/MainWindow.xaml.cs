@@ -29,9 +29,6 @@ namespace TablePet.Win
     /// </summary>
     public partial class MainWindow : Window
     {
-
-        private System.Windows.Forms.Screen screen = System.Windows.Forms.Screen.PrimaryScreen;
-
         private double screenWidth = SystemParameters.PrimaryScreenWidth;
         private double screenHeight = SystemParameters.PrimaryScreenHeight;
 
@@ -140,6 +137,7 @@ namespace TablePet.Win
             }
         }
 
+
         private void timerinfo_Tick(object sender, EventArgs e)
         {
 
@@ -156,10 +154,16 @@ namespace TablePet.Win
                 
                 showNotification("性能使用提示", $"CPU: {cpu}%\nRAM: {ram}MB", NotificationType.Information);
             });
-            
+        }
 
-            
-            
+
+        // 按下鼠标左键
+        private Point lmAbs = new Point();
+        private void mainWin_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.lmAbs = e.GetPosition(this);
+            this.lmAbs.Y = Convert.ToInt16(this.Top) + this.lmAbs.Y;
+            this.lmAbs.X = Convert.ToInt16(this.Left) + this.lmAbs.X;
         }
 
 
@@ -169,7 +173,14 @@ namespace TablePet.Win
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 AnimationBehavior.SetSourceUri(pet, Resource[7]);
-                DragMove();
+                Point MousePosition = e.GetPosition(this);
+                Point MousePositionAbs = new Point();
+                MousePositionAbs.X = Convert.ToInt16(this.Left) + MousePosition.X;
+                MousePositionAbs.Y = Convert.ToInt16(this.Top) + MousePosition.Y;
+                this.Left = this.Left + (MousePositionAbs.X - this.lmAbs.X);
+                this.Top = this.Top + (MousePositionAbs.Y - this.lmAbs.Y);
+                this.lmAbs = MousePositionAbs;
+
             }
         }
 

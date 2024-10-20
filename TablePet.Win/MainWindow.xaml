@@ -10,7 +10,7 @@
         Height="330" Width="330" Topmost="True"
         WindowStyle="None" ResizeMode="NoResize" 
         Background="Transparent" AllowsTransparency="True" 
-        MouseMove="mainWin_MouseMove" MouseLeftButtonUp="mainWin_MouseLeftButtonUp">
+        MouseLeftButtonDown="mainWin_MouseLeftButtonDown" MouseMove="mainWin_MouseMove" MouseLeftButtonUp="mainWin_MouseLeftButtonUp">
     <Grid>
         <Image x:Name="pet" Visibility="Visible" Height="330" Width="330" Stretch="Uniform"
                    gif:AnimationBehavior.SourceUri="pack://application:,,,/Resources/relax.gif"
