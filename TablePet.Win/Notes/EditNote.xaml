@@ -11,8 +11,9 @@
             <StackPanel Height="50" Orientation="Horizontal">
                 <Button Content="最小化"/>
                 <Button Name="bt_noteSave" Content="保存" Click="bt_noteSave_Click"/>
-                <TextBox Name="tb_noteTitle" Text="标题..." Width="100"/>
-                <Button Content="新建"/>
+                <TextBox Name="tb_noteTitle" Width="100"/>
+                <TextBlock Name="titleTip" Text="标题..." Padding="10"/>
+                <Button Name="bt_noteNew" Content="新建" Click="bt_noteNew_Click"/>
                 <Button Name="bt_noteClose" Content="关闭" Click="bt_noteClose_Click"/>
             </StackPanel>
             <TextBox Name="tb_noteContent" TextWrapping="Wrap" Text="内容..." Height="250" />
