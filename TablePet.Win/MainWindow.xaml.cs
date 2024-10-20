@@ -31,8 +31,6 @@ namespace TablePet.Win
     {
 
         private System.Windows.Forms.Screen screen = System.Windows.Forms.Screen.PrimaryScreen;
-        private float screenWidth = 0;
-        private float screenHeight = 0;
 
         private double screenWidth = SystemParameters.PrimaryScreenWidth;
         private double screenHeight = SystemParameters.PrimaryScreenHeight;
@@ -69,10 +67,6 @@ namespace TablePet.Win
         public MainWindow()
         {
             InitializeComponent();
-
-
-            screenWidth = screen.Bounds.Width;    // 获取屏幕的宽度     
-            screenHeight = screen.Bounds.Height;  // 获取屏幕的高度
 
             ratW = screenWidth / 1920.0;
             ratH = screenHeight / 1080.0;
