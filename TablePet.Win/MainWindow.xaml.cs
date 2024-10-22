@@ -180,7 +180,6 @@ namespace TablePet.Win
                 this.Left = this.Left + (MousePositionAbs.X - this.lmAbs.X);
                 this.Top = this.Top + (MousePositionAbs.Y - this.lmAbs.Y);
                 this.lmAbs = MousePositionAbs;
-
             }
         }
 
