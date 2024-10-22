@@ -21,6 +21,8 @@ using TablePet.Services;
 using TablePet.Services.Models;
 using System.Diagnostics;
 using System.Threading;
+using System.Drawing;
+using System.Windows.Interop;
 
 namespace TablePet.Win
 {
@@ -249,7 +251,6 @@ namespace TablePet.Win
                 Message = message,
                 Type = type
             });
-        
         }
 
 
