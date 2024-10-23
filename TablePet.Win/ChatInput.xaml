@@ -1,0 +1,15 @@
+﻿<Window x:Class="TablePet.Win.ChatInput"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TablePet.Win"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterOwner" AllowsTransparency="True" WindowStyle="None"
+        Title="ChatInput" Height="120" Width="400">
+    <DockPanel>
+        <RichTextBox Name="rtb_Out" DockPanel.Dock="Top" Height="75" Margin="5" Padding="5" IsReadOnly="True" ScrollViewer.VerticalScrollBarVisibility="Auto" FontSize="13"/>
+        <TextBox Name="tb_In" DockPanel.Dock="Left" Height="25" Width="330" Margin="5" FontSize="13" Padding="5,0,5,0" VerticalContentAlignment="Center"/>
+        <Button Name="bt_In" DockPanel.Dock="Bottom" Height="25" Margin="0,5,5,5" Content="输入" FontSize="13" Click="bt_In_Click"/>
+    </DockPanel>
+</Window>

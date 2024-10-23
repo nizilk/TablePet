@@ -21,18 +21,17 @@ namespace TablePet.Win.Notes
     /// </summary>
     public partial class EditNote : Window
     {
-        public NoteService service;
+        private NoteService noteService;
         private NoteContext db;
         public EditNote()
         {
             InitializeComponent();
         }
 
-        public EditNote(NoteContext db)
+        public EditNote(NoteService sv)
         {
             InitializeComponent();
-            service = new NoteService(db);
-            this.db = db;
+            noteService = sv;
         }
 
 
@@ -42,13 +41,13 @@ namespace TablePet.Win.Notes
             Note note = new Note();
             note.NoteTitle = tb_noteTitle.Text;
             note.NoteContent = tb_noteContent.Text;
-            service.UpdateNote(note);
+            noteService.UpdateNote(note);
         }
 
         // 新建按钮
         private void bt_noteNew_Click(object sender, RoutedEventArgs e)
         {
-            EditNote note = new EditNote(db);
+            EditNote note = new EditNote(noteService);
             note.Show();
         }
 

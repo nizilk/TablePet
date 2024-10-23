@@ -4,6 +4,42 @@
              xmlns:local="clr-namespace:TablePet.Win"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Resources/IconDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style x:Key="TextBoxPlaceHolder" TargetType="{x:Type TextBox}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TextBoxBase}">
+                            <Grid>
+                                <Border x:Name="border" 
+                                        BorderThickness="{TemplateBinding BorderThickness}" 
+                                        SnapsToDevicePixels="True">
+                                    <ScrollViewer x:Name="PART_ContentHost" Focusable="false" 
+                                                  HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" />
+                                </Border>
+                                <!-- 添加一个placeholder文本 -->
+                                <TextBlock IsHitTestVisible="False" Visibility="Collapsed" Text="{TemplateBinding Tag}" 
+                                           x:Name="placeholder" Foreground="Gray" 
+                                           FontFamily="{TemplateBinding FontFamily}" 
+                                           FontSize="{TemplateBinding FontSize}" 
+                                           Padding="{TemplateBinding Padding}" 
+                                           VerticalAlignment="{TemplateBinding VerticalAlignment}" 
+                                           HorizontalAlignment="{TemplateBinding HorizontalAlignment}"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <!--当TextBoxPlaceHolder的text没有值时，显示placeholder-->
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Text}" Value="">
+                                    <Setter TargetName="placeholder" Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

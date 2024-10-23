@@ -33,6 +33,7 @@ namespace TablePet.Win
     {
         private double screenWidth = SystemParameters.PrimaryScreenWidth;
         private double screenHeight = SystemParameters.PrimaryScreenHeight;
+        private double DpiRatio;
 
         private double ratW;
         private double ratH;
@@ -40,7 +41,9 @@ namespace TablePet.Win
         private DispatcherTimer timer = new DispatcherTimer();
         private DispatcherTimer timerMove = new DispatcherTimer();
         private DispatcherTimer timerinfo = new DispatcherTimer();
+
         public NoteContext db = new NoteContext();
+        public NoteService noteService;
 
         // 全部动画资源的路径 -- 只用一次的
         public Uri[] ResourceOnce = {
@@ -70,6 +73,7 @@ namespace TablePet.Win
             ratW = screenWidth / 1920.0;
             ratH = screenHeight / 1080.0;
 
+            DpiRatio = Graphics.FromHwnd(new WindowInteropHelper(Application.Current.MainWindow).Handle).DpiX / 96;
 
             pet.Width *= ratW;
             pet.Height = pet.Width;
@@ -87,6 +91,8 @@ namespace TablePet.Win
             timer.Start();
             timerMove.Start();
             timerinfo.Start();
+
+            noteService = new NoteService(db);
         }
 
 
@@ -124,8 +130,8 @@ namespace TablePet.Win
             if (state == null) return;
             if (!moveable) return;
 
-            Point ptLeftUp = this.PointToScreen(new Point(0, 0));   // 左上角屏幕坐标
-            Point ptRightDown = this.PointToScreen(new Point(this.ActualWidth, this.ActualHeight));     // 右下角屏幕坐标
+            System.Windows.Point ptLeftUp = this.PointToScreen(new System.Windows.Point(0, 0));   // 左上角屏幕坐标
+            System.Windows.Point ptRightDown = this.PointToScreen(new System.Windows.Point(this.ActualWidth, this.ActualHeight));     // 右下角屏幕坐标
 
             if (state == Resource[0])
             {
@@ -134,8 +140,8 @@ namespace TablePet.Win
             }
             if (state == Resource[1])
             {
-                if (screenWidth - ptRightDown.X < edge) return;
-                mainWin.Left += step*ratW;
+                if (screenWidth * DpiRatio - ptRightDown.X < edge) return;
+                this.Left += step*ratW;
             }
         }
 
@@ -160,7 +166,7 @@ namespace TablePet.Win
 
 
         // 按下鼠标左键
-        private Point lmAbs = new Point();
+        private System.Windows.Point lmAbs = new System.Windows.Point();
         private void mainWin_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.lmAbs = e.GetPosition(this);
@@ -170,13 +176,13 @@ namespace TablePet.Win
 
 
         // 鼠标拖动
-        private void mainWin_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)    
+        private void mainWin_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 AnimationBehavior.SetSourceUri(pet, Resource[7]);
-                Point MousePosition = e.GetPosition(this);
-                Point MousePositionAbs = new Point();
+                System.Windows.Point MousePosition = e.GetPosition(this);
+                System.Windows.Point MousePositionAbs = new System.Windows.Point();
                 MousePositionAbs.X = Convert.ToInt16(this.Left) + MousePosition.X;
                 MousePositionAbs.Y = Convert.ToInt16(this.Top) + MousePosition.Y;
                 this.Left = this.Left + (MousePositionAbs.X - this.lmAbs.X);
@@ -376,11 +382,26 @@ namespace TablePet.Win
 
 
         /*---------- 扩展功能入口 ----------*/
+        private void chatIn_Click(object sender, RoutedEventArgs e)
+        {
+            ChatInput chatInput = new ChatInput();
+            chatInput.Show();
+        }
+
+
         private void note_new_Click(object sender, RoutedEventArgs e)
         {
-            EditNote note = new EditNote(db);
+            EditNote note = new EditNote(noteService);
             note.Show();
         }
+
+
+        private void note_all_Click(object sender, RoutedEventArgs e)
+        {
+            MenuNote note = new MenuNote(noteService);
+            note.Show();
+        }
+
         /*---------- 扩展功能入口 ----------*/
 
 

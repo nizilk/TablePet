@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TablePet.Services;
 
 namespace TablePet.Win.Notes
 {
@@ -20,9 +21,28 @@ namespace TablePet.Win.Notes
     /// </summary>
     public partial class MenuNote : Window
     {
+        private NoteService noteService;
         public MenuNote()
         {
             InitializeComponent();
+        }
+
+        public MenuNote(NoteService sv)
+        {
+            InitializeComponent();
+            noteService = sv;
+            lb_Notes.ItemsSource = noteService.Notes;
+        }
+
+        private void bt_folderPlus_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void bt_noteNew_Click(object sender, RoutedEventArgs e)
+        {
+            EditNote note = new EditNote(noteService);
+            note.Show();
         }
     }
 }

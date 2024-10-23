@@ -30,8 +30,9 @@
                     <MenuItem Name="sit" Header="坐下" Click="sit_Click"/>
                     <MenuItem Name="sleep" Header="睡觉" Click="sleep_Click"/>
                     <Separator/>
+                    <MenuItem Name="chatIn" Header="对话" Click="chatIn_Click"/>
                     <MenuItem Header="便签">
-                        <MenuItem Name="note_all" Header="菜单"/>
+                        <MenuItem Name="note_all" Header="菜单" Click="note_all_Click"/>
                         <MenuItem Name="note_new" Header="新建" Click="note_new_Click"/>
                     </MenuItem>
                     <Separator/>

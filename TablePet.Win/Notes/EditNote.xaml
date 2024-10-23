@@ -5,19 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TablePet.Win.Notes"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen" AllowsTransparency="True"
         Title="Note" Height="300" Width="250" WindowStyle="None">
     <Grid>
-        <StackPanel>
-            <StackPanel Height="50" Orientation="Horizontal">
-                <Button Content="最小化"/>
-                <Button Name="bt_noteSave" Content="保存" Click="bt_noteSave_Click"/>
-                <TextBox Name="tb_noteTitle" Width="100"/>
-                <TextBlock Name="titleTip" Text="标题..." Padding="10"/>
-                <Button Name="bt_noteNew" Content="新建" Click="bt_noteNew_Click"/>
-                <Button Name="bt_noteClose" Content="关闭" Click="bt_noteClose_Click"/>
-            </StackPanel>
-            <TextBox Name="tb_noteContent" TextWrapping="Wrap" Text="内容..." Height="250" />
-        </StackPanel>
+        <DockPanel Background="#f0deff">
+            <DockPanel DockPanel.Dock="Top" Height="40" Background="#e6cbfd">
+                <Button DockPanel.Dock="Left" Width="25" Name="bt_noteNew" Background="Transparent" Click="bt_noteNew_Click" Padding="5,0,5,0" BorderThickness="0">
+                    <Path Data="{DynamicResource AddGeometry}" Fill="Black" Stretch="Uniform"/>
+                </Button>
+                <TextBox Name="tb_noteTitle" Style="{StaticResource TextBoxPlaceHolder}" Tag="标题..." 
+                         Width="175" FontSize="13" VerticalAlignment="Center" Padding="5,0,0,0"/>
+                <Button DockPanel.Dock="Right" Width="25" Name="bt_noteClose" Background="Transparent" Click="bt_noteClose_Click" Padding="5,0,5,0" BorderThickness="0">
+                    <Path Data="{DynamicResource CloseGeometry}" Fill="Black" Stretch="Uniform"/>
+                </Button>
+                <Button DockPanel.Dock="Right" Width="25" Name="bt_noteSave" Background="Transparent" Click="bt_noteSave_Click" Padding="5,0,5,0" BorderThickness="0">
+                    <Path Data="{DynamicResource SaveGeometry}" Fill="Black" Stretch="Uniform"/>
+                </Button>
+            </DockPanel>
+            <TextBox Name="tb_noteContent" TextWrapping="Wrap" Style="{StaticResource TextBoxPlaceHolder}" Tag="内容..."
+                     Height="260" FontSize="13" Padding="5,5,5,5" AcceptsReturn="True"/>
+        </DockPanel>
 
     </Grid>
 </Window>
