@@ -1,38 +1,45 @@
 from openai import OpenAI
 import json
+from pathlib import Path
+import time
+import configparser
 
 
-def gpt_35_api_stream(messages: list):
-    """为提供的对话消息创建新的回答 (流式传输)
-
-    Args:
-        messages (list): 完整的对话消息
-    """
-    stream = client.chat.completions.create(
-        model='gpt-3.5-turbo',
-        messages=messages,
-        stream=True,
-    )
-    for chunk in stream:
-        if chunk.choices[0].delta.content is not None:
-            print(chunk.choices[0].delta.content, end="")
+client = OpenAI(
+    # defaults to os.environ.get("OPENAI_API_KEY")
+    api_key="sk-WM2GGtnoub7lHpmix4ihZX0Si8K1Go5vqyXQDjIwdD3dZdeZ",
+    base_url="https://api.chatanywhere.tech/v1"
+    # base_url="https://api.chatanywhere.org/v1"
+)
 
 
-def test():
-    client = OpenAI(
-        # defaults to os.environ.get("OPENAI_API_KEY")
-        api_key="sk-WM2GGtnoub7lHpmix4ihZX0Si8K1Go5vqyXQDjIwdD3dZdeZ",
-        base_url="https://api.chatanywhere.tech/v1"
-        # base_url="https://api.chatanywhere.org/v1"
-    )
-    with open('D:\Documents\GitHub\TablePet\TablePet.Services\Python\prompt.json', encoding='UTF-8') as prompt_file:
-        file_contents = prompt_file.read()
-    psj = json.loads(file_contents)
-    messages = [psj["start"][1]]
-    completion = client.chat.completions.create(model="gpt-3.5-turbo", messages=messages)
-    print(completion.choices[0].message.content)
-    return completion.choices[0].message.content
+class ChatGPT:
+    def __init__(self):
+        # 前置内容-设定角色
+        path = 'D:\Documents\GitHub\TablePet\TablePet.Services\Python\prompt.json'
+        with open(path, encoding='UTF-8') as prompt_file:
+            file_contents = prompt_file.read()
+            psj = json.loads(file_contents)
+            self.messages = [psj["start"][1]]
+
+    def ask_gpt(self, question):
+        # 记录问题
+        self.messages.append({"role": "user", "content": question})
+        # 发送请求
+        rsp = client.chat.completions.create(
+            model="gpt-4o-mini",    # gpt-3.5-turbo / gpt-4o-mini
+            messages=self.messages
+        )
+        answer = rsp.choices[0].message.content
+        # 记录回答
+        self.messages.append({"role": "assistant", "content": answer})
+        return answer
 
 
 if __name__ == '__main__':
-    test()
+    chat = ChatGPT()
+    print(chat.ask_gpt("请你向我打招呼。"))
+    print(chat.ask_gpt("复述上一次回答。"))
+    print(chat.ask_gpt("凯尔希，上一条我给你的指示是什么？"))
+
+

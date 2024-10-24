@@ -15,6 +15,7 @@ namespace TablePet.Services
     {
         private static string OPENAI_API_KEY = "sk-WM2GGtnoub7lHpmix4ihZX0Si8K1Go5vqyXQDjIwdD3dZdeZ";
         private IntPtr m_threadState;
+        private dynamic GPTInst;
 
         public ChatService()
         {
@@ -33,25 +34,39 @@ namespace TablePet.Services
             PythonEngine.PythonHome = venvPath;
             // PythonEngine.PythonPath = Environment.GetEnvironmentVariable("PYTHONPATH", EnvironmentVariableTarget.Process);
 
-            // PythonEngine.Initialize();
+            PythonEngine.Initialize();
+            Init();
         }
 
 
-        public string test(string pm)
+        private void Init()
         {
-            string t;
-            PythonEngine.Initialize();
             m_threadState = PythonEngine.BeginAllowThreads();
             using (Py.GIL())
             {
-                using (PyModule scope = Py.CreateScope())
+                using (var scope = Py.CreateScope())
                 {
-                    dynamic openai = Py.Import("chat");
-                    t = openai.test();
+                    dynamic chat = Py.Import("chat");
+                    GPTInst = chat.ChatGPT();
                 }
             }
             PythonEngine.EndAllowThreads(m_threadState);
-            return t;
+        }
+
+
+        public string AskGpt(string pm)
+        {
+            string str;
+            m_threadState = PythonEngine.BeginAllowThreads();
+            using (Py.GIL())
+            {
+                using (var scope = Py.CreateScope())
+                {
+                    str = GPTInst.ask_gpt(pm);
+                }
+            }
+            PythonEngine.EndAllowThreads(m_threadState);
+            return str;
         }
 
 

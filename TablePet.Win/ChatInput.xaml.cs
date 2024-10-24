@@ -24,6 +24,11 @@ namespace TablePet.Win
         public ChatInput()
         {
             InitializeComponent();
+            Task chatTask = Task.Run(() =>
+            {
+                string t = chatService.AskGpt("请你向我打招呼。");
+                UpdateTextOut(t);
+            });
         }
 
         private void bt_In_Click(object sender, RoutedEventArgs e)
@@ -31,7 +36,7 @@ namespace TablePet.Win
             string pm = tb_In.Text;
             Task chatTask = Task.Run(() =>
             {
-                string t = chatService.test(pm);
+                string t = chatService.AskGpt(pm);
                 UpdateTextOut(t);
             });
         }
@@ -42,6 +47,14 @@ namespace TablePet.Win
             {
                 rtb_Out.AppendText(text + "\n");
             }));            
+        }
+
+        private void ChatWin_MouseMove(object sender, MouseEventArgs e)
+        {
+            if(e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
         }
     }
 }
