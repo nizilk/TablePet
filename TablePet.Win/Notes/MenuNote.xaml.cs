@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TablePet.Services;
+using TablePet.Services.Models;
 
 namespace TablePet.Win.Notes
 {
@@ -32,6 +34,7 @@ namespace TablePet.Win.Notes
             InitializeComponent();
             noteService = sv;
             lb_Notes.ItemsSource = noteService.Notes;
+            this.DataContext = this;
         }
 
         private void bt_folderPlus_Click(object sender, RoutedEventArgs e)

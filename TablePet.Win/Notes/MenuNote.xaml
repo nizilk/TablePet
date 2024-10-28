@@ -9,20 +9,26 @@
         Title="MainWindow" Height="450" Width="600" WindowStyle="None">
     <DockPanel>
         <Grid DockPanel.Dock="Top">
-            <Button Grid.Column="0" Width="25" Name="bt_folderPlus" Background="Transparent"
+            <Button Grid.Column="0" Width="20" Name="bt_folderPlus" Background="Transparent"
                     Padding="0,22,0,0" Margin="20,0,0,0" BorderThickness="0" HorizontalAlignment="Left"
                     Click="bt_folderPlus_Click">
                 <Path Data="{DynamicResource FolderPlusGeometry}" Fill="Black" Stretch="Uniform"/>
             </Button>
-            <Label Grid.Column="1" Content="所有便签" HorizontalAlignment="Center" FontSize="20" Height="60" VerticalContentAlignment="Bottom"/>
-            <Button Grid.Column="2" Width="25" Name="bt_noteNew" Background="Transparent"
+            <Label Grid.Column="1" Content="所有便签" HorizontalAlignment="Center" FontSize="15" Height="60" VerticalContentAlignment="Bottom"/>
+            <Button Grid.Column="2" Width="20" Name="bt_noteNew" Background="Transparent"
                     Padding="2,20,2,0" Margin="0,0,20,0" BorderThickness="0" HorizontalAlignment="Right"
                     Click="bt_noteNew_Click">
                 <Path Data="{DynamicResource AddGeometry}" Fill="Black" Stretch="Uniform"/>
             </Button>
         </Grid>
         <Border BorderBrush="Black"  BorderThickness="1" Margin="15,0,15,15">
-            <ListBox Name="lb_Notes"/>
+            <ListBox Name="lb_Notes" HorizontalAlignment="Stretch">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding NoteTitle}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Border>
 
     </DockPanel>

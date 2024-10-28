@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,9 +14,13 @@ namespace TablePet.Services
         public NoteService(NoteContext context)
         {
             db = context;
+            Notes.Add(new Note() { NoteId = "0", NoteTitle = "测试机一号", CreatedDate=DateTime.Now, NoteContent="内容内容内容。" });
         }
 
-        public List<Note> Notes
+        // 因为数据库这边还不太会，先用这个
+        public ObservableCollection<Note> Notes { get; set; } = new ObservableCollection<Note>();
+
+        public List<Note> NotesB
         {
             get
             {
@@ -24,8 +29,6 @@ namespace TablePet.Services
             }
         }
 
-        // 因为数据库这边还不太会，先用这个
-        public List<Note> NotesTestList { get; } = new List<Note>();
 
         public void AddNote(Note note) 
         {
@@ -33,21 +36,14 @@ namespace TablePet.Services
             note.CreatedDate = DateTime.Now;
             // db.Notes .Add(note);
             // db.SaveChanges();
-            NotesTestList.Add(note);
+            Notes.Add(note);
         }
 
-        public void RemoveNote(string id) 
-        {
-            if (id == null || id == "") return;
-            NotesTestList.ForEach(n =>
-            {
-                if (n.NoteId == id) NotesTestList.Remove(n);
-            });
-        }
+        public void RemoveNote(Note note) => Notes.Remove(note);
 
         public void UpdateNote(Note note)
         {
-            RemoveNote(note.NoteId);
+            RemoveNote(note);
             AddNote(note);
         }
     }
