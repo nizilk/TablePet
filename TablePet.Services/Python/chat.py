@@ -20,7 +20,8 @@ class ChatGPT:
         with open(path, encoding='UTF-8') as prompt_file:
             file_contents = prompt_file.read()
             psj = json.loads(file_contents)
-            self.messages = [psj["start"][1]]
+            self.messages = psj["start"]
+            self.intents = psj["intent"]
 
     def ask_gpt(self, question):
         # 记录问题
@@ -34,12 +35,28 @@ class ChatGPT:
         # 记录回答
         self.messages.append({"role": "assistant", "content": answer})
         return answer
+    
+    def query_rec(self, question):
+        self.intents.append({"role": "user", "content": question})
+        self.messages.append({"role": "user", "content": question})
+        rsp = client.chat.completions.create(
+            model = "gpt-4o-mini",
+            messages=self.intents
+        )
+        answer = rsp.choices[0].message.content
+        del self.intents[-1]
+        self.messages.append({"role": "assistant", "content": answer})
+        return answer
 
 
 if __name__ == '__main__':
     chat = ChatGPT()
-    print(chat.ask_gpt("请你向我打招呼。"))
-    print(chat.ask_gpt("复述上一次回答。"))
-    print(chat.ask_gpt("凯尔希，上一条我给你的指示是什么？"))
+    while(1):
+        qst = input()
+        print(chat.query_rec(qst))
+
+    # print(chat.ask_gpt("请你向我打招呼。"))
+    # print(chat.ask_gpt("复述上一次回答。"))
+    # print(chat.ask_gpt("凯尔希，上一条我给你的指示是什么？"))
 
 

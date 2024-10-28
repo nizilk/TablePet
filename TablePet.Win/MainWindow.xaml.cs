@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using XamlAnimatedGif;
+using TablePet.Win.Chat;
 using TablePet.Win.Notes;
 using TablePet.Services;
 using TablePet.Services.Models;
@@ -384,7 +385,7 @@ namespace TablePet.Win
         /*---------- 扩展功能入口 ----------*/
         private void chatIn_Click(object sender, RoutedEventArgs e)
         {
-            ChatInput chatInput = new ChatInput();
+            ChatInput chatInput = new ChatInput(noteService);
             chatInput.Show();
         }
 

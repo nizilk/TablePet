@@ -7,6 +7,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Python.Runtime;
 
 namespace TablePet.Services
@@ -62,7 +64,23 @@ namespace TablePet.Services
             {
                 using (var scope = Py.CreateScope())
                 {
-                    str = GPTInst.ask_gpt(pm);
+                    str = GPTInst.ask_gpt(pm);                    
+                }
+            }
+            PythonEngine.EndAllowThreads(m_threadState);
+            return str;
+        }
+
+
+        public string QueryRec(string pm)
+        {
+            string str;
+            m_threadState = PythonEngine.BeginAllowThreads();
+            using (Py.GIL())
+            {
+                using (var scope = Py.CreateScope())
+                {
+                    str = GPTInst.query_rec(pm);
                 }
             }
             PythonEngine.EndAllowThreads(m_threadState);
