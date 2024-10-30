@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Python.Runtime;
 
-namespace TablePet.Services
+namespace TablePet.Services.Controllers
 {
     public class ChatService
     {

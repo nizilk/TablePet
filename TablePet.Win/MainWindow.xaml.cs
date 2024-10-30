@@ -20,10 +20,16 @@ using TablePet.Win.Chat;
 using TablePet.Win.Notes;
 using TablePet.Services;
 using TablePet.Services.Models;
+using TablePet.Services.Controllers;
 using System.Diagnostics;
 using System.Threading;
 using System.Drawing;
 using System.Windows.Interop;
+using TablePet.Win.FeedReader;
+using CodeHollow.FeedReader;
+using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace TablePet.Win
 {
@@ -45,6 +51,7 @@ namespace TablePet.Win
 
         public NoteContext db = new NoteContext();
         public NoteService noteService;
+        FeedReaderService feedReaderService = new FeedReaderService();
 
         // 全部动画资源的路径 -- 只用一次的
         public Uri[] ResourceOnce = {
@@ -401,6 +408,28 @@ namespace TablePet.Win
         {
             MenuNote note = new MenuNote(noteService);
             note.Show();
+        }
+
+        private void mi_feed_Click(object sender, RoutedEventArgs e)
+        {
+            FeedReaderService feedReaderService = new FeedReaderService();
+            Feed feed = feedReaderService.UpdateFeed();
+            feedReaderService.ParseFeedItems(feed);
+
+            FeedView feedView = new FeedView(feedReaderService);
+            feedView.Show();
+        }
+
+
+        private void test_Click(object sender, RoutedEventArgs e)
+        {
+            FeedReaderService feedReaderService = new FeedReaderService();
+            Feed feed = feedReaderService.UpdateFeed();
+            feedReaderService.ParseFeedItems(feed);
+            FeedItem smp = feed.Items[0];
+            MessageBox.Show(smp.Content);
+            //var xml = XElement.Parse("<root>"+smp.Content+"</root>");
+            //MessageBox.Show(xml.Value);
         }
 
         /*---------- 扩展功能入口 ----------*/

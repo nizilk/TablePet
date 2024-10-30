@@ -103,14 +103,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChatService.cs" />
-    <Compile Include="NoteService.cs" />
+    <Compile Include="Controllers\ChatService.cs" />
+    <Compile Include="Controllers\FeedReaderService.cs" />
+    <Compile Include="Controllers\NoteService.cs" />
     <Compile Include="Models\Note.cs" />
     <Compile Include="Models\NoteContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Controllers\" />
     <Folder Include="Python\" />
   </ItemGroup>
   <ItemGroup>

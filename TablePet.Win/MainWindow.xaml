@@ -35,6 +35,8 @@
                         <MenuItem Name="note_all" Header="菜单" Click="note_all_Click"/>
                         <MenuItem Name="note_new" Header="新建" Click="note_new_Click"/>
                     </MenuItem>
+                    <MenuItem Name="mi_feed" Header="Feed Reader" Click="mi_feed_Click"/>
+                    <MenuItem Name="test" Header="测试" Click="test_Click"/>
                     <Separator/>
                     <MenuItem Name="exit" Header="退出" Click="exit_Click"/>
                 </ContextMenu>

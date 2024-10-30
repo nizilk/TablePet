@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TablePet.Services;
 using TablePet.Services.Models;
+using TablePet.Services.Controllers;
 
 namespace TablePet.Win.Notes
 {

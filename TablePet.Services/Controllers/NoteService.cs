@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TablePet.Services.Models;
 
-namespace TablePet.Services
+namespace TablePet.Services.Controllers
 {
     public class NoteService
     {

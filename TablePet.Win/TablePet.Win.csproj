@@ -88,6 +88,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="FeedReader\FeedProperties.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FeedReader\FeedView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FeedReader\Temp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\IconDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -104,8 +116,19 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BindableRichTextBox.cs" />
     <Compile Include="Chat\ChatInput.xaml.cs">
       <DependentUpon>ChatInput.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DocumentConverter.cs" />
+    <Compile Include="FeedReader\FeedProperties.xaml.cs">
+      <DependentUpon>FeedProperties.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FeedReader\FeedView.xaml.cs">
+      <DependentUpon>FeedView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FeedReader\Temp.xaml.cs">
+      <DependentUpon>Temp.xaml</DependentUpon>
     </Compile>
     <Compile Include="Notes\EditNote.xaml.cs">
       <DependentUpon>EditNote.xaml</DependentUpon>
@@ -222,9 +245,7 @@
       <Name>TablePet.Services</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="FeedReader\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
