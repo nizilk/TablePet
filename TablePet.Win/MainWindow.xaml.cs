@@ -169,7 +169,7 @@ namespace TablePet.Win
                 cpu = cpuCounter.NextValue();
                 float ram = ramCounter.NextValue();
                 
-                showNotification("性能使用提示", $"CPU: {cpu}%\nRAM: {ram}MB", NotificationType.Information);
+                showNotification("性能使用提示", $"CPU: {cpu}%\nRAM: {ram}MB", NotificationType.Warning);
             });
         }
 
@@ -260,13 +260,18 @@ namespace TablePet.Win
         
         private void showNotification(string title, string message, NotificationType type = NotificationType.Information)
         {
-            notificationManager.Show(new NotificationContent
+            if (type == NotificationType.Information)
+            {
+                comicMessageBox.ShowMessage(message);
+            }
+            else notificationManager.Show(new NotificationContent            
             {
                 Title = title,
                 Message = message,
                 Type = type
             });
         }
+        
 
 
         /*==================== 右键选单 ====================*/
