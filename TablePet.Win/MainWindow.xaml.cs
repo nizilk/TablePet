@@ -18,6 +18,7 @@ using System.Windows.Threading;
 using XamlAnimatedGif;
 using TablePet.Win.Chat;
 using TablePet.Win.Notes;
+using TablePet.Win.Calendar;
 using TablePet.Services;
 using TablePet.Services.Models;
 using TablePet.Services.Controllers;
@@ -420,6 +421,11 @@ namespace TablePet.Win
             feedView.Show();
         }
 
+        private void calendar_Click(object sender, RoutedEventArgs e)
+        {
+            CalendarWindow calendar = new CalendarWindow();
+            calendar.Show();
+        }
 
         private void test_Click(object sender, RoutedEventArgs e)
         {
