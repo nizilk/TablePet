@@ -99,7 +99,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-
+      <Page Include="ComicMessageBox\ComicMessageBox.xaml" />
     <Page Include="FeedReader\FeedProperties.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -112,8 +112,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ComicMessageBox.xaml" />
-
     <Page Include="Resources\IconDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -140,6 +138,7 @@
     <Compile Include="Chat\ChatInput.xaml.cs">
       <DependentUpon>ChatInput.xaml</DependentUpon>
     </Compile>
+      <Compile Include="ComicMessageBox\ComicMessageBox.xaml.cs" />
     <Compile Include="DocumentConverter.cs" />
     <Compile Include="FeedReader\FeedProperties.xaml.cs">
       <DependentUpon>FeedProperties.xaml</DependentUpon>
@@ -149,9 +148,6 @@
     </Compile>
     <Compile Include="FeedReader\Temp.xaml.cs">
       <DependentUpon>Temp.xaml</DependentUpon>
-    <Compile Include="ComicMessageBox.xaml.cs">
-      <DependentUpon>ComicMessageBox.xaml</DependentUpon>
-
     </Compile>
     <Compile Include="Notes\EditNote.xaml.cs">
       <DependentUpon>EditNote.xaml</DependentUpon>
