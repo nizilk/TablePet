@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TablePet.Services;
+using TablePet.Services.Controllers;
 using TablePet.Win.Notes;
 
 namespace TablePet.Win.Chat

@@ -9,6 +9,8 @@
                 <ResourceDictionary Source="pack://application:,,,/Resources/IconDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
+            <local:DocumentConverter x:Key="DocConverter"/>
+            
             <Style x:Key="TextBoxPlaceHolder" TargetType="{x:Type TextBox}">
                 <Setter Property="Template">
                     <Setter.Value>
@@ -40,6 +42,80 @@
                 </Setter>
             </Style>
 
+
+            <DataTemplate x:Key="EntriesTemplate">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="20"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="20"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="5" FontWeight="Bold" FontSize="20" Margin="10,0,0,0">
+                        <Hyperlink Name="hyperlink_Title" NavigateUri="{Binding Link}" Foreground="Black" TextDecorations="None" Click="hyperlink_Title_Click">
+                            <Run Text="{Binding Title}"/>
+                        </Hyperlink>
+                    </Label>
+                    <Button Grid.Row="1" Grid.Column="6" Height="20" Width="20" Name="bt_starEntry" Background="Transparent" Margin="0,0,15,0" BorderThickness="0" Tag="0">
+                        <Path x:Name="bt_starEntry_Path" Data="{DynamicResource StarGeometry}" Fill="#999999" Stretch="Uniform"/>
+                    </Button>
+                    <Button Grid.Row="1" Grid.Column="7" Height="20" Width="20" Name="bt_delEntry" Background="Transparent"  BorderThickness="0">
+                        <Path x:Name="bt_delEntry_Path" Data="{DynamicResource DelGeometry}" Fill="#999999" Stretch="Uniform"/>
+                    </Button>
+
+                    <Label Grid.Row="2" Grid.Column="1" Content="from"/>
+                    <Label Grid.Row="2" Grid.Column="2" Content="标题"/>
+                    <Label Grid.Row="2" Grid.Column="3" Content="by"/>
+                    <Label Grid.Row="2" Grid.Column="4" Content="作者"/>
+                    <Label Grid.Row="2" Grid.Column="5" Content="{Binding PublishingDateString}" HorizontalAlignment="Right" Grid.ColumnSpan="2"/>
+                    <!--Sat Aug 10 2024 23:59:00 (2 months)-->
+                    <Label Grid.Row="2" Grid.Column="7" Content="# 1."/>
+
+                    <local:BindableRichTextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="7" x:Name="rtb_contentEntry" 
+                                               BorderThickness="0" Margin="20,5,20,25" Padding="10" IsReadOnly="True" MinWidth="500" 
+                                               BindableDocument="{Binding Content, Converter={StaticResource DocConverter}, Mode=TwoWay}">
+                        
+                    </local:BindableRichTextBox>
+                    
+                    <ComboBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="5" Text="转发" IsEditable="True" IsReadOnly="True" BorderThickness="0" HorizontalAlignment="Left" Padding="0" Margin="5,0,0,0"/>
+                    <CheckBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="5" Content=" 保持未读" HorizontalAlignment="Left" Padding="0" Margin="65,0,0,0"/>
+                    <Button Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="5" Height="20" Width="20" Name="bt_tagEntry" Background="Transparent"  BorderThickness="0" HorizontalAlignment="Left" Margin="150,0,0,0" Padding="1,-1,1,3">
+                        <Path x:Name="bt_tagEntry_Path" Data="{DynamicResource TagGeometry}" Fill="Gray" Stretch="Uniform"/>
+                    </Button>
+
+                    <Border Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="9" BorderBrush="LightGray"  BorderThickness="0.2" SnapsToDevicePixels="True" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+
+                </Grid>
+            </DataTemplate>
+
+
+            <Style x:Key="SettingSelectorStyle" TargetType="{x:Type ContentControl}">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path=SelectedSettingIndex}" Value="0">
+                        <!--Setter Property="ContentTemplate" Value="{StaticResource FullArticlesMode}"/-->
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+
+            
+            
+            
         </ResourceDictionary>
     </Application.Resources>
 </Application>

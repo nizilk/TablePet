@@ -58,6 +58,9 @@
     <Reference Include="Notifications.Wpf, Version=0.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Notifications.Wpf.0.1.1\lib\net461\Notifications.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="NuGet.Frameworks, Version=6.11.1.2, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\NuGet.Frameworks.6.11.1\lib\net472\NuGet.Frameworks.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -84,11 +87,33 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Calendar\AddEventDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Calendar\CalendarWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Chat\ChatInput.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+
+    <Page Include="FeedReader\FeedProperties.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FeedReader\FeedView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FeedReader\Temp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ComicMessageBox.xaml" />
+
     <Page Include="Resources\IconDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -105,11 +130,28 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BindableRichTextBox.cs" />
+    <Compile Include="Calendar\AddEventDialog.xaml.cs">
+      <DependentUpon>AddEventDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Calendar\CalendarWindow.xaml.cs">
+      <DependentUpon>CalendarWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Chat\ChatInput.xaml.cs">
       <DependentUpon>ChatInput.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DocumentConverter.cs" />
+    <Compile Include="FeedReader\FeedProperties.xaml.cs">
+      <DependentUpon>FeedProperties.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FeedReader\FeedView.xaml.cs">
+      <DependentUpon>FeedView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FeedReader\Temp.xaml.cs">
+      <DependentUpon>Temp.xaml</DependentUpon>
     <Compile Include="ComicMessageBox.xaml.cs">
       <DependentUpon>ComicMessageBox.xaml</DependentUpon>
+
     </Compile>
     <Compile Include="Notes\EditNote.xaml.cs">
       <DependentUpon>EditNote.xaml</DependentUpon>
@@ -226,9 +268,7 @@
       <Name>TablePet.Services</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="FeedReader\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

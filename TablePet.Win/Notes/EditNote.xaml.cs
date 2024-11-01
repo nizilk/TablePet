@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using TablePet.Services;
 using TablePet.Services.Models;
+using TablePet.Services.Controllers;
 
 namespace TablePet.Win.Notes
 {
