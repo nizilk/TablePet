@@ -32,6 +32,7 @@ namespace TablePet.Win
     /// </summary>
     public partial class MainWindow : Window
     {
+        
         private double screenWidth = SystemParameters.PrimaryScreenWidth;
         private double screenHeight = SystemParameters.PrimaryScreenHeight;
         private double DpiRatio;
@@ -81,7 +82,7 @@ namespace TablePet.Win
             this.Width *= ratW;
             this.Height *= ratH;
 
-            edge = -280 * ratW;
+            edge = -100 * ratW;
 
             timer.Interval = TimeSpan.FromSeconds(1);
             timerMove.Interval = TimeSpan.FromMilliseconds(1);
@@ -94,6 +95,7 @@ namespace TablePet.Win
             timerinfo.Start();
 
             noteService = new NoteService(db);
+            
         }
 
 
@@ -145,11 +147,13 @@ namespace TablePet.Win
                 this.Left += step*ratW;
             }
         }
+        
+        
+        
 
 
         private void timerinfo_Tick(object sender, EventArgs e)
         {
-
             Task infoTask = Task.Run(() =>
             {
                 var cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
@@ -161,7 +165,7 @@ namespace TablePet.Win
                 cpu = cpuCounter.NextValue();
                 float ram = ramCounter.NextValue();
                 
-                showNotification("性能使用提示", $"CPU: {cpu}%\nRAM: {ram}MB", NotificationType.Information);
+                showNotification("性能使用提示", $"CPU: {Math.Round(cpu, 1)}%\nRAM: {ram}MB", NotificationType.Warning);
             });
         }
 
@@ -252,13 +256,18 @@ namespace TablePet.Win
         
         private void showNotification(string title, string message, NotificationType type = NotificationType.Information)
         {
-            notificationManager.Show(new NotificationContent
+            if (type == NotificationType.Information)
+            {
+                comicMessageBox.ShowMessage(message);
+            }
+            else notificationManager.Show(new NotificationContent
             {
                 Title = title,
                 Message = message,
                 Type = type
             });
         }
+        
 
 
         /*==================== 右键选单 ====================*/

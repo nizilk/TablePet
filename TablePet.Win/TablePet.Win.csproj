@@ -88,6 +88,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ComicMessageBox.xaml" />
     <Page Include="Resources\IconDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -106,6 +107,9 @@
     </Compile>
     <Compile Include="Chat\ChatInput.xaml.cs">
       <DependentUpon>ChatInput.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ComicMessageBox.xaml.cs">
+      <DependentUpon>ComicMessageBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Notes\EditNote.xaml.cs">
       <DependentUpon>EditNote.xaml</DependentUpon>
