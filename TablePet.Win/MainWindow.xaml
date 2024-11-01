@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TablePet.Win"
         xmlns:gif="https://github.com/XamlAnimatedGif/XamlAnimatedGif"
+        xmlns:messagebox="clr-namespace:TablePet.Win.Messagebox"
         mc:Ignorable="d"
         Title="MainWindow"
         Height="330" Width="330" Topmost="True"
@@ -12,11 +13,12 @@
         Background="Transparent" AllowsTransparency="True" 
         MouseLeftButtonDown="mainWin_MouseLeftButtonDown" MouseMove="mainWin_MouseMove" MouseLeftButtonUp="mainWin_MouseLeftButtonUp">
     <Grid>
+        <messagebox:ComicMessageBox x:Name="comicMessageBox" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-165,0,0"/>
         <Image x:Name="pet" Visibility="Visible" Height="330" Width="330" Stretch="Uniform"
-                   gif:AnimationBehavior.SourceUri="pack://application:,,,/Resources/relax.gif"
-                   gif:AnimationBehavior.RepeatBehavior="Forever"
-                   gif:AnimationBehavior.CacheFramesInMemory = "False" 
-                   PreviewMouseLeftButtonDown="pet_PreviewMouseLeftButtonDown">
+               gif:AnimationBehavior.SourceUri="pack://application:,,,/Resources/relax.gif"
+               gif:AnimationBehavior.RepeatBehavior="Forever"
+               gif:AnimationBehavior.CacheFramesInMemory = "False" 
+               PreviewMouseLeftButtonDown="pet_PreviewMouseLeftButtonDown">
             <Image.ContextMenu>
                 <ContextMenu>
                     <MenuItem Name="pinTop" Header="置于顶层" Click="pinTop_Click" IsChecked="True"/>
