@@ -32,6 +32,7 @@ using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using TablePet.Win.ProgressBar;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
@@ -119,6 +120,9 @@ namespace TablePet.Win
 
             noteService = new NoteService(db);
             WelcomeMessage();
+            FeelingBar.Progress = 80;
+            
+            
         }
 
         private void WelcomeMessage()
@@ -142,6 +146,28 @@ namespace TablePet.Win
             {
                 showNotification("TablePet", "晚上好，今天也辛苦了~");
             }
+        }
+        
+        private void Window_MouseEnter(object sender, MouseEventArgs e)
+        {
+            UpdateFeelingBar();
+            FeelingBar.Visibility = Visibility.Visible;
+        }
+        
+        private void UpdateFeelingBar()
+        {
+            FeelingBar.Dispatcher.Invoke(() => 
+            {
+                if (FeelingBar is FeelingBar progressBar)
+                {
+                    progressBar.UpdateProgress(); 
+                }
+            });
+        }
+
+        private void Window_MouseLeave(object sender, MouseEventArgs e)
+        {
+            FeelingBar.Visibility = Visibility.Hidden;
         }
 
 
@@ -197,7 +223,6 @@ namespace TablePet.Win
 
         private void timerinfo_Tick(object sender, EventArgs e)
         {
-
             Task infoTask = Task.Run(() =>
             {
                 var cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");

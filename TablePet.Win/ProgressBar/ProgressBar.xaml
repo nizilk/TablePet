@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="TablePet.Win.ProgressBar.FeelingBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Name="Root"
+             Width="80" Height="20">
+    <Grid>
+        <!-- 背景条 -->
+        <Border Background="White" 
+                CornerRadius="10" 
+                Height="10" 
+                VerticalAlignment="Center" />
+
+        <!-- 前景条 -->
+        <Border x:Name="ProgressFill"
+                Background="Pink" 
+                Height="10"
+                CornerRadius="10"
+                HorizontalAlignment="Left"
+                Width="0"/>
+    </Grid>
+</UserControl>
