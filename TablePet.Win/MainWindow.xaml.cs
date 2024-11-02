@@ -30,7 +30,11 @@ using TablePet.Win.FeedReader;
 using CodeHollow.FeedReader;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 using System.Xml.Linq;
+using Application = System.Windows.Application;
+using MessageBox = System.Windows.MessageBox;
+using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 
 namespace TablePet.Win
 {
@@ -42,6 +46,8 @@ namespace TablePet.Win
         private double screenWidth = SystemParameters.PrimaryScreenWidth;
         private double screenHeight = SystemParameters.PrimaryScreenHeight;
         private double DpiRatio;
+        
+        private NotifyIcon notifyIcon;
 
         private double ratW;
         private double ratH;
@@ -78,6 +84,16 @@ namespace TablePet.Win
         public MainWindow()
         {
             InitializeComponent();
+            this.ShowInTaskbar = false;
+            
+            string iconPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\Resources", "logo.ico");
+            notifyIcon = new NotifyIcon
+            {
+                
+                Icon = new Icon(iconPath),
+                Visible = true,
+                Text = "TablePet"
+            };
 
             ratW = screenWidth / 1920.0;
             ratH = screenHeight / 1080.0;
@@ -194,7 +210,10 @@ namespace TablePet.Win
                 System.Windows.Point MousePositionAbs = new System.Windows.Point();
                 MousePositionAbs.X = Convert.ToInt16(this.Left) + MousePosition.X;
                 MousePositionAbs.Y = Convert.ToInt16(this.Top) + MousePosition.Y;
+                if(MousePositionAbs.X - this.lmAbs.X > 0)
+                    AnimationBehavior.SetSourceUri(pet, Resource[6]);
                 this.Left = this.Left + (MousePositionAbs.X - this.lmAbs.X);
+                
                 this.Top = this.Top + (MousePositionAbs.Y - this.lmAbs.Y);
                 this.lmAbs = MousePositionAbs;
             }
