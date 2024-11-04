@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
@@ -24,7 +25,7 @@ namespace TablePet.Win
 
         private void lb_num_Loaded(object sender, RoutedEventArgs e)
         {
-
+            Label lb = sender as Label;
         }
     }
 }

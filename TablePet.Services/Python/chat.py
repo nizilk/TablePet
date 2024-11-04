@@ -1,8 +1,6 @@
+import os
 from openai import OpenAI
 import json
-from pathlib import Path
-import time
-import configparser
 
 
 client = OpenAI(
@@ -16,7 +14,7 @@ client = OpenAI(
 class ChatGPT:
     def __init__(self):
         # 前置内容-设定角色
-        path = 'D:\Documents\GitHub\TablePet\TablePet.Services\Python\prompt.json'
+        path = os.path.join(os.path.abspath(__file__), '..\prompt.json')   # 'D:\Documents\GitHub\TablePet\TablePet.Services\Python\prompt.json'
         with open(path, encoding='UTF-8') as prompt_file:
             file_contents = prompt_file.read()
             psj = json.loads(file_contents)
