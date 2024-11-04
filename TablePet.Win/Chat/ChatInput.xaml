@@ -7,14 +7,35 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"  AllowsTransparency="True" Background="Transparent" WindowStyle="None" 
         Title="ChatInput" Width="500" MouseMove="ChatWin_MouseMove">
-    <StackPanel>
-        <RichTextBox Name="rtb_Out" Margin="5" Padding="10,30,10,10" MinHeight="100" MaxHeight="500" Width="490"
-                     IsReadOnly="True" ScrollViewer.VerticalScrollBarVisibility="Auto" FontSize="13"/>
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
-            <TextBox Name="tb_In" DockPanel.Dock="Bottom" Height="30" Width="440" 
-                     Margin="5" FontSize="13" Padding="10,0,10,0" VerticalContentAlignment="Center"/>
-            <Button Name="bt_In" DockPanel.Dock="Right" Height="30" Width="45" Margin="0,5,5,5" 
-                    Content="输入" FontSize="13" Click="bt_In_Click"/>
-        </StackPanel>
-    </StackPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="440"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        
+        <RichTextBox Name="rtb_Out" Padding="10,5,10,30" MinHeight="100" MaxHeight="500" Width="500"
+                     IsReadOnly="True" ScrollViewer.VerticalScrollBarVisibility="Auto" FontSize="13" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+            <FlowDocument LineHeight="10" FontSize="14"/>
+        </RichTextBox>
+
+        <Button Name="bt_chatSwitch" Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom" Height="30" Width="30" Padding="5" Margin="0,0,0,1"
+                Background="Transparent" BorderThickness="0" Click="bt_chatSwitch_Click">
+            <Path x:Name="pt_chatSwitch" Data="{DynamicResource BubbleGeometry}" Fill="Gray"  Stretch="Uniform"/>
+        </Button>
+        <Button Name="bt_chatClose" Grid.Row="0" Grid.Column="2" VerticalAlignment="Bottom" Height="30" Width="29" Padding="5" Margin="0,0,1,1"
+                Background="Transparent" BorderThickness="0" Click="bt_chatClose_Click">
+            <Path x:Name="pt_chatClose" Data="{DynamicResource CloseMaruGeometry}" Fill="Gray" Stretch="Uniform"/>
+        </Button>
+
+        <TextBox Name="tb_In" DockPanel.Dock="Bottom" Margin="0,5,5,0" FontSize="13" Padding="10,6,10,6" MinHeight="35" MaxHeight="100"
+                 VerticalContentAlignment="Center" Grid.Row="1" Grid.Column="0" AcceptsReturn="True"/>
+        <Button Name="bt_In" DockPanel.Dock="Right" Margin="0,5,0,0" Grid.ColumnSpan="2" Background="White" Height="35"
+                    Content="输入" FontSize="13" Click="bt_In_Click" Grid.Row="1" Grid.Column="1"/>
+    </Grid>
 </Window>

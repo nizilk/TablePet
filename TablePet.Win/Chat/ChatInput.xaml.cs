@@ -11,10 +11,14 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using CodeHollow.FeedReader;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TablePet.Services;
 using TablePet.Services.Controllers;
+using TablePet.Win.Calendar;
+using TablePet.Win.FeedReader;
+using TablePet.Win.Messagebox;
 using TablePet.Win.Notes;
 
 namespace TablePet.Win.Chat
@@ -24,8 +28,10 @@ namespace TablePet.Win.Chat
     /// </summary>
     public partial class ChatInput : Window
     {
+        private MainWindow mainWindow;
         private ChatService chatService = new ChatService();
         private NoteService noteService;
+
         public ChatInput()
         {
             InitializeComponent();
@@ -37,14 +43,15 @@ namespace TablePet.Win.Chat
         }
 
 
-        public ChatInput(NoteService noteService)
+        public ChatInput(MainWindow mainWindow, NoteService noteService)
         {
             InitializeComponent();
             Task chatTask = Task.Run(() =>
             {
                 string t = chatService.AskGpt("请你向我打招呼。");
-                UpdateTextOut(t);
+                UpdateTextOut(t + "\r\n");
             });
+            this.mainWindow = mainWindow;
             this.noteService = noteService;
         }
 
@@ -68,11 +75,29 @@ namespace TablePet.Win.Chat
                             noteE.Show();
                         }));
                         break;
-                    case "Check Notes":
+                    case "All Notes":
                         this.Dispatcher.Invoke(new Action(() =>
                         {
                             MenuNote noteM = new MenuNote(noteService);
                             noteM.Show();
+                        }));
+                        break;
+                    case "Feed Reader":
+                        this.Dispatcher.Invoke(new Action(() =>
+                        {
+                            FeedReaderService feedReaderService = new FeedReaderService();
+                            Feed feed = feedReaderService.UpdateFeed();
+                            feedReaderService.ParseFeedItems(feed);
+
+                            FeedView feedView = new FeedView(feedReaderService);
+                            feedView.Show();
+                        }));
+                        break;
+                    case "Calendar":
+                        this.Dispatcher.Invoke(new Action(() =>
+                        {
+                            CalendarWindow calendar = new CalendarWindow();
+                            calendar.Show();
                         }));
                         break;
                     case "Recommend Music":
@@ -92,13 +117,25 @@ namespace TablePet.Win.Chat
             });
         }
 
+
         private void UpdateTextOut(string text)
         {
-            rtb_Out.Dispatcher.Invoke(new Action(() =>
+            if (BubbleFlag)
             {
-                rtb_Out.AppendText(text + "\n");
-            }));            
+                mainWindow.comicMessageBox.Dispatcher.Invoke(new Action(() =>
+                {
+                    mainWindow.comicMessageBox.ShowMessage(text);
+                }));
+            }
+            else
+            {
+                rtb_Out.Dispatcher.Invoke(new Action(() =>
+                {
+                    rtb_Out.AppendText("\r\n" + text + "\r\n");
+                }));
+            }         
         }
+
 
         private void ChatWin_MouseMove(object sender, MouseEventArgs e)
         {
@@ -108,5 +145,20 @@ namespace TablePet.Win.Chat
             }
         }
 
+
+        private bool BubbleFlag = false;
+        private void bt_chatSwitch_Click(object sender, RoutedEventArgs e)
+        {
+            BubbleFlag = !BubbleFlag;
+            rtb_Out.Visibility = BubbleFlag ? Visibility.Hidden : Visibility.Visible;
+            pt_chatSwitch.Fill = BubbleFlag ? Brushes.White : Brushes.Gray;
+            pt_chatClose.Fill = BubbleFlag ? Brushes.White : Brushes.Gray;
+        }
+
+
+        private void bt_chatClose_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

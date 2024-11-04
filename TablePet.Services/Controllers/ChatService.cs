@@ -22,17 +22,18 @@ namespace TablePet.Services.Controllers
         public ChatService()
         {
             var osPath = Environment.GetEnvironmentVariable("PATH");
-            var venvPath = "D:\\Documents\\GitHub\\TablePet\\.venv\\";
+            var venvPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\.venv\\");  // "D:\\Documents\\GitHub\\TablePet\\.venv\\";
             var binPath = Path.Combine(venvPath, "Scripts");
-            var pyPath = "C:\\Users\\ailie\\AppData\\Local\\Programs\\Python\\Python310-32\\";
-            var pyPath2 = Path.Combine(pyPath, "python310.dll");
+            var pyPath0 = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\TablePet.Services\\Python\\");
+            var pyPath1 = Path.Combine(pyPath0, "Python310-32\\");    // "C:\\Users\\ailie\\AppData\\Local\\Programs\\Python\\Python310-32\\";
+            var pyPath2 = Path.Combine(pyPath1, "python310.dll");
 
             Environment.SetEnvironmentVariable("PATH", $"{binPath};{osPath}");
             Environment.SetEnvironmentVariable("VIRTUAL_ENV", venvPath);
 
             Runtime.PythonDLL = pyPath2;
 
-            PythonEngine.PythonPath = $"D:\\Documents\\GitHub\\TablePet\\TablePet.Services\\Python;{venvPath}Lib\\site-packages;{venvPath}Lib;{pyPath}Lib;{pyPath}DLLs";
+            PythonEngine.PythonPath = $"{pyPath0};{venvPath}Lib\\site-packages;{venvPath}Lib;{pyPath1}Lib;{pyPath1}DLLs";
             PythonEngine.PythonHome = venvPath;
             // PythonEngine.PythonPath = Environment.GetEnvironmentVariable("PYTHONPATH", EnvironmentVariableTarget.Process);
 

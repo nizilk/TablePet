@@ -35,6 +35,7 @@ using System.Xml.Linq;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
+using System.IO;
 
 namespace TablePet.Win
 {
@@ -277,6 +278,8 @@ namespace TablePet.Win
 
         }
         
+
+        // 气泡显示 or 右下角通知
         private void showNotification(string title, string message, NotificationType type = NotificationType.Information)
         {
             if (type == NotificationType.Information)
@@ -325,6 +328,7 @@ namespace TablePet.Win
             
         }
 
+
         // 调整大小 -- 中
         private async void mid_Click(object sender, RoutedEventArgs e)
         {
@@ -347,6 +351,7 @@ namespace TablePet.Win
                 edge = -280 * ratW;
             });
         }
+
 
         // 调整大小 -- 大
         private async void large_Click(object sender, RoutedEventArgs e)
@@ -414,13 +419,15 @@ namespace TablePet.Win
 
 
         /*---------- 扩展功能入口 ----------*/
+        // 对话
         private void chatIn_Click(object sender, RoutedEventArgs e)
         {
-            ChatInput chatInput = new ChatInput(noteService);
+            ChatInput chatInput = new ChatInput(this, noteService);
             chatInput.Show();
         }
 
 
+        // 新建便签
         private void note_new_Click(object sender, RoutedEventArgs e)
         {
             EditNote note = new EditNote(noteService);
@@ -428,12 +435,15 @@ namespace TablePet.Win
         }
 
 
+        // 所有便签
         private void note_all_Click(object sender, RoutedEventArgs e)
         {
             MenuNote note = new MenuNote(noteService);
             note.Show();
         }
 
+
+        // Feed Reader
         private void mi_feed_Click(object sender, RoutedEventArgs e)
         {
             FeedReaderService feedReaderService = new FeedReaderService();
@@ -444,19 +454,28 @@ namespace TablePet.Win
             feedView.Show();
         }
 
+
+        // 日历
         private void calendar_Click(object sender, RoutedEventArgs e)
         {
             CalendarWindow calendar = new CalendarWindow();
             calendar.Show();
         }
 
+
+        // 测试功能时用，后续需删除
         private void test_Click(object sender, RoutedEventArgs e)
         {
-            FeedReaderService feedReaderService = new FeedReaderService();
-            Feed feed = feedReaderService.UpdateFeed();
-            feedReaderService.ParseFeedItems(feed);
-            FeedItem smp = feed.Items[0];
-            MessageBox.Show(smp.Content);
+            // MessageBox.Show(Directory.GetCurrentDirectory());   // D:\Documents\GitHub\TablePet\TablePet.Win\bin\Debug
+            // MessageBox.Show(AppDomain.CurrentDomain.BaseDirectory);     // D:\Documents\GitHub\TablePet\TablePet.Win\bin\Debug\
+            // MessageBox.Show(Environment.CurrentDirectory);      // D:\Documents\GitHub\TablePet\TablePet.Win\bin\Debug
+
+            // FeedReaderService feedReaderService = new FeedReaderService();
+            // Feed feed = feedReaderService.UpdateFeed();
+            // feedReaderService.ParseFeedItems(feed);
+            // FeedItem smp = feed.Items[0];
+            // MessageBox.Show(smp.Content);
+
             //var xml = XElement.Parse("<root>"+smp.Content+"</root>");
             //MessageBox.Show(xml.Value);
         }

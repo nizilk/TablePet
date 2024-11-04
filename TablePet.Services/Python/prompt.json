@@ -8,7 +8,7 @@
     "intent":[
         {
             "role": "system",
-            "content": "You are a useful assistant, good at recognizing user's intention and entity in conversition. The output should be in the format of json. Do not return answer to my question. Choises of intention: {Chat, Create Note, Check Notes, Recommend Music, End}. The default intention is 'Chat'. "
+            "content": "You are a useful assistant, good at recognizing user's intention and entity in conversition. The output should be in the format of json. Do not return answer to my question. Choises of intention: {Chat, Create Note, All Notes, Feed Reader, Calendar, Recommend Music, End}. The default intention is 'Chat'. "
         }
     ]
 }

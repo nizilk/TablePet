@@ -67,7 +67,7 @@
                     </Grid.ColumnDefinitions>
 
                     <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="5" FontWeight="Bold" FontSize="20" Margin="10,0,0,0">
-                        <Hyperlink Name="hyperlink_Title" NavigateUri="{Binding Link}" Foreground="Black" TextDecorations="None" Click="hyperlink_Title_Click">
+                        <Hyperlink Name="hyperlink_Title" NavigateUri="{Binding Link}" Foreground="Black" TextDecorations="None" RequestNavigate="hyperlink_Title_Click">
                             <Run Text="{Binding Title}"/>
                         </Hyperlink>
                     </Label>
@@ -84,10 +84,10 @@
                     <Label Grid.Row="2" Grid.Column="4" Content="作者"/>
                     <Label Grid.Row="2" Grid.Column="5" Content="{Binding PublishingDateString}" HorizontalAlignment="Right" Grid.ColumnSpan="2"/>
                     <!--Sat Aug 10 2024 23:59:00 (2 months)-->
-                    <Label Grid.Row="2" Grid.Column="7" Content="# 1."/>
+                    <Label Grid.Row="2" Grid.Column="7" Content="# 1." Name="lb_num" Loaded="lb_num_Loaded"/>
 
-                    <local:BindableRichTextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="7" x:Name="rtb_contentEntry" 
-                                               BorderThickness="0" Margin="20,5,20,25" Padding="10" IsReadOnly="True" MinWidth="500" 
+                    <local:BindableRichTextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="7" x:Name="rtb_contentEntry"
+                                               BorderThickness="0" Margin="20,5,20,25" Padding="10" IsReadOnly="True" MinWidth="1000"
                                                BindableDocument="{Binding Content, Converter={StaticResource DocConverter}, Mode=TwoWay}">
                         
                     </local:BindableRichTextBox>
@@ -103,7 +103,8 @@
                 </Grid>
             </DataTemplate>
 
-
+            
+            <!--以下想做Listbox的模版切换，但还未实现-->
             <Style x:Key="SettingSelectorStyle" TargetType="{x:Type ContentControl}">
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding Path=SelectedSettingIndex}" Value="0">

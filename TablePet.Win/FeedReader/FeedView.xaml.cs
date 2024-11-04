@@ -48,5 +48,7 @@ namespace TablePet.Win.FeedReader
                 parent.RaiseEvent(eventArg);
             }
         }
+
+        
     }
 }

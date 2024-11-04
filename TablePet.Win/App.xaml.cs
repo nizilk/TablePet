@@ -21,5 +21,10 @@ namespace TablePet.Win
             var hp = sender as Hyperlink;
             Process.Start(new ProcessStartInfo(hp.NavigateUri.AbsoluteUri));
         }
+
+        private void lb_num_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
