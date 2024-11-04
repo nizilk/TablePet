@@ -13,7 +13,7 @@
             <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-
+        <Image Name="img_icon"/>
         <TextBlock Grid.Column="1" Foreground="Gray"/>
 
     </Grid>

@@ -6,19 +6,25 @@
         xmlns:local="clr-namespace:TablePet.Win.FeedReader"
         mc:Ignorable="d"
         Title="FeedReader"
-        Height="600" Width="1000">
+        Height="600" Width="1000"
+        Loaded="Window_Loaded" SizeChanged="Window_SizeChanged">
     <Grid>
-        <Grid.RowDefinitions></Grid.RowDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <ListBox Grid.Column="0" Name="lb_Feeds"/>
 
-        <ScrollViewer Grid.Column="1">
-            <ListBox Grid.Column="1" Name="lb_Entries" ItemTemplate="{StaticResource EntriesTemplate}" HorizontalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" PreviewMouseWheel="HandlePreviewMouseWheel"/>
+        <ListBox Grid.Row="1" Grid.Column="0" Name="lb_Feeds"/>
+
+        <ScrollViewer Grid.Row="1" Grid.Column="1">
+            <ListBox Name="lb_Entries" ItemTemplate="{StaticResource EntriesTemplate}" 
+                     HorizontalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" PreviewMouseWheel="HandlePreviewMouseWheel"/>
         </ScrollViewer>
         
     </Grid>

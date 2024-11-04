@@ -24,6 +24,7 @@ namespace TablePet.Win.FeedReader
     {
         public FeedReaderService feedReaderService;
 
+
         public FeedView()
         {
             InitializeComponent();
@@ -33,7 +34,7 @@ namespace TablePet.Win.FeedReader
         {
             InitializeComponent();
             this.feedReaderService = feedReaderService;
-            lb_Entries.ItemsSource = feedReaderService.Items;
+            lb_Entries.ItemsSource = this.feedReaderService.Items;
         }
 
         private void HandlePreviewMouseWheel(object sender, MouseWheelEventArgs e)
@@ -49,6 +50,53 @@ namespace TablePet.Win.FeedReader
             }
         }
 
-        
+
+        private T SearchVisualTree<T>(DependencyObject tarElem) where T : DependencyObject
+        {
+            if (tarElem != null)
+            {
+                var count = VisualTreeHelper.GetChildrenCount(tarElem);
+                if (count == 0)
+                    return null;
+                for (int i = 0; i < count; ++i)
+                {
+                    var child = VisualTreeHelper.GetChild(tarElem, i);
+                    if (child != null && child is T)
+                    {
+                        return (T)child;
+                    }
+                    else
+                    {
+                        var res = SearchVisualTree<T>(child);
+                        if (res != null)
+                        {
+                            return res;
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            for (int i = 0; i < this.lb_Entries.Items.Count; i++)
+            {
+                ListBoxItem it = this.lb_Entries.ItemContainerGenerator.ContainerFromIndex(i) as ListBoxItem;
+                RichTextBox rtb = SearchVisualTree<RichTextBox>(it);
+                rtb.Document.PageWidth = rtb.ActualWidth - 20;
+            }
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            for (int i = 0; i < this.lb_Entries.Items.Count; i++)
+            {
+                ListBoxItem it = this.lb_Entries.ItemContainerGenerator.ContainerFromIndex(i) as ListBoxItem;
+                RichTextBox rtb = SearchVisualTree<RichTextBox>(it);
+                rtb.Document.PageWidth = rtb.ActualWidth - 20;
+            }
+        }
     }
 }

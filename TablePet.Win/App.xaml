@@ -12,7 +12,7 @@
 
             <conv:DocumentConverter x:Key="DocConverter"/>
             <conv:IndexConverter x:Key="IndexConverter"/>
-            
+
             <Style x:Key="TextBoxPlaceHolder" TargetType="{x:Type TextBox}">
                 <Setter Property="Template">
                     <Setter.Value>
@@ -46,7 +46,15 @@
 
 
             <DataTemplate x:Key="FeedsTemplate">
-                
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Image Grid.Column="0" Name="img_icon" Source="{Binding ImageUrl}"/>
+                    <TextBlock Grid.Column="1" Foreground="Gray" Text="{Binding Title}"/>
+                </Grid>
             </DataTemplate>
             
             
@@ -56,7 +64,7 @@
                         <RowDefinition Height="20"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="20"/>
                     </Grid.RowDefinitions>
@@ -94,10 +102,15 @@
                     <Label Grid.Row="2" Grid.Column="7" Name="lb_num" 
                            Content="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Converter={StaticResource IndexConverter}}"/>
 
-                    <conv:BindableRichTextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="7" x:Name="rtb_contentEntry"
-                                               BorderThickness="0" Margin="20,5,20,25" Padding="10" IsReadOnly="True" MinWidth="800"
+                    <conv:BindableRichTextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="7" x:Name="rtb_contentEntry" HorizontalAlignment="Stretch"
+                                               BorderThickness="0" Margin="20,5,20,25" Padding="10" IsReadOnly="True"
                                                BindableDocument="{Binding Content, Converter={StaticResource DocConverter}, Mode=TwoWay}">
-                        
+                        <RichTextBox.Resources>
+                            <Style TargetType="{x:Type Paragraph}">
+                                <Setter Property="Margin" Value="10"/>
+                                <Setter Property="LineHeight" Value="25"/>
+                            </Style>
+                        </RichTextBox.Resources>
                     </conv:BindableRichTextBox>
                     
                     <ComboBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="5" Text="转发" IsEditable="True" IsReadOnly="True" BorderThickness="0" HorizontalAlignment="Left" Padding="0" Margin="5,0,0,0"/>

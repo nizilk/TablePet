@@ -112,13 +112,13 @@ namespace TablePet.Services.Controllers
             content = Regex.Replace(content, pattern_href, "<Hyperlink Foreground=\"Blue\" NavigateUri=\"${1}\">");
 
             string pattern_head = @"<h2[^>]*>(.*)</h2>";
-            content = Regex.Replace(content, pattern_head, "<Paragraph LineHeight=\"20\" FontSize=\"18\"><Bold>${1}</Bold></Paragraph>");
+            content = Regex.Replace(content, pattern_head, "<Paragraph FontSize=\"18\"><Bold>${1}</Bold></Paragraph>");     // LineHeight=\"20\"
 
             string pattern_hr = @"<hr[^>]*>";
             content = Regex.Replace(content, pattern_hr, "<Paragraph><Separator Width=\"500\" BorderBrush=\"Gray\" BorderThickness=\"1\" SnapsToDevicePixels=\"True\" HorizontalAlignment=\"Stretch\" VerticalAlignment=\"Center\"/></Paragraph>");
 
             string pattern_ent = @"(<br>|</br>|<br/>|<br />)";
-            content = Regex.Replace(content, pattern_ent, "\r\n");
+            content = Regex.Replace(content, pattern_ent, "</Paragraph> <Paragraph>");
 
             string pattern_blk = @"(<div[^>]*>(.|\n)*</div>|<p>|</p>)";
             content = Regex.Replace(content, pattern_blk, "");

@@ -15,8 +15,14 @@ namespace TablePet.Win.CustomCon
     {
         public FlowDocument BindableDocument
         {
-            get { return (FlowDocument)GetValue(DocumentProperty); }
-            set { SetValue(DocumentProperty, value); }
+            get
+            {
+                return (FlowDocument)GetValue(DocumentProperty);
+            }
+            set
+            {
+                SetValue(DocumentProperty, value);
+            }
         }
         // Using a DependencyProperty as the backing store for Document.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DocumentProperty =
