@@ -6,13 +6,24 @@
         xmlns:local="clr-namespace:TablePet.Win"
         xmlns:gif="https://github.com/XamlAnimatedGif/XamlAnimatedGif"
         xmlns:messagebox="clr-namespace:TablePet.Win.Messagebox"
+        xmlns:progressBar="clr-namespace:TablePet.Win.ProgressBar"
         mc:Ignorable="d"
         Title="MainWindow"
         Height="330" Width="330" Topmost="True"
         WindowStyle="None" ResizeMode="NoResize" 
         Background="Transparent" AllowsTransparency="True" 
-        MouseLeftButtonDown="mainWin_MouseLeftButtonDown" MouseMove="mainWin_MouseMove" MouseLeftButtonUp="mainWin_MouseLeftButtonUp">
+        MouseLeftButtonDown="mainWin_MouseLeftButtonDown" MouseMove="mainWin_MouseMove" MouseLeftButtonUp="mainWin_MouseLeftButtonUp" 
+        MouseEnter="Window_MouseEnter"
+        MouseLeave="Window_MouseLeave">
+
     <Grid>
+        <progressBar:FeelingBar x:Name="FeelingBar"
+                          Progress="0"
+                          Width="80"
+                          VerticalAlignment="Bottom"
+                          Margin="0,0,0,50"
+                          ToolTip="心情值"
+                          Visibility="Collapsed"/>
         <messagebox:ComicMessageBox x:Name="comicMessageBox" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-165,0,0"/>
         <Image x:Name="pet" Visibility="Visible" Height="330" Width="330" Stretch="Uniform"
                gif:AnimationBehavior.SourceUri="pack://application:,,,/Resources/relax.gif"

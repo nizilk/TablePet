@@ -32,6 +32,7 @@ using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using TablePet.Win.ProgressBar;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
@@ -119,6 +120,55 @@ namespace TablePet.Win
             timerinfo.Start();
 
             noteService = new NoteService(db);
+            WelcomeMessage();
+            FeelingBar.Progress = 80;
+            
+            
+        }
+
+        private void WelcomeMessage()
+        {
+            System.DateTime currentTime=new System.DateTime(); 
+            currentTime = System.DateTime.Now;
+            
+            if (currentTime.Hour >= 0 && currentTime.Hour < 6)
+            {
+                showNotification("TablePet", "夜深了，注意休息哦~");
+            }
+            else if (currentTime.Hour >= 6 && currentTime.Hour < 12)
+            {
+                showNotification("TablePet", "早上好，今天也要加油哦~");
+            }
+            else if (currentTime.Hour >= 12 && currentTime.Hour < 18)
+            {
+                showNotification("TablePet", "下午好，要来杯咖啡休息一下么~");
+            }
+            else
+            {
+                showNotification("TablePet", "晚上好，今天也辛苦了~");
+            }
+        }
+        
+        private void Window_MouseEnter(object sender, MouseEventArgs e)
+        {
+            UpdateFeelingBar();
+            FeelingBar.Visibility = Visibility.Visible;
+        }
+        
+        private void UpdateFeelingBar()
+        {
+            FeelingBar.Dispatcher.Invoke(() => 
+            {
+                if (FeelingBar is FeelingBar progressBar)
+                {
+                    progressBar.UpdateProgress(); 
+                }
+            });
+        }
+
+        private void Window_MouseLeave(object sender, MouseEventArgs e)
+        {
+            FeelingBar.Visibility = Visibility.Hidden;
         }
 
 
@@ -174,7 +224,6 @@ namespace TablePet.Win
 
         private void timerinfo_Tick(object sender, EventArgs e)
         {
-
             Task infoTask = Task.Run(() =>
             {
                 var cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");

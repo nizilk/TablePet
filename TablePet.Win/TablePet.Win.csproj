@@ -112,6 +112,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ProgressBar\ProgressBar.xaml" />
     <Page Include="Resources\IconDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -164,6 +165,9 @@
   <ItemGroup>
     <Compile Include="Notes\MenuNote.xaml.cs">
       <DependentUpon>MenuNote.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProgressBar\ProgressBar.xaml.cs">
+      <DependentUpon>ProgressBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
