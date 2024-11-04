@@ -39,12 +39,5 @@ namespace TablePet.Win
             }
             return null;
         }
-
-
-        private void lb_num_Loaded(object sender, RoutedEventArgs e)
-        {
-            System.Windows.Controls.Label label = (System.Windows.Controls.Label)sender;
-            // var ltb = GetAncestor < Selector > label;
-        }
     }
 }
