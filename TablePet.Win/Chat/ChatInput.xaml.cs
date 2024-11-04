@@ -29,7 +29,7 @@ namespace TablePet.Win.Chat
     public partial class ChatInput : Window
     {
         private MainWindow mainWindow;
-        private ChatService chatService = new ChatService();
+        private ChatService chatService;
         private NoteService noteService;
 
         public ChatInput()
@@ -43,7 +43,7 @@ namespace TablePet.Win.Chat
         }
 
 
-        public ChatInput(MainWindow mainWindow, NoteService noteService)
+        public ChatInput(MainWindow mainWindow, ChatService chatService, NoteService noteService)
         {
             InitializeComponent();
             Task chatTask = Task.Run(() =>
@@ -52,6 +52,7 @@ namespace TablePet.Win.Chat
                 UpdateTextOut(t + "\r\n");
             });
             this.mainWindow = mainWindow;
+            this.chatService = chatService;
             this.noteService = noteService;
         }
 

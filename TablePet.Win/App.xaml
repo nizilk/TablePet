@@ -45,6 +45,11 @@
             </Style>
 
 
+            <DataTemplate x:Key="FeedsTemplate">
+                
+            </DataTemplate>
+            
+            
             <DataTemplate x:Key="EntriesTemplate">
                 <Grid>
                     <Grid.RowDefinitions>

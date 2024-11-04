@@ -25,19 +25,5 @@ namespace TablePet.Win
             var hp = sender as Hyperlink;
             Process.Start(new ProcessStartInfo(hp.NavigateUri.AbsoluteUri));
         }
-
-
-        T GetAncestor<T>(Visual v)
-        where T : DependencyObject
-        {
-            var a = VisualTreeHelper.GetParent(v);
-            while (a != null)
-            {
-                if (a is T)
-                    return (T)a;
-                a = VisualTreeHelper.GetParent(a);
-            }
-            return null;
-        }
     }
 }

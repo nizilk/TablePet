@@ -60,6 +60,7 @@ namespace TablePet.Win
 
         public NoteContext db = new NoteContext();
         public NoteService noteService;
+        private ChatService chatService = new ChatService();
         FeedReaderService feedReaderService = new FeedReaderService();
 
         // 全部动画资源的路径 -- 只用一次的
@@ -471,7 +472,7 @@ namespace TablePet.Win
         // 对话
         private void chatIn_Click(object sender, RoutedEventArgs e)
         {
-            ChatInput chatInput = new ChatInput(this, noteService);
+            ChatInput chatInput = new ChatInput(this, chatService, noteService);
             chatInput.Show();
         }
 
