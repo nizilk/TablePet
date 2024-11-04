@@ -3,11 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:TablePet.Win.FeedReader"
-        mc:Ignorable="d"
+        mc:Ignorable="d" BorderThickness="3"
         Title="FeedProperties" WindowStyle="None" AllowsTransparency="True"
         Height="360" Width="550">
+    <Window.Effect>
+        <DropShadowEffect ShadowDepth="1" BlurRadius="6" Direction="270" Opacity="0.75" Color="#FF211613"/>
+    </Window.Effect>
     <Grid>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition Height="Auto"/>
@@ -33,17 +38,24 @@
         </Grid.ColumnDefinitions>
         
         <Label Grid.Row="1" Grid.Column="1" Content="Feed URL"/>
-        <TextBox Grid.Row="1" Grid.Column="2" BorderThickness="0,0,0,1" Margin="0,0,5,0"/>
-        <Button Grid.Row="1" Grid.Column="3" Content="加载" Background="GhostWhite"/>
+        <ComboBox Grid.Row="1" Grid.Column="2" Name="cb_url" BorderThickness="0,0,0,1" HorizontalAlignment="Left" Width="333" 
+                  IsEditable="True" DropDownClosed="cb_url_DropDownClosed">
+            <ComboBox.Resources>
+                <SolidColorBrush x:Key="ComboBox.Static.Editable.Background" Color="Transparent"/>
+                <sys:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">0</sys:Double>
+            </ComboBox.Resources>
+        </ComboBox>
+        <!--ComboBox Grid.Row="1" Grid.Column="2"/-->
+        <Button Grid.Row="1" Grid.Column="3" Name="bt_loadFeed" Content="加载" Background="GhostWhite" Click="bt_loadFeed_Click"/>
 
         <Label Grid.Row="2" Grid.Column="1" Content="标题"/>
-        <TextBox Grid.Row="2" Grid.Column="2" BorderThickness="0,0,0,1" Margin="0,0,5,0"/>
+        <TextBox Grid.Row="2" Grid.Column="2" Name="tb_feedTitle" BorderThickness="0,0,0,1" Margin="0,0,5,0" VerticalContentAlignment="Center"/>
 
         <Label Grid.Row="3" Grid.Column="1" Content="最后发布时间"/>
-        <Label Grid.Row="3" Grid.Column="2" Content="2个月前"/>
+        <Label Grid.Row="3" Grid.Column="2" Name="lb_lastDate" Content=""/>
 
         <Label Grid.Row="4" Grid.Column="1" Content="状态"/>
-        <Label Grid.Row="4" Grid.Column="2" Content="OK"/>
+        <Label Grid.Row="4" Grid.Column="2" Name="lb_state" Content=""/>
 
         <Label Grid.Row="5" Grid.Column="1" Content="最大保存条目数"/>
         <ComboBox Grid.Row="5" Grid.Column="2" BorderThickness="0,0,0,1" Width="100" HorizontalAlignment="Left" IsEditable="True" IsReadOnly="True">
@@ -78,9 +90,15 @@
         <TextBox Grid.Row="10" Grid.Column="2" BorderThickness="0,0,0,1" Width="200" HorizontalAlignment="Left"/>
 
         <Border Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="5" BorderBrush="Gray" BorderThickness="0,0.5,0,0"/>
-        <Button Grid.Row="12" Grid.Column="2" Grid.ColumnSpan="2" Content="保存" HorizontalAlignment="Right" Height="30" Width="100" Background="RoyalBlue" Foreground="White"/>
-        <Button Grid.Row="12" Grid.Column="2" Grid.ColumnSpan="2" Content="预览" HorizontalAlignment="Right" Height="30" Width="100" Margin="0,0,120,0" Background="GhostWhite"/>
-        <Button Grid.Row="12" Grid.Column="2" Grid.ColumnSpan="2" Content="取消" HorizontalAlignment="Right" Height="30" Width="100" Margin="0,0,240,0" Background="GhostWhite"/>
+        
+        <Button Grid.Row="12" Grid.Column="2" Grid.ColumnSpan="2" Name="bt_feedSave" Content="保存" HorizontalAlignment="Right" Height="30" Width="100" 
+                Background="RoyalBlue" Foreground="White" Click="bt_feedSave_Click"/>
+        
+        <Button Grid.Row="12" Grid.Column="2" Grid.ColumnSpan="2" Name="bt_feedPreview" Content="预览" HorizontalAlignment="Right" Height="30" Width="100" 
+                Margin="0,0,120,0" Background="GhostWhite" Click="bt_feedPreview_Click"/>
+        
+        <Button Grid.Row="12" Grid.Column="2" Grid.ColumnSpan="2" Name="bt_feedCancel" Content="取消" HorizontalAlignment="Right" Height="30" Width="100" 
+                Margin="0,0,240,0" Background="GhostWhite" Click="bt_feedCancel_Click"/>
 
     </Grid>
 </Window>

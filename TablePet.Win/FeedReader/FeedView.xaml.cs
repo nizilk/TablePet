@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using CodeHollow.FeedReader;
 using TablePet.Services.Controllers;
 
@@ -23,6 +25,8 @@ namespace TablePet.Win.FeedReader
     public partial class FeedView : Window
     {
         public FeedReaderService feedReaderService;
+        public ObservableCollection<Feed> Feeds { get; set; } = new ObservableCollection<Feed>();
+        public ObservableCollection<FeedItem> Items { get; set; } = new ObservableCollection<FeedItem>();
 
 
         public FeedView()
@@ -30,12 +34,18 @@ namespace TablePet.Win.FeedReader
             InitializeComponent();
         }
 
+        public FeedView(ObservableCollection<Feed> Feeds)
+        {
+            InitializeComponent();
+            this.Feeds = Feeds;
+        }
+
         public FeedView(FeedReaderService feedReaderService)
         {
             InitializeComponent();
             this.feedReaderService = feedReaderService;
-            lb_Entries.ItemsSource = this.feedReaderService.Items;
         }
+
 
         private void HandlePreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
@@ -79,8 +89,9 @@ namespace TablePet.Win.FeedReader
         }
 
 
-        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void ChangeDocumentWidth()
         {
+            lb_Entries.UpdateLayout();
             for (int i = 0; i < this.lb_Entries.Items.Count; i++)
             {
                 ListBoxItem it = this.lb_Entries.ItemContainerGenerator.ContainerFromIndex(i) as ListBoxItem;
@@ -89,14 +100,63 @@ namespace TablePet.Win.FeedReader
             }
         }
 
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            ChangeDocumentWidth();
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            for (int i = 0; i < this.lb_Entries.Items.Count; i++)
+            lb_Feeds.ItemsSource = Feeds;
+            lb_Entries.ItemsSource = Items;
+            ChangeDocumentWidth();
+        }
+
+        private void bt_addFeed_Click(object sender, RoutedEventArgs e)
+        {
+            FeedProperties feedProperties = new FeedProperties(this);
+            feedProperties.Show();
+        }
+
+        private void lb_Feeds_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (lb_Feeds.SelectedIndex == -1)
+                return;
+
+            ListBox lb = sender as ListBox;
+            Feed feed = lb.SelectedItem as Feed;
+            if (feed == null) return;
+
+            Items.Clear();
+            foreach (FeedItem it in feed.Items)
             {
-                ListBoxItem it = this.lb_Entries.ItemContainerGenerator.ContainerFromIndex(i) as ListBoxItem;
-                RichTextBox rtb = SearchVisualTree<RichTextBox>(it);
-                rtb.Document.PageWidth = rtb.ActualWidth - 20;
+                Items.Add(it);
             }
+
+            ChangeDocumentWidth();
+
+            lb_Feeds.SelectedIndex = -1;
+        }
+
+        private void FeedUpdate_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+
+        // TODO:!!
+        private void FeedDelete_Click(object sender, RoutedEventArgs e)
+        {
+            var obj = lb_Feeds.SelectedItem;
+
+            //Feeds.Remove(obj);
+        }
+
+        private void FeedSetting_Click(object sender, RoutedEventArgs e)
+        {
+            FeedProperties feedProperties = new FeedProperties();
+            feedProperties.Show();
         }
     }
 }

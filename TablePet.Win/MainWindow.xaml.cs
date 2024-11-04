@@ -65,6 +65,8 @@ namespace TablePet.Win
         private ChatService chatService = new ChatService();
         FeedReaderService feedReaderService = new FeedReaderService();
 
+        public ObservableCollection<Feed> Feeds { get; set; } = new ObservableCollection<Feed>();
+
         // 全部动画资源的路径 -- 只用一次的
         public Uri[] ResourceOnce = {
             new Uri("pack://application:,,,/Resources/headpicture.gif"),       // 0 headpicture
@@ -499,11 +501,10 @@ namespace TablePet.Win
         // Feed Reader
         private void mi_feed_Click(object sender, RoutedEventArgs e)
         {
-            FeedReaderService feedReaderService = new FeedReaderService();
-            Feed feed = feedReaderService.UpdateFeed();
-            feedReaderService.ParseFeedItems(feed);
-
-            FeedView feedView = new FeedView(feedReaderService);
+            // FeedReaderService feedReaderService = new FeedReaderService();
+            // Feed feed = feedReaderService.ReadFeed();
+            // feedReaderService.ParseFeedItems(feed);
+            FeedView feedView = new FeedView(Feeds);
             feedView.Show();
         }
 

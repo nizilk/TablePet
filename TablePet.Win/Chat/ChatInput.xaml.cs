@@ -87,7 +87,7 @@ namespace TablePet.Win.Chat
                         this.Dispatcher.Invoke(new Action(() =>
                         {
                             FeedReaderService feedReaderService = new FeedReaderService();
-                            Feed feed = feedReaderService.UpdateFeed();
+                            Feed feed = feedReaderService.ReadFeed();
                             feedReaderService.ParseFeedItems(feed);
 
                             FeedView feedView = new FeedView(feedReaderService);

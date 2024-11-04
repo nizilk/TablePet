@@ -48,12 +48,14 @@
             <DataTemplate x:Key="FeedsTemplate">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="10"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <Image Grid.Column="0" Name="img_icon" Source="{Binding ImageUrl}"/>
-                    <TextBlock Grid.Column="1" Foreground="Gray" Text="{Binding Title}"/>
+                    <!--Image Grid.Column="0" Name="img_icon" Source="{Binding ImageUrl}"/-->
+                    <TextBlock Grid.Column="1" Foreground="Gray" Text="{Binding Title}">
+                        
+                    </TextBlock>
                 </Grid>
             </DataTemplate>
             

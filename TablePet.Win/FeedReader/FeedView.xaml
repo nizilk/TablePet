@@ -15,16 +15,34 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="250"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
+        <Button Name="bt_addFeed" Grid.Row="0" Grid.Column="0" Width="20" Height="20" Background="Transparent" 
+                BorderThickness="0" Margin="5" HorizontalAlignment="Right" Click="bt_addFeed_Click">
+            <Path x:Name="bt_addFeed_Path" Data="{StaticResource AddMaruGeometry}" Fill="Green" Stretch="Uniform"/>
+        </Button>
 
-        <ListBox Grid.Row="1" Grid.Column="0" Name="lb_Feeds"/>
+        <ScrollViewer Grid.Row="1" Grid.Column="0" VerticalScrollBarVisibility="Hidden">
+            <ListBox Name="lb_Feeds" ItemTemplate="{StaticResource FeedsTemplate}" SelectionChanged="lb_Feeds_SelectionChanged">
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Name="FeedUpdate" Header="更新" Click="FeedUpdate_Click"/>
+                        <MenuItem Name="FeedDelete" Header="删除" Click="FeedDelete_Click"/>
+                        <MenuItem Name="FeedSetting" Header="设置" Click="FeedSetting_Click"/>
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+            </ListBox>
+        </ScrollViewer>
 
         <ScrollViewer Grid.Row="1" Grid.Column="1">
-            <ListBox Name="lb_Entries" ItemTemplate="{StaticResource EntriesTemplate}" 
-                     HorizontalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" PreviewMouseWheel="HandlePreviewMouseWheel"/>
+            <ListBox Name="lb_Entries" ItemTemplate="{StaticResource EntriesTemplate}"
+                     HorizontalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" PreviewMouseWheel="HandlePreviewMouseWheel">
+                <ListBox.Resources>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
+                </ListBox.Resources>
+            </ListBox>
         </ScrollViewer>
         
     </Grid>

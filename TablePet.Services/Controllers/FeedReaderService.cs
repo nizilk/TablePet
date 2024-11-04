@@ -15,9 +15,9 @@ namespace TablePet.Services.Controllers
     {
         public FeedReaderService() { }
 
-        public ObservableCollection<Feed> Feeds { get; set; } = new ObservableCollection<Feed>();
+        // public ObservableCollection<Feed> Feeds { get; set; } = new ObservableCollection<Feed>();
 
-        public ObservableCollection<FeedItem> Items { get; set; } = new ObservableCollection<FeedItem>();
+        // public ObservableCollection<FeedItem> Items { get; set; } = new ObservableCollection<FeedItem>();
 
 
         public List<string> FindFeed(string url = "https://youkilee.top/")
@@ -49,12 +49,13 @@ namespace TablePet.Services.Controllers
         }
 
 
-        public Feed UpdateFeed(string url = "https://youkilee.top/index.php/feed/")
+        public Feed ReadFeed(string url = "https://youkilee.top/index.php/feed/")
         {
+            if (url == "" || url is null)   return new Feed();
             var readerTask = FeedReader.ReadAsync(url);
             readerTask.ConfigureAwait(false);
             Feed feed = readerTask.Result;
-            Feeds.Add(feed);
+            // Feeds.Add(feed);
             return feed;
         }
 
@@ -66,9 +67,9 @@ namespace TablePet.Services.Controllers
                 
                 DateTime pd = (DateTime)item.PublishingDate;
                 item.PublishingDateString = pd.ToString("ddd MMM dd yyyy HH:mm:ss", new System.Globalization.CultureInfo("en-us"));
-                item.PublishingDateString += " " + GetTimeSpanTilNow(pd);   // Sat Aug 10 2024 23:59:00 (2 months)
+                item.PublishingDateString += " (" + GetTimeSpanTilNow(pd) + ")";   // Sat Aug 10 2024 23:59:00 (2 months)
                 item.Content = FiltContent(item.Content);
-                Items.Add(item);
+                // Items.Add(item);
             }
         }
 
@@ -77,17 +78,17 @@ namespace TablePet.Services.Controllers
         {
             DateTime now = DateTime.Now;
             if (now.Year != dt.Year)
-                return "(" + (now.Year - dt.Year).ToString() + " years)";
+                return (now.Year - dt.Year).ToString() + " years";
             else if (now.Month != dt.Month)
-                return "(" + (now.Month - dt.Month).ToString() + " months)";
+                return (now.Month - dt.Month).ToString() + " months";
             else if (now.Day != dt.Day)
-                return "(" + (now.Day - dt.Day).ToString() + " days)";
+                return (now.Day - dt.Day).ToString() + " days";
             else if (now.Hour != dt.Hour)
-                return "(" + (now.Hour - dt.Hour).ToString() + " hours)";
+                return (now.Hour - dt.Hour).ToString() + " hours";
             else if (now.Minute != dt.Minute)
-                return "(" + (now.Minute - dt.Minute).ToString() + " minutes)";
+                return (now.Minute - dt.Minute).ToString() + " minutes";
             else
-                return "(" + (now.Second - dt.Second).ToString() + " seconds)";
+                return (now.Second - dt.Second).ToString() + " seconds";
         }
 
         public string FiltContent(string content)
