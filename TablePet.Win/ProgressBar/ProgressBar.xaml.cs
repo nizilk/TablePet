@@ -26,6 +26,7 @@ namespace TablePet.Win.ProgressBar
             if (d is FeelingBar progressBar)
             {
                 progressBar.UpdateProgress();
+                
             }
         }
         

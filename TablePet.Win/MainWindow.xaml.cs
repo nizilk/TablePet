@@ -32,11 +32,13 @@ using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using TablePet.Win.SharingDatan;
 using TablePet.Win.ProgressBar;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 using System.IO;
+
 
 namespace TablePet.Win
 {
@@ -122,13 +124,14 @@ namespace TablePet.Win
 
             noteService = new NoteService(db);
             WelcomeMessage();
-            FeelingBar.Progress = 80;
+            FeelingBar.Progress = SharingData.Favorability;
             
             
         }
 
         private void WelcomeMessage()
         {
+            if (SharingData.IsFavorabilityLow()) return;
             System.DateTime currentTime=new System.DateTime(); 
             currentTime = System.DateTime.Now;
             
