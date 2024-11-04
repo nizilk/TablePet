@@ -129,7 +129,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BindableRichTextBox.cs" />
+    <Compile Include="CustomCon\BindableRichTextBox.cs" />
     <Compile Include="Calendar\AddEventDialog.xaml.cs">
       <DependentUpon>AddEventDialog.xaml</DependentUpon>
     </Compile>
@@ -140,7 +140,8 @@
       <DependentUpon>ChatInput.xaml</DependentUpon>
     </Compile>
     <Compile Include="ComicMessageBox\ComicMessageBox.xaml.cs" />
-    <Compile Include="DocumentConverter.cs" />
+    <Compile Include="CustomCon\DocumentConverter.cs" />
+    <Compile Include="CustomCon\IndexConverter.cs" />
     <Compile Include="FeedReader\FeedProperties.xaml.cs">
       <DependentUpon>FeedProperties.xaml</DependentUpon>
     </Compile>

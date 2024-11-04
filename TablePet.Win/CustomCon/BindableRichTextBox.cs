@@ -9,7 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Runtime.Remoting.Channels;
 
-namespace TablePet.Win
+namespace TablePet.Win.CustomCon
 {
     public class BindableRichTextBox : RichTextBox
     {

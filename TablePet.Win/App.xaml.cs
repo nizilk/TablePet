@@ -7,7 +7,10 @@ using System.Linq;
 using System.Reflection.Emit;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
+using System.Windows.Media;
 using static System.Windows.Forms.LinkLabel;
 
 namespace TablePet.Win
@@ -23,9 +26,25 @@ namespace TablePet.Win
             Process.Start(new ProcessStartInfo(hp.NavigateUri.AbsoluteUri));
         }
 
+
+        T GetAncestor<T>(Visual v)
+        where T : DependencyObject
+        {
+            var a = VisualTreeHelper.GetParent(v);
+            while (a != null)
+            {
+                if (a is T)
+                    return (T)a;
+                a = VisualTreeHelper.GetParent(a);
+            }
+            return null;
+        }
+
+
         private void lb_num_Loaded(object sender, RoutedEventArgs e)
         {
-            Label lb = sender as Label;
+            System.Windows.Controls.Label label = (System.Windows.Controls.Label)sender;
+            // var ltb = GetAncestor < Selector > label;
         }
     }
 }

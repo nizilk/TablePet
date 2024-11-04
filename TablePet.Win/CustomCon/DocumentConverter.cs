@@ -9,7 +9,7 @@ using System.Windows.Documents;
 using System.Windows.Markup;
 using System.Xml;
 
-namespace TablePet.Win
+namespace TablePet.Win.CustomCon
 {
     public class DocumentConverter : IValueConverter
     {
