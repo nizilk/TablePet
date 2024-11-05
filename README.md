@@ -21,18 +21,17 @@
 - [x] 系统托盘图标 完成图标，后续考虑是否加入右键菜单
 - [x] 改进固定对白：人物头上气泡
 - [x] GPT对话
-    - [x] 输入输出框
-    - [x] 上下文连续
-    - [x] 角色扮演
-    - [x] 使用pythonnet连接Python和.NET, 用Python实现OpenAI API的调用
-    - [x] 改进外观，和气泡结合
-    - [x] 像Siri一样, 通过意图提取，用对话调用功能
+    - 输入输出框，可选气泡模式
+    - 上下文连续
+    - 角色扮演
+    - 使用pythonnet连接Python和.NET, 用Python实现OpenAI API的调用
+    - 像Siri一样, 通过意图提取，用对话调用功能
 - [x] rss订阅 & 推送
-    - [x] 用包获取Feed & 读取Feed & 解析Feed
-    - [x] Feed的Properties：新建和修改设置
-    - [x] Feed列表和Entry列表, 双层联动
-    - [x] 美观的Entry列表, 包含标题(链接到原网页)、Feed的名称和作者、最后更新时间、序号、从HTML解析到xaml格式的正文、Icon功能按钮, richtextbox宽度自适应
-    - [x] Listbox放于ScrollViewer内, 并重写滚动处理方法, bubble到外层, 避免被Listbox截断。效果是可以随意滚动, 而不是只能滚动到下一个Item在最顶端的显示。
+    - 用包获取Feed & 读取Feed & 解析Feed
+    - Feed的Properties：新建和修改设置
+    - Feed列表和Entry列表, 双层联动
+    - 美观的Entry列表, 包含标题(链接到原网页)、Feed的名称和作者、最后更新时间、序号、从HTML解析到xaml格式的正文、Icon功能按钮, richtextbox宽度自适应
+    - Listbox放于ScrollViewer内, 并重写滚动处理方法, bubble到外层, 避免被Listbox截断。效果是可以随意滚动, 而不是只能滚动到下一个Item在最顶端的显示。
 
 ---
 
