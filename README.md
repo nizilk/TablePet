@@ -20,6 +20,20 @@
 - [x] 改进拖拽：左右方向不同
 - [x] 系统托盘图标 完成图标，后续考虑是否加入右键菜单
 - [x] 改进固定对白：人物头上气泡
+- [x] GPT对话
+    - [x] 输入输出框
+    - [x] 上下文连续
+    - [x] 角色扮演
+    - [x] 使用pythonnet连接Python和.NET, 用Python实现OpenAI API的调用
+    - [x] 改进外观，和气泡结合
+    - [x] 像Siri一样, 通过意图提取，用对话调用功能
+- [x] rss订阅 & 推送
+    - [x] 用包获取Feed & 读取Feed & 解析Feed
+    - [x] Feed的Properties：新建和修改设置
+    - [x] Feed列表和Entry列表, 双层联动
+    - [x] 美观的Entry列表, 包含标题(链接到原网页)、Feed的名称和作者、最后更新时间、序号、从HTML解析到xaml格式的正文、Icon功能按钮, richtextbox宽度自适应
+    - [x] Listbox放于ScrollViewer内, 并重写滚动处理方法, bubble到外层, 避免被Listbox截断。效果是可以随意滚动, 而不是只能滚动到下一个Item在最顶端的显示。
+
 ---
 
 ##### 计划：
@@ -35,32 +49,24 @@
         - [ ] 设置选项：提供几个背景颜色方案，字体和字号，透明度
         - [ ] 文件夹
         - [x] Icon按钮
+        - [ ] Item双击
         - [ ] 连接数据库
     - [ ] 闹钟/计时器/日历
-    - [ ] <font color=red>GPT对话</font>
-        - [x] 输入输出框
-        - [x] 上下文连续
-        - [x] 角色扮演
-        - [x] 使用pythonnet连接Python和.NET, 用Python实现OpenAI API的调用
-        - [x] 改进外观，和气泡结合
-        - [x] 像Siri一样, 通过意图提取，用对话调用功能
+    - [ ] GPT对话
+        - [ ] 保留输入文本
         - [ ] 设计并利用实体识别
     - [ ] 交互培养、心情值、投喂互动 (需要更多动画)
         - [x] 心情条
     - [ ] 置顶的图片查看器
     - [ ] 快捷启动
-    - [ ] <font color=red>rss订阅 & 推送</font>
-        - [x] 用包获取Feed & 读取Feed & 解析Feed
-        - [x] Listbox遍历显示Feed中的每一个Entry。设计美观的模版, 包含标题(链接到原网页), <font color=red>Feed的名称和作者</font>, 最后更新时间, 内容, <font color=red>序号, 以及功能Icon按钮。</font> (红字还没实现)
-        - [x] Listbox放于ScrollViewer内, 并重写滚动处理方法, bubble到外层, 避免被Listbox截断。效果是可以随意滚动, 而不是只能滚动到下一个Item在最顶端的显示。
-        - [ ] 所有Feed源的列表和联动
-        - [ ] 解析xml文件
+    - [ ] rss订阅 & 推送
+        - [ ] 每个FeedItem单独的Creator
+        - [ ] 解析xml文件: 继续改进div、img、...
         - [ ] 文件夹
         - [ ] 收藏
         - [ ] 已读未读
         - [ ] 转发
         - [ ] Tag
-        - [ ] Feed的Properties：界面已搭建完毕
     - [ ] 和桌面图标互动
 - [ ] 数据模型和数据库
 - [ ] 改进透明窗口：提升显存效率

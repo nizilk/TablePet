@@ -65,7 +65,7 @@ namespace TablePet.Win
         private ChatService chatService = new ChatService();
         FeedReaderService feedReaderService = new FeedReaderService();
 
-        public ObservableCollection<Feed> Feeds { get; set; } = new ObservableCollection<Feed>();
+        public ObservableCollection<FeedExt> Feeds { get; set; } = new ObservableCollection<FeedExt>();
 
         // 全部动画资源的路径 -- 只用一次的
         public Uri[] ResourceOnce = {
@@ -477,7 +477,7 @@ namespace TablePet.Win
         // 对话
         private void chatIn_Click(object sender, RoutedEventArgs e)
         {
-            ChatInput chatInput = new ChatInput(this, chatService, noteService);
+            ChatInput chatInput = new ChatInput(this, chatService, noteService, Feeds);
             chatInput.Show();
         }
 
@@ -525,8 +525,11 @@ namespace TablePet.Win
             // MessageBox.Show(Environment.CurrentDirectory);      // D:\Documents\GitHub\TablePet\TablePet.Win\bin\Debug
 
             // FeedReaderService feedReaderService = new FeedReaderService();
-            // Feed feed = feedReaderService.UpdateFeed();
-            // feedReaderService.ParseFeedItems(feed);
+            // Feed feed = feedReaderService.ReadFeed();
+            // string origDoc = feed.OriginalDocument;
+            // string pattern = @"<dc:creator><!\[CDATA\[([^\]]+)\]\]></dc:creator>";
+            // string creater = Regex.Match(origDoc, pattern).Groups[1].Value;
+            // MessageBox.Show(creater);
             // FeedItem smp = feed.Items[0];
             // MessageBox.Show(smp.Content);
 

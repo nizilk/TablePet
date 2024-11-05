@@ -25,7 +25,7 @@
         </Button>
 
         <ScrollViewer Grid.Row="1" Grid.Column="0" VerticalScrollBarVisibility="Hidden">
-            <ListBox Name="lb_Feeds" ItemTemplate="{StaticResource FeedsTemplate}" SelectionChanged="lb_Feeds_SelectionChanged">
+            <ListBox Name="lb_Feeds" ItemTemplate="{StaticResource FeedsTemplate}" SelectionChanged="lb_Feeds_SelectionChanged" MouseRightButtonDown="lb_Feeds_MouseRightButtonDown" MouseLeftButtonDown="lb_Feeds_MouseLeftButtonDown">
                 <ListBox.ContextMenu>
                     <ContextMenu>
                         <MenuItem Name="FeedUpdate" Header="更新" Click="FeedUpdate_Click"/>

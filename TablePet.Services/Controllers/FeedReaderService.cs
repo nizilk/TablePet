@@ -51,26 +51,27 @@ namespace TablePet.Services.Controllers
 
         public Feed ReadFeed(string url = "https://youkilee.top/index.php/feed/")
         {
-            if (url == "" || url is null)   return new Feed();
+            if (url == "" || url is null)   return null;
             var readerTask = FeedReader.ReadAsync(url);
             readerTask.ConfigureAwait(false);
             Feed feed = readerTask.Result;
-            // Feeds.Add(feed);
-            return feed;
-        }
-
-
-        public void ParseFeedItems(Feed feed)
-        {
             foreach (var item in feed.Items)
             {
-                
                 DateTime pd = (DateTime)item.PublishingDate;
                 item.PublishingDateString = pd.ToString("ddd MMM dd yyyy HH:mm:ss", new System.Globalization.CultureInfo("en-us"));
                 item.PublishingDateString += " (" + GetTimeSpanTilNow(pd) + ")";   // Sat Aug 10 2024 23:59:00 (2 months)
                 item.Content = FiltContent(item.Content);
-                // Items.Add(item);
             }
+            return feed;
+        }
+
+
+        public string GetCreator(Feed feed)
+        {
+            string origDoc = feed.OriginalDocument;
+            string pattern = @"<dc:creator><!\[CDATA\[([^\]]+)\]\]></dc:creator>";
+            string creator = Regex.Match(origDoc, pattern).Groups[1].Value;
+            return creator;
         }
 
 

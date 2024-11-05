@@ -111,6 +111,8 @@
     <Compile Include="Controllers\FeedReaderService.cs" />
     <Compile Include="Controllers\NoteService.cs" />
     <Compile Include="Models\CalendarEvent.cs" />
+    <Compile Include="Models\FeedExt.cs" />
+    <Compile Include="Models\FeedItemExt.cs" />
     <Compile Include="Models\Note.cs" />
     <Compile Include="Models\NoteContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

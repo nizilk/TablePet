@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,7 @@ using TablePet.Win.Calendar;
 using TablePet.Win.FeedReader;
 using TablePet.Win.Messagebox;
 using TablePet.Win.Notes;
+using TablePet.Services.Models;
 
 namespace TablePet.Win.Chat
 {
@@ -32,6 +34,8 @@ namespace TablePet.Win.Chat
         private ChatService chatService;
         private NoteService noteService;
 
+        public ObservableCollection<FeedExt> Feeds;
+
         public ChatInput()
         {
             InitializeComponent();
@@ -43,7 +47,7 @@ namespace TablePet.Win.Chat
         }
 
 
-        public ChatInput(MainWindow mainWindow, ChatService chatService, NoteService noteService)
+        public ChatInput(MainWindow mainWindow, ChatService chatService, NoteService noteService, ObservableCollection<FeedExt> Feeds)
         {
             InitializeComponent();
             Task chatTask = Task.Run(() =>
@@ -54,6 +58,7 @@ namespace TablePet.Win.Chat
             this.mainWindow = mainWindow;
             this.chatService = chatService;
             this.noteService = noteService;
+            this.Feeds = Feeds;
         }
 
 
@@ -88,9 +93,8 @@ namespace TablePet.Win.Chat
                         {
                             FeedReaderService feedReaderService = new FeedReaderService();
                             Feed feed = feedReaderService.ReadFeed();
-                            feedReaderService.ParseFeedItems(feed);
 
-                            FeedView feedView = new FeedView(feedReaderService);
+                            FeedView feedView = new FeedView(Feeds);
                             feedView.Show();
                         }));
                         break;

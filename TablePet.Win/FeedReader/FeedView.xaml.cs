@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using CodeHollow.FeedReader;
 using TablePet.Services.Controllers;
+using TablePet.Services.Models;
 
 namespace TablePet.Win.FeedReader
 {
@@ -24,9 +25,9 @@ namespace TablePet.Win.FeedReader
     /// </summary>
     public partial class FeedView : Window
     {
-        public FeedReaderService feedReaderService;
-        public ObservableCollection<Feed> Feeds { get; set; } = new ObservableCollection<Feed>();
-        public ObservableCollection<FeedItem> Items { get; set; } = new ObservableCollection<FeedItem>();
+        public FeedReaderService feedReaderService = new FeedReaderService();
+        public ObservableCollection<FeedExt> Feeds { get; set; } = new ObservableCollection<FeedExt>();
+        public ObservableCollection<FeedItemExt> Items { get; set; } = new ObservableCollection<FeedItemExt>();
 
 
         public FeedView()
@@ -34,16 +35,11 @@ namespace TablePet.Win.FeedReader
             InitializeComponent();
         }
 
-        public FeedView(ObservableCollection<Feed> Feeds)
+
+        public FeedView(ObservableCollection<FeedExt> Feeds)
         {
             InitializeComponent();
             this.Feeds = Feeds;
-        }
-
-        public FeedView(FeedReaderService feedReaderService)
-        {
-            InitializeComponent();
-            this.feedReaderService = feedReaderService;
         }
 
 
@@ -106,6 +102,7 @@ namespace TablePet.Win.FeedReader
             ChangeDocumentWidth();
         }
 
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             lb_Feeds.ItemsSource = Feeds;
@@ -113,11 +110,13 @@ namespace TablePet.Win.FeedReader
             ChangeDocumentWidth();
         }
 
+
         private void bt_addFeed_Click(object sender, RoutedEventArgs e)
         {
             FeedProperties feedProperties = new FeedProperties(this);
             feedProperties.Show();
         }
+
 
         private void lb_Feeds_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -125,38 +124,65 @@ namespace TablePet.Win.FeedReader
                 return;
 
             ListBox lb = sender as ListBox;
-            Feed feed = lb.SelectedItem as Feed;
-            if (feed == null) return;
+            FeedExt feed = (FeedExt)lb.SelectedItem;
+            if (feed.feed == null) return;
 
             Items.Clear();
-            foreach (FeedItem it in feed.Items)
+            foreach (FeedItem it in feed.feed.Items)
             {
-                Items.Add(it);
+                Items.Add(new FeedItemExt(it, feed.feed.Title, feedReaderService.GetCreator(feed.feed)));
             }
 
             ChangeDocumentWidth();
 
-            lb_Feeds.SelectedIndex = -1;
+            //lb_Feeds.SelectedIndex = -1;
         }
+
 
         private void FeedUpdate_Click(object sender, RoutedEventArgs e)
         {
-
+            var obj = (FeedExt)lb_Feeds.SelectedItem;
+            Task readTask = Task.Run(() =>
+            {
+                obj.feed = feedReaderService.ReadFeed(obj.url);
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    lb_Entries.ItemsSource = obj.feed.Items;
+                    ChangeDocumentWidth();
+                }));
+            });
         }
 
 
-        // TODO:!!
         private void FeedDelete_Click(object sender, RoutedEventArgs e)
         {
-            var obj = lb_Feeds.SelectedItem;
-
-            //Feeds.Remove(obj);
+            var obj = (FeedExt)lb_Feeds.SelectedItem;
+            Feeds.Remove(obj);
+            lb_Entries.ItemsSource = null;
         }
+
 
         private void FeedSetting_Click(object sender, RoutedEventArgs e)
         {
-            FeedProperties feedProperties = new FeedProperties();
+            var obj = (FeedExt)lb_Feeds.SelectedItem;
+            FeedProperties feedProperties = new FeedProperties(this, obj);
             feedProperties.Show();
+        }
+
+        
+        private void lb_Feeds_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (lb_Feeds.SelectedItem != null)
+            {
+                e.Handled = true; // 阻止默认的选中行为
+                lb_Feeds.ContextMenu.IsOpen = true; // 打开上下文菜单
+            }
+        }
+
+
+        private void lb_Feeds_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            lb_Feeds.SelectedIndex = -1;
         }
     }
 }

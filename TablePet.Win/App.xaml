@@ -53,7 +53,7 @@
                     </Grid.ColumnDefinitions>
 
                     <!--Image Grid.Column="0" Name="img_icon" Source="{Binding ImageUrl}"/-->
-                    <TextBlock Grid.Column="1" Foreground="Gray" Text="{Binding Title}">
+                    <TextBlock Grid.Column="1" Foreground="Gray" Text="{Binding feed.Title}">
                         
                     </TextBlock>
                 </Grid>
@@ -84,8 +84,8 @@
                     </Grid.ColumnDefinitions>
 
                     <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="5" FontWeight="Bold" FontSize="20" Margin="10,0,0,0">
-                        <Hyperlink Name="hyperlink_Title" NavigateUri="{Binding Link}" Foreground="Black" TextDecorations="None" RequestNavigate="hyperlink_Title_Click">
-                            <Run Text="{Binding Title}"/>
+                        <Hyperlink Name="hyperlink_Title" NavigateUri="{Binding FeedItem.Link}" Foreground="Black" TextDecorations="None" RequestNavigate="hyperlink_Title_Click">
+                            <Run Text="{Binding FeedItem.Title}"/>
                         </Hyperlink>
                     </Label>
                     <Button Grid.Row="1" Grid.Column="6" Height="20" Width="20" Name="bt_starEntry" Background="Transparent" Margin="0,0,15,0" BorderThickness="0" Tag="0">
@@ -96,17 +96,17 @@
                     </Button>
 
                     <Label Grid.Row="2" Grid.Column="1" Content="from"/>
-                    <Label Grid.Row="2" Grid.Column="2" Content="标题"/>
+                    <Label Grid.Row="2" Grid.Column="2" Content="{Binding FeedTitle}"/>
                     <Label Grid.Row="2" Grid.Column="3" Content="by"/>
-                    <Label Grid.Row="2" Grid.Column="4" Content="作者"/>
-                    <Label Grid.Row="2" Grid.Column="5" Content="{Binding PublishingDateString}" HorizontalAlignment="Right" Grid.ColumnSpan="2"/>
+                    <Label Grid.Row="2" Grid.Column="4" Content="{Binding Creator}"/>
+                    <Label Grid.Row="2" Grid.Column="5" Content="{Binding FeedItem.PublishingDateString}" HorizontalAlignment="Right" Grid.ColumnSpan="2"/>
                     <!--Sat Aug 10 2024 23:59:00 (2 months)-->
                     <Label Grid.Row="2" Grid.Column="7" Name="lb_num" 
                            Content="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Converter={StaticResource IndexConverter}}"/>
 
                     <conv:BindableRichTextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="7" x:Name="rtb_contentEntry" HorizontalAlignment="Stretch"
                                                BorderThickness="0" Margin="20,5,20,25" Padding="10" IsReadOnly="True"
-                                               BindableDocument="{Binding Content, Converter={StaticResource DocConverter}, Mode=TwoWay}">
+                                               BindableDocument="{Binding FeedItem.Content, Converter={StaticResource DocConverter}, Mode=TwoWay}">
                         <RichTextBox.Resources>
                             <Style TargetType="{x:Type Paragraph}">
                                 <Setter Property="Margin" Value="10"/>
