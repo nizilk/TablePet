@@ -60,5 +60,36 @@ namespace TablePet.Services.Controllers
             }
             events[date].Add(calendarEvent);
         }
+
+        public string CheckTodaysEvents()
+        {
+            string todayEvent = GetEventForToday();
+
+            return string.IsNullOrEmpty(todayEvent) ? string.Empty : todayEvent;
+        }
+
+        private string GetEventForToday()
+        {
+            DateTime now = DateTime.Now;
+            
+            if (events.ContainsKey(now.Date))
+            {
+                var eventsForToday = events[now.Date];
+
+                // 遍历今天的所有事件，检查是否有与当前时间相符的事件
+                foreach (var calendarEvent in eventsForToday)
+                {
+                    // 比较事件的开始时间与当前时间
+                    if (calendarEvent.StartTime <= now && calendarEvent.StartTime.AddMinutes(1) > now) // 精确到分钟
+                    {
+                        // 如果找到了匹配的事件，返回事件内容
+                        return $"现在的时间是{calendarEvent.StartTime:HH:mm},该做{calendarEvent.Title}啦";
+                    }
+                }
+            }
+
+            // 如果没有与当前时间匹配的事件，返回空字符串
+            return string.Empty;
+        }
     }
 }
