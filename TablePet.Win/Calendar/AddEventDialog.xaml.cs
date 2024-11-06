@@ -38,7 +38,7 @@ namespace TablePet.Win.Calendar
                 HourComboBox.Items.Add(i.ToString("D2"));
             }
 
-            for (int i = 0; i < 60; i += 5)
+            for (int i = 0; i < 60; i++)
             {
                 MinuteComboBox.Items.Add(i.ToString("D2"));
             }

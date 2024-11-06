@@ -17,7 +17,7 @@ namespace TablePet.Win.Messagebox
         {
             InitializeComponent();
             timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(3);
+            timer.Interval = TimeSpan.FromSeconds(6);
             timer.Tick += Timer_Tick;
         }
         

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -23,28 +24,35 @@ namespace TablePet.Win.Calendar
     {
         private DateTime currentMonth;
         private CalendarService calendarService;
-
+        private DateTime selectedDate;
+        private Timer notificationTimer;
+        
         public CalendarWindow()
         {
             InitializeComponent();
-            calendarService = new CalendarService();
+        }
+        
+        public CalendarWindow(CalendarService calendarService)
+        {
+            InitializeComponent();
+            this.calendarService = calendarService;
             currentMonth = DateTime.Today;
             UpdateCalendar();
         }
 
         private void UpdateCalendar()
         {
-            MonthYearLabel.Text = calendarService.GetMonthYearLabel(currentMonth);
-            CalendarGrid.Children.Clear();
+            MonthYearLabel.Text = calendarService.GetMonthYearLabel(currentMonth); 
+            CalendarGrid.Children.Clear(); 
 
-            int startDay = calendarService.GetStartDayOfMonth(currentMonth);
+            int startDay = calendarService.GetStartDayOfMonth(currentMonth); 
             int daysInMonth = calendarService.GetDaysInMonth(currentMonth);
-            DateTime today = DateTime.Today;
+            DateTime today = DateTime.Today; 
 
             // 添加空白空间以填充该月第一天之前的天数
             for (int i = 0; i < startDay; i++)
             {
-                CalendarGrid.Children.Add(new TextBlock());
+                CalendarGrid.Children.Add(new TextBlock()); // 添加空白文本块
             }
 
             // 为该月的每一天添加按钮
@@ -54,18 +62,29 @@ namespace TablePet.Win.Calendar
                 Button dayButton = new Button
                 {
                     Content = day.ToString(),
-                    Tag = date,
-                    Background = date == today ? Brushes.LightBlue : Brushes.White,
-                    BorderBrush = Brushes.Gray,
-                    Margin = new Thickness(2),
-                    Padding = new Thickness(5),
+                    Tag = date, 
+                    Background = date == today ? Brushes.LightBlue : Brushes.White, 
+                    BorderBrush = (date == selectedDate) ? Brushes.LightSlateGray : Brushes.Gray, 
+                    BorderThickness = (date == selectedDate) ? new Thickness(2) : new Thickness(1), 
+                    Margin = new Thickness(2), 
+                    Padding = new Thickness(5), 
                     HorizontalContentAlignment = HorizontalAlignment.Center,
-                    VerticalContentAlignment = VerticalAlignment.Center
+                    VerticalContentAlignment = VerticalAlignment.Center 
                 };
-                dayButton.Click += (sender, e) => ShowEventsForDate(date);
-                CalendarGrid.Children.Add(dayButton);
+                
+                dayButton.Click += (sender, e) => 
+                {
+                    selectedDate = date; 
+                    UpdateCalendar(); 
+                    ShowEventsForDate(date); 
+                };
+
+                CalendarGrid.Children.Add(dayButton); 
             }
+            
+            ShowEventsForDate(today);
         }
+
 
         private void ShowEventsForDate(DateTime date)
         {
