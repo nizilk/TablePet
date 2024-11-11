@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TablePet.Services.Models;
+using MySql.Data.MySqlClient;
 
 namespace TablePet.Services.Controllers
 {
     public class CalendarService
     {
         private Dictionary<DateTime, List<CalendarEvent>> events;
+        private string connectionString = ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString;
 
         public CalendarService()
         {
@@ -36,29 +39,53 @@ namespace TablePet.Services.Controllers
         //根据日期获取事件
         public List<string> GetEventsForDate(DateTime date)
         {
-            if (events.TryGetValue(date, out var dateEvents))
+            List<string> eventDescriptions = new List<string>();
+
+            // 获取指定日期的事件，按时间排序
+            string query = "SELECT start_time, description FROM CalendarEvents WHERE DATE(start_time) = @Date ORDER BY start_time";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
-                List<string> eventDescriptions = new List<string>();
-                foreach (var calendarEvent in dateEvents)
+                conn.Open();
+                using (MySqlCommand cmd = new MySqlCommand(query, conn))
                 {
-                    eventDescriptions.Add($"{calendarEvent.StartTime.ToShortTimeString()} - {calendarEvent.Title}");
+                    cmd.Parameters.AddWithValue("@Date", date.Date);
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            DateTime startTime = reader.GetDateTime("start_time");
+                            string description = reader.GetString("description");
+                            eventDescriptions.Add($"{startTime.ToShortTimeString()} - {description}");
+                        }
+                    }
                 }
-                return eventDescriptions;
             }
-            else
+            
+            if (eventDescriptions.Count == 0)
             {
-                return new List<string> { "当前日期没有事件。" };
+                eventDescriptions.Add("当前日期没有事件。");
             }
+
+            return eventDescriptions;
         }
 
+
         //添加事件
-        public void AddEvent(DateTime date, CalendarEvent calendarEvent)
+        public void AddEvent(CalendarEvent calendarEvent)
         {
-            if (!events.ContainsKey(date))
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
-                events[date] = new List<CalendarEvent>();
+                conn.Open();
+                string query = "INSERT INTO CalendarEvents (start_time, description) VALUES (@StartTime, @Description)";
+                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@StartTime", calendarEvent.startTime);
+                    cmd.Parameters.AddWithValue("@Description", calendarEvent.description);
+                    cmd.ExecuteNonQuery();
+                }
             }
-            events[date].Add(calendarEvent);
         }
 
         public string CheckTodaysEvents()
@@ -71,25 +98,52 @@ namespace TablePet.Services.Controllers
         private string GetEventForToday()
         {
             DateTime now = DateTime.Now;
-            
-            if (events.ContainsKey(now.Date))
-            {
-                var eventsForToday = events[now.Date];
+            string eventDescription = string.Empty;
 
-                // 遍历今天的所有事件，检查是否有与当前时间相符的事件
-                foreach (var calendarEvent in eventsForToday)
+            // 获取今天的所有事件
+            var eventsForToday = GetEventListForToday();
+
+            // 遍历事件并检查是否有匹配的事件
+            foreach (var calendarEvent in eventsForToday)
+            {
+                // 比较事件的开始时间与当前时间，确保精确到分钟
+                if (calendarEvent.startTime <= now && calendarEvent.startTime.AddMinutes(1) > now)
                 {
-                    // 比较事件的开始时间与当前时间
-                    if (calendarEvent.StartTime <= now && calendarEvent.StartTime.AddMinutes(1) > now) // 精确到分钟
+                    // 如果找到与当前时间匹配的事件，返回事件内容
+                    eventDescription = $"现在的时间是{calendarEvent.startTime:HH:mm}, 该做{calendarEvent.description}啦";
+                    break;
+                }
+            }
+            
+            return eventDescription;
+        }
+
+        private List<CalendarEvent> GetEventListForToday()
+        {
+            List<CalendarEvent> eventList = new List<CalendarEvent>();
+
+            string query = "SELECT * FROM CalendarEvents WHERE DATE(start_time) = CURDATE()";  // 获取今天的所有事件
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+                using (var command = new MySqlCommand(query, connection))
+                {
+                    using (var reader = command.ExecuteReader())
                     {
-                        // 如果找到了匹配的事件，返回事件内容
-                        return $"现在的时间是{calendarEvent.StartTime:HH:mm},该做{calendarEvent.Title}啦";
+                        while (reader.Read())
+                        {
+                            eventList.Add(new CalendarEvent
+                            {
+                                startTime = reader.GetDateTime("start_time"),
+                                description = reader.GetString("description")
+                            });
+                        }
                     }
                 }
             }
 
-            // 如果没有与当前时间匹配的事件，返回空字符串
-            return string.Empty;
+            return eventList;
         }
+
     }
 }

@@ -96,20 +96,22 @@ namespace TablePet.Win.Calendar
             }
         }
 
+
         private void AddEvent_Click(object sender, RoutedEventArgs e)
         {
-            var selectedDate = DateTime.Today; 
+            var selectedDate = DateTime.Today;
             var dialog = new AddEventDialog(selectedDate);
 
             if (dialog.ShowDialog() == true)
             {
                 var newEvent = new CalendarEvent
                 {
-                    Title = dialog.EventTitle,
-                    StartTime = dialog.EventStartTime
+                    startTime = dialog.EventStartTime,  // 用户选择的时间
+                    description = dialog.EventTitle      // 用户输入的事件描述
                 };
 
-                calendarService.AddEvent(selectedDate, newEvent);
+                // 调用 CalendarService 中的方法保存事件到数据库
+                calendarService.AddEvent(newEvent);
                 ShowEventsForDate(selectedDate);
             }
         }
