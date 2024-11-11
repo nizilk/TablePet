@@ -8,8 +8,7 @@ namespace TablePet.Services.Models
 {
     public class CalendarEvent
     {
-        public DateTime Date { get; set; }
-        public string Title { get; set; }
-        public DateTime StartTime { get; set; }
+        public string description { get; set; }
+        public DateTime startTime { get; set; }
     }
 }
