@@ -30,7 +30,7 @@
     - 用包获取Feed & 读取Feed & 解析Feed
     - Feed的Properties：新建和修改设置
     - Feed列表和Entry列表, 双层联动
-    - 美观的Entry列表, 包含标题(链接到原网页)、Feed的名称和作者、最后更新时间、序号、从HTML解析到xaml格式的正文、Icon功能按钮, richtextbox宽度自适应
+    - 美观的Entry列表, 包含标题(链接到原网页)、Feed的名称和作者、最后更新时间、序号、从HTML解析到xaml格式的正文、显示图片、Icon功能按钮, richtextbox宽度自适应
     - Listbox放于ScrollViewer内, 并重写滚动处理方法, bubble到外层, 避免被Listbox截断。效果是可以随意滚动, 而不是只能滚动到下一个Item在最顶端的显示。
 
 ---
@@ -59,11 +59,8 @@
     - [ ] 置顶的图片查看器
     - [ ] 快捷启动
     - [ ] rss订阅 & 推送
-        - [ ] 每个FeedItem单独的Creator
-        - [ ] 解析xml文件: 继续改进div、img、...
         - [ ] 文件夹
         - [ ] 收藏
-        - [ ] 已读未读
         - [ ] 转发
         - [ ] Tag
     - [ ] 和桌面图标互动

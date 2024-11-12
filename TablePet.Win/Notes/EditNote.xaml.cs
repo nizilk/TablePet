@@ -43,6 +43,7 @@ namespace TablePet.Win.Notes
             note.NoteTitle = tb_noteTitle.Text;
             note.NoteContent = tb_noteContent.Text;
             noteService.UpdateNote(note);
+            this.Close();
         }
 
         // 新建按钮

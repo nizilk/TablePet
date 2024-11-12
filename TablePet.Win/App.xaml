@@ -2,7 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:TablePet.Win"
-             xmlns:conv ="clr-namespace:TablePet.Win.CustomCon"
+             xmlns:conv="clr-namespace:TablePet.Win.CustomCon"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
@@ -98,14 +98,14 @@
                     <Label Grid.Row="2" Grid.Column="1" Content="from"/>
                     <Label Grid.Row="2" Grid.Column="2" Content="{Binding FeedTitle}"/>
                     <Label Grid.Row="2" Grid.Column="3" Content="by"/>
-                    <Label Grid.Row="2" Grid.Column="4" Content="{Binding Creator}"/>
+                    <Label Grid.Row="2" Grid.Column="4" Content="{Binding FeedItem.Author}"/>
                     <Label Grid.Row="2" Grid.Column="5" Content="{Binding FeedItem.PublishingDateString}" HorizontalAlignment="Right" Grid.ColumnSpan="2"/>
                     <!--Sat Aug 10 2024 23:59:00 (2 months)-->
                     <Label Grid.Row="2" Grid.Column="7" Name="lb_num" 
                            Content="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Converter={StaticResource IndexConverter}}"/>
 
                     <conv:BindableRichTextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="7" x:Name="rtb_contentEntry" HorizontalAlignment="Stretch"
-                                               BorderThickness="0" Margin="20,5,20,25" Padding="10" IsReadOnly="True"
+                                               BorderThickness="0" Margin="20,5,20,25" Padding="10" IsReadOnly="True" IsDocumentEnabled="True"
                                                BindableDocument="{Binding FeedItem.Content, Converter={StaticResource DocConverter}, Mode=TwoWay}">
                         <RichTextBox.Resources>
                             <Style TargetType="{x:Type Paragraph}">

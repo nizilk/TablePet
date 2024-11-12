@@ -11,14 +11,12 @@ namespace TablePet.Services.Models
     {
         public FeedItem FeedItem { get; set; }
         public string FeedTitle { get; set; }
-        public string Creator { get; set; }
-        public FeedItemExt(FeedItem feedItem, string feedTitle, string creator)
+        public FeedItemExt(FeedItem feedItem, string feedTitle)
         {
             Feed f = new Feed();
             
             FeedItem = feedItem;
             FeedTitle = feedTitle;
-            Creator = creator;
         }
     }
 }

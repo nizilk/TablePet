@@ -130,7 +130,7 @@ namespace TablePet.Win.FeedReader
             Items.Clear();
             foreach (FeedItem it in feed.feed.Items)
             {
-                Items.Add(new FeedItemExt(it, feed.feed.Title, feedReaderService.GetCreator(feed.feed)));
+                Items.Add(new FeedItemExt(it, feed.feed.Title));
             }
 
             ChangeDocumentWidth();

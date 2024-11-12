@@ -55,11 +55,23 @@ namespace TablePet.Services.Controllers
             var readerTask = FeedReader.ReadAsync(url);
             readerTask.ConfigureAwait(false);
             Feed feed = readerTask.Result;
+
             foreach (var item in feed.Items)
             {
-                DateTime pd = (DateTime)item.PublishingDate;
-                item.PublishingDateString = pd.ToString("ddd MMM dd yyyy HH:mm:ss", new System.Globalization.CultureInfo("en-us"));
-                item.PublishingDateString += " (" + GetTimeSpanTilNow(pd) + ")";   // Sat Aug 10 2024 23:59:00 (2 months)
+                if (item.Author == null)
+                {
+                    item.Author = GetCreator(feed);
+                }
+                if (item.PublishingDate != null)
+                {
+                    DateTime pd = (DateTime)item.PublishingDate;
+                    item.PublishingDateString = pd.ToString("ddd MMM dd yyyy HH:mm:ss", new System.Globalization.CultureInfo("en-us"));
+                    item.PublishingDateString += " (" + GetTimeSpanTilNow(pd) + ")";   // Sat Aug 10 2024 23:59:00 (2 months)
+                }
+                if (item.Content == null)
+                {
+                    item.Content = item.Description;
+                }
                 item.Content = FiltContent(item.Content);
             }
             return feed;
@@ -96,8 +108,10 @@ namespace TablePet.Services.Controllers
         {
             content = "<FlowDocument LineHeight=\"10\" FontSize=\"14\" " +
                 "xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" " +
-                "xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">" + 
-                content + 
+                "xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"> " +
+                "<Paragraph> " +
+                content +
+                "</Paragraph> " +
                 "</FlowDocument>";
 
             content = content.Replace("<p>", "<Paragraph>");
@@ -110,7 +124,7 @@ namespace TablePet.Services.Controllers
             // content = content.Replace("\'", "&apos;");
 
             content = content.Replace("</a>", "</Hyperlink>");
-            string pattern_href = @"<a href=""([^"">]*)""[^>]*>";
+            string pattern_href = @"<a[^>]*href=""([^"">]*)""[^>]*>";
             content = Regex.Replace(content, pattern_href, "<Hyperlink Foreground=\"Blue\" NavigateUri=\"${1}\">");
 
             string pattern_head = @"<h2[^>]*>(.*)</h2>";
@@ -122,8 +136,31 @@ namespace TablePet.Services.Controllers
             string pattern_ent = @"(<br>|</br>|<br/>|<br />)";
             content = Regex.Replace(content, pattern_ent, "</Paragraph> <Paragraph>");
 
-            string pattern_blk = @"(<div[^>]*>(.|\n)*</div>|<p>|</p>)";
-            content = Regex.Replace(content, pattern_blk, "");
+            string pattern_blk = @"<div[^>]*>((.|\n)*?)</div>";
+            content = Regex.Replace(content, pattern_blk, "<Section><Paragraph>${1}</Paragraph></Section>");
+
+            /*
+            string pattern_divc = @"<div class=""([^""]+)"">(.|\n)*</div>";
+            string cls;
+            MatchCollection collection = Regex.Matches(content, pattern_divc);
+            foreach (Match match in collection)
+            {
+                cls = match.Groups[1].Value;
+            }
+            */
+
+            string pattern_fgr = @"<figure[^>]*>(.*?)</figure>";
+            content = Regex.Replace(content, pattern_fgr, "${1}");
+
+            string pattern_img = @"<img[^>]*src=""([^""]+)""[^>]*>";
+            content = Regex.Replace(content, pattern_img, "<Image Source=\"${1}\"/>");
+
+            string pattern_multi_p = @"<Paragraph>(\s*<Paragraph>)+";
+            content = Regex.Replace(content, pattern_multi_p, "<Paragraph>");
+
+            string pattern_multi_pend = @"</Paragraph>(\s*</Paragraph>)+";
+            content = Regex.Replace(content, pattern_multi_pend, "</Paragraph>");
+
             return content;
         }
     }
