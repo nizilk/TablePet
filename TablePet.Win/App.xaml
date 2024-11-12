@@ -45,10 +45,10 @@
             </Style>
 
 
-            <DataTemplate x:Key="FeedsTemplate">
+            <HierarchicalDataTemplate x:Key="FeedsTemplate">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="15"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
@@ -57,9 +57,8 @@
                         
                     </TextBlock>
                 </Grid>
-            </DataTemplate>
-            
-            
+            </HierarchicalDataTemplate>
+
             <DataTemplate x:Key="EntriesTemplate">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -91,6 +90,7 @@
                     <Button Grid.Row="1" Grid.Column="6" Height="20" Width="20" Name="bt_starEntry" Background="Transparent" Margin="0,0,15,0" BorderThickness="0" Tag="0">
                         <Path x:Name="bt_starEntry_Path" Data="{DynamicResource StarGeometry}" Fill="#999999" Stretch="Uniform"/>
                     </Button>
+
                     <Button Grid.Row="1" Grid.Column="7" Height="20" Width="20" Name="bt_delEntry" Background="Transparent"  BorderThickness="0">
                         <Path x:Name="bt_delEntry_Path" Data="{DynamicResource DelGeometry}" Fill="#999999" Stretch="Uniform"/>
                     </Button>
@@ -104,9 +104,9 @@
                     <Label Grid.Row="2" Grid.Column="7" Name="lb_num" 
                            Content="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Converter={StaticResource IndexConverter}}"/>
 
-                    <conv:BindableRichTextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="7" x:Name="rtb_contentEntry" HorizontalAlignment="Stretch"
-                                               BorderThickness="0" Margin="20,5,20,25" Padding="10" IsReadOnly="True" IsDocumentEnabled="True"
-                                               BindableDocument="{Binding FeedItem.Content, Converter={StaticResource DocConverter}, Mode=TwoWay}">
+                    <conv:BindableRichTextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="7" x:Name="rtb_contentEntry" HorizontalAlignment="Stretch" 
+                                              BorderThickness="0" Margin="20,5,20,25" Padding="10" IsReadOnly="True" IsDocumentEnabled="True" 
+                                              BindableDocument="{Binding FeedItem.Content, Converter={StaticResource DocConverter}, Mode=TwoWay}">
                         <RichTextBox.Resources>
                             <Style TargetType="{x:Type Paragraph}">
                                 <Setter Property="Margin" Value="10"/>
@@ -114,7 +114,7 @@
                             </Style>
                         </RichTextBox.Resources>
                     </conv:BindableRichTextBox>
-                    
+
                     <ComboBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="5" Text="转发" IsEditable="True" IsReadOnly="True" BorderThickness="0" HorizontalAlignment="Left" Padding="0" Margin="5,0,0,0"/>
                     <CheckBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="5" Content=" 保持未读" HorizontalAlignment="Left" Padding="0" Margin="65,0,0,0"/>
                     <Button Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="5" Height="20" Width="20" Name="bt_tagEntry" Background="Transparent"  BorderThickness="0" HorizontalAlignment="Left" Margin="150,0,0,0" Padding="1,-1,1,3">
@@ -122,11 +122,10 @@
                     </Button>
 
                     <Border Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="9" BorderBrush="LightGray"  BorderThickness="0.2" SnapsToDevicePixels="True" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-
                 </Grid>
             </DataTemplate>
 
-            
+
             <!--以下想做Listbox的模版切换，但还未实现-->
             <Style x:Key="SettingSelectorStyle" TargetType="{x:Type ContentControl}">
                 <Style.Triggers>
@@ -137,9 +136,30 @@
             </Style>
 
 
-            
-            
-            
+            <Style x:Key="_ListBoxItemStyle" TargetType="ListBoxItem">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ListBoxItem">
+                            <Border Name="_Border"
+                                Padding="2"
+                                SnapsToDevicePixels="true">
+                                <ContentPresenter />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsSelected" Value="true">
+                                    <Setter TargetName="_Border" Property="Background" Value="Transparent"/>
+                                    <Setter Property="Foreground" Value="Transparent"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter TargetName="_Border" Property="Background" Value="Transparent"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

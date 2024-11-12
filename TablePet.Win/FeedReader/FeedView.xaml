@@ -7,7 +7,7 @@
         xmlns:conv="clr-namespace:TablePet.Win.CustomCon"
         mc:Ignorable="d"
         Title="FeedReader"
-        Height="600" Width="1000"
+        Height="600" Width="800"
         Loaded="Window_Loaded" SizeChanged="Window_SizeChanged">
     <Grid>
         <Grid.RowDefinitions>
@@ -17,7 +17,7 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
@@ -29,16 +29,20 @@
         </Button>
 
         <ScrollViewer Grid.Row="1" Grid.Column="0" VerticalScrollBarVisibility="Hidden">
-            <ListBox Name="lb_Feeds" ItemTemplate="{StaticResource FeedsTemplate}" BorderThickness="0"
-                     SelectionChanged="lb_Feeds_SelectionChanged" MouseRightButtonDown="lb_Feeds_MouseRightButtonDown" MouseLeftButtonDown="lb_Feeds_MouseLeftButtonDown">
-                <ListBox.ContextMenu>
+            <TreeView Name="tv_Feeds" ItemTemplate="{StaticResource FeedsTemplate}" BorderThickness="0" 
+                      PreviewMouseLeftButtonDown="tv_Feeds_PreviewMouseLeftButtonDown"
+                      PreviewMouseRightButtonDown="tv_Feeds_PreviewMouseRightButtonDown">
+                <TreeView.ContextMenu>
                     <ContextMenu>
                         <MenuItem Name="FeedUpdate" Header="更新" Click="FeedUpdate_Click"/>
                         <MenuItem Name="FeedDelete" Header="删除" Click="FeedDelete_Click"/>
                         <MenuItem Name="FeedSetting" Header="设置" Click="FeedSetting_Click"/>
                     </ContextMenu>
-                </ListBox.ContextMenu>
-            </ListBox>
+                </TreeView.ContextMenu>
+                <TreeView.Resources>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
+                </TreeView.Resources>
+            </TreeView>
         </ScrollViewer>
 
         <RichTextBox Grid.Row="2" Grid.Column="0" BorderThickness="0">
@@ -51,7 +55,7 @@
         </RichTextBox>
 
         <ScrollViewer Grid.Row="1" Grid.Column="1" Grid.RowSpan="2">
-            <ListBox Name="lb_Entries" ItemTemplate="{StaticResource EntriesTemplate}" BorderBrush="LightGray" BorderThickness="1,0,0,0"
+            <ListBox Name="lb_Entries" ItemTemplate="{StaticResource EntriesTemplate}" BorderBrush="LightGray" BorderThickness="1,0,0,0" ItemContainerStyle="{StaticResource _ListBoxItemStyle}"
                      HorizontalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" PreviewMouseWheel="HandlePreviewMouseWheel">
                 <ListBox.Resources>
                     <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>

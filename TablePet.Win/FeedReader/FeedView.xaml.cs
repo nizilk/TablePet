@@ -85,6 +85,15 @@ namespace TablePet.Win.FeedReader
         }
 
 
+        static DependencyObject VisualUpwardSearch<T>(DependencyObject source)
+        {
+            while (source != null && source.GetType() != typeof(T))
+                source = VisualTreeHelper.GetParent(source);
+
+            return source;
+        }
+
+
         private void ChangeDocumentWidth()
         {
             lb_Entries.UpdateLayout();
@@ -105,7 +114,7 @@ namespace TablePet.Win.FeedReader
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            lb_Feeds.ItemsSource = Feeds;
+            tv_Feeds.ItemsSource = Feeds;
             lb_Entries.ItemsSource = Items;
             ChangeDocumentWidth();
         }
@@ -118,30 +127,9 @@ namespace TablePet.Win.FeedReader
         }
 
 
-        private void lb_Feeds_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (lb_Feeds.SelectedIndex == -1)
-                return;
-
-            ListBox lb = sender as ListBox;
-            FeedExt feed = (FeedExt)lb.SelectedItem;
-            if (feed.feed == null) return;
-
-            Items.Clear();
-            foreach (FeedItem it in feed.feed.Items)
-            {
-                Items.Add(new FeedItemExt(it, feed.feed.Title));
-            }
-
-            ChangeDocumentWidth();
-
-            //lb_Feeds.SelectedIndex = -1;
-        }
-
-
         private void FeedUpdate_Click(object sender, RoutedEventArgs e)
         {
-            var obj = (FeedExt)lb_Feeds.SelectedItem;
+            var obj = (FeedExt)tv_Feeds.SelectedItem;
             Task readTask = Task.Run(() =>
             {
                 obj.feed = feedReaderService.ReadFeed(obj.url);
@@ -156,7 +144,7 @@ namespace TablePet.Win.FeedReader
 
         private void FeedDelete_Click(object sender, RoutedEventArgs e)
         {
-            var obj = (FeedExt)lb_Feeds.SelectedItem;
+            var obj = (FeedExt)tv_Feeds.SelectedItem;
             Feeds.Remove(obj);
             lb_Entries.ItemsSource = null;
         }
@@ -164,25 +152,39 @@ namespace TablePet.Win.FeedReader
 
         private void FeedSetting_Click(object sender, RoutedEventArgs e)
         {
-            var obj = (FeedExt)lb_Feeds.SelectedItem;
+            var obj = (FeedExt)tv_Feeds.SelectedItem;
             FeedProperties feedProperties = new FeedProperties(this, obj);
             feedProperties.Show();
         }
 
-        
-        private void lb_Feeds_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+
+        private void tv_Feeds_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (lb_Feeds.SelectedItem != null)
+            var treeViewItem = VisualUpwardSearch<TreeViewItem>(e.OriginalSource as DependencyObject) as TreeViewItem;
+            if (treeViewItem == null) return;
+            FeedExt feed = (FeedExt)treeViewItem.DataContext;
+
+            if (feed.feed == null) return;
+
+            Items.Clear();
+            foreach (FeedItem it in feed.feed.Items)
             {
-                e.Handled = true; // 阻止默认的选中行为
-                lb_Feeds.ContextMenu.IsOpen = true; // 打开上下文菜单
+                Items.Add(new FeedItemExt(it, feed.feed.Title));
             }
+
+            ChangeDocumentWidth();
+            //treeViewItem.
         }
 
 
-        private void lb_Feeds_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void tv_Feeds_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            lb_Feeds.SelectedIndex = -1;
+            var treeViewItem = VisualUpwardSearch<TreeViewItem>(e.OriginalSource as DependencyObject) as TreeViewItem;
+            if (treeViewItem != null)
+            {
+                treeViewItem.Focus();
+                e.Handled = true;
+            }
         }
     }
 }
