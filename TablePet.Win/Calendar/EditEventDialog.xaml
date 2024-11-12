@@ -1,0 +1,29 @@
+﻿<Window x:Class="TablePet.Win.Calendar.EditEventDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:TablePet.Win.Calendar"
+        WindowStartupLocation="CenterScreen"
+        mc:Ignorable="d"
+        Title="EditEventDialog" Height="200" Width="400">
+    <Grid Margin="10">
+        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+            <TextBlock Text="编辑事件描述:" Margin="5" />
+            <TextBox x:Name="EventTitleTextBox" Margin="5" />
+
+            <TextBlock Text="开始时间:" Margin="5" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
+                <ComboBox x:Name="HourComboBox" Width="50" />
+                <TextBlock Text=":" VerticalAlignment="Center" Margin="2" />
+                <ComboBox x:Name="MinuteComboBox" Width="50" />
+                <ComboBox x:Name="AMPMComboBox" Width="60" Visibility="Collapsed">
+                    <ComboBoxItem Content="AM" />
+                    <ComboBoxItem Content="PM" />
+                </ComboBox>
+            </StackPanel>
+
+            <Button Content="保存更改" Width="100" Margin="5" HorizontalAlignment="Center" Click="SaveEvent_Click" />
+        </StackPanel>
+    </Grid>
+</Window>

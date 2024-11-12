@@ -37,12 +37,12 @@ namespace TablePet.Services.Controllers
         }
 
         //根据日期获取事件
-        public List<string> GetEventsForDate(DateTime date)
+        public List<CalendarEvent> GetEventsForDate(DateTime date)
         {
-            List<string> eventDescriptions = new List<string>();
+            List<CalendarEvent> events = new List<CalendarEvent>();
 
             // 获取指定日期的事件，按时间排序
-            string query = "SELECT start_time, description FROM CalendarEvents WHERE DATE(start_time) = @Date ORDER BY start_time";
+            string query = "SELECT id, start_time, description FROM CalendarEvents WHERE DATE(start_time) = @Date ORDER BY start_time";
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
@@ -55,21 +55,21 @@ namespace TablePet.Services.Controllers
                     {
                         while (reader.Read())
                         {
-                            DateTime startTime = reader.GetDateTime("start_time");
-                            string description = reader.GetString("description");
-                            eventDescriptions.Add($"{startTime.ToShortTimeString()} - {description}");
+                            CalendarEvent calendarEvent = new CalendarEvent
+                            {
+                                id = reader.GetInt32("id"),
+                                startTime = reader.GetDateTime("start_time"),
+                                description = reader.GetString("description")
+                            };
+                            events.Add(calendarEvent);
                         }
                     }
                 }
             }
-            
-            if (eventDescriptions.Count == 0)
-            {
-                eventDescriptions.Add("当前日期没有事件。");
-            }
 
-            return eventDescriptions;
+            return events;
         }
+
 
 
         //添加事件
@@ -84,6 +84,36 @@ namespace TablePet.Services.Controllers
                     cmd.Parameters.AddWithValue("@StartTime", calendarEvent.startTime);
                     cmd.Parameters.AddWithValue("@Description", calendarEvent.description);
                     cmd.ExecuteNonQuery();
+                }
+            }
+        }
+        
+        public void UpdateEvent(CalendarEvent calendarEvent)
+        {
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+                var query = "UPDATE CalendarEvents SET start_time = @startTime, description = @description WHERE id = @id";
+                using (var command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@startTime", calendarEvent.startTime);
+                    command.Parameters.AddWithValue("@description", calendarEvent.description);
+                    command.Parameters.AddWithValue("@id", calendarEvent.id);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void DeleteEvent(CalendarEvent calendarEvent)
+        {
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+                var query = "DELETE FROM CalendarEvents WHERE id = @id";
+                using (var command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@id", calendarEvent.id);
+                    command.ExecuteNonQuery();
                 }
             }
         }
@@ -111,6 +141,7 @@ namespace TablePet.Services.Controllers
                 {
                     // 如果找到与当前时间匹配的事件，返回事件内容
                     eventDescription = $"现在的时间是{calendarEvent.startTime:HH:mm}, 该做{calendarEvent.description}啦";
+                    DeleteEvent(calendarEvent);
                     break;
                 }
             }
@@ -134,6 +165,7 @@ namespace TablePet.Services.Controllers
                         {
                             eventList.Add(new CalendarEvent
                             {
+                                id = reader.GetInt32("id"),
                                 startTime = reader.GetDateTime("start_time"),
                                 description = reader.GetString("description")
                             });
