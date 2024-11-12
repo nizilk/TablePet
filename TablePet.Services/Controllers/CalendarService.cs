@@ -43,7 +43,7 @@ namespace TablePet.Services.Controllers
 
             // 获取指定日期的事件，按时间排序
             string query = "SELECT id, start_time, description FROM CalendarEvents WHERE DATE(start_time) = @Date ORDER BY start_time";
-
+            /*
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 conn.Open();
@@ -65,7 +65,7 @@ namespace TablePet.Services.Controllers
                         }
                     }
                 }
-            }
+            }*/
 
             return events;
         }
