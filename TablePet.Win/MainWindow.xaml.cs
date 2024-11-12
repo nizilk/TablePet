@@ -59,14 +59,13 @@ namespace TablePet.Win
         private DispatcherTimer timer = new DispatcherTimer();
         private DispatcherTimer timerMove = new DispatcherTimer();
         private DispatcherTimer timerinfo = new DispatcherTimer();
-        private DispatcherTimer timerEvent = new DispatcherTimer();
-
 
         public NoteContext db = new NoteContext();
         public NoteService noteService;
         private ChatService chatService = new ChatService();
         private CalendarService calendarService = new CalendarService();
         FeedReaderService feedReaderService = new FeedReaderService();
+        private CalendarWindow calendarWindow;
 
         public ObservableCollection<FeedExt> Feeds { get; set; } = new ObservableCollection<FeedExt>();
 
@@ -123,37 +122,24 @@ namespace TablePet.Win
             timer.Tick += timer_Tick;
             timerMove.Tick += timerMove_Tick;  
             timerinfo.Tick += timerinfo_Tick;
-            timerEvent.Tick += timerEvent_Tick;
             timer.Start();
             timerMove.Start();
             timerinfo.Start();
-
-            StartTimerAtNextWholeMinute();
-
+            
             noteService = new NoteService(db);
             WelcomeMessage();
             FeelingBar.Progress = SharingData.Favorability;
             
+            calendarWindow = new CalendarWindow(calendarService);
+            calendarWindow.OnNotificationRequested += ShowNotificationHandler;
             
         }
         
-        private void StartTimerAtNextWholeMinute()
+        private void ShowNotificationHandler(string title, string message, NotificationType type)
         {
-            // 获取当前时间
-            DateTime now = DateTime.Now;
-
-            // 计算下一分钟的零秒
-            DateTime nextMinute = now.AddMinutes(1).AddSeconds(-now.Second).AddMilliseconds(-now.Millisecond);
-
-            // 计算距离下一分钟零秒的时间间隔
-            TimeSpan timeToNextMinute = nextMinute - now;
-
-            // 设置定时器的初始启动时间
-            timerEvent.Interval = timeToNextMinute;
-
-            // 启动定时器
-            timerEvent.Start();
+            showNotification(title, message, type);
         }
+        
 
         private void WelcomeMessage()
         {
@@ -267,19 +253,6 @@ namespace TablePet.Win
                 
                 showNotification("性能使用提示", $"CPU: {cpu}%\nRAM: {ram}MB", NotificationType.Warning);
             });
-        }
-        
-        private void timerEvent_Tick(object sender, EventArgs e)
-        {
-            string eventMessage = calendarService.CheckTodaysEvents();
-
-            // 如果事件信息不为空，则显示通知
-            if (!string.IsNullOrEmpty(eventMessage))
-            {
-                showNotification("事件通知", eventMessage, NotificationType.Information);
-            }
-            
-            timer.Interval = TimeSpan.FromMinutes(1);
         }
 
 
@@ -549,8 +522,7 @@ namespace TablePet.Win
         // 日历
         private void calendar_Click(object sender, RoutedEventArgs e)
         {
-            CalendarWindow calendar = new CalendarWindow(calendarService);
-            calendar.Show();
+            calendarWindow.Show();
         }
 
 

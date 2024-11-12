@@ -12,6 +12,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
+using Notifications.Wpf;
 using TablePet.Services.Controllers;
 using TablePet.Services.Models;
 
@@ -25,7 +27,7 @@ namespace TablePet.Win.Calendar
         private DateTime currentMonth;
         private CalendarService calendarService;
         private DateTime selectedDate;
-        private Timer notificationTimer;
+        private DispatcherTimer timerEvent = new DispatcherTimer();
         
         public CalendarWindow()
         {
@@ -35,11 +37,49 @@ namespace TablePet.Win.Calendar
         public CalendarWindow(CalendarService calendarService)
         {
             InitializeComponent();
+            timerEvent.Tick += timerEvent_Tick;
+            StartTimerAtNextWholeMinute();
+
             this.calendarService = calendarService;
             currentMonth = DateTime.Today;
             UpdateCalendar();
         }
+        
+        public delegate void NotificationEventHandler(string title, string message, NotificationType type);
+        public event NotificationEventHandler OnNotificationRequested;
+        
+        private void timerEvent_Tick(object sender, EventArgs e)
+        {
+            string eventMessage = calendarService.CheckTodaysEvents();
 
+            // 如果事件信息不为空，则显示通知
+            if (!string.IsNullOrEmpty(eventMessage))
+            {
+                OnNotificationRequested?.Invoke("事件通知", eventMessage, NotificationType.Information);
+                ShowEventsForDate(selectedDate);
+            }
+            
+            timerEvent.Interval = TimeSpan.FromMinutes(1);
+        }
+        
+        private void StartTimerAtNextWholeMinute()
+        {
+            // 获取当前时间
+            DateTime now = DateTime.Now;
+
+            // 计算下一分钟的零秒
+            DateTime nextMinute = now.AddMinutes(1).AddSeconds(-now.Second).AddMilliseconds(-now.Millisecond);
+
+            // 计算距离下一分钟零秒的时间间隔
+            TimeSpan timeToNextMinute = nextMinute - now;
+
+            // 设置定时器的初始启动时间
+            timerEvent.Interval = timeToNextMinute;
+
+            // 启动定时器
+            timerEvent.Start();
+        }
+        
         private void UpdateCalendar()
         {
             MonthYearLabel.Text = calendarService.GetMonthYearLabel(currentMonth); 
@@ -65,7 +105,7 @@ namespace TablePet.Win.Calendar
                     Tag = date, 
                     Background = date == today ? Brushes.LightBlue : Brushes.White, 
                     BorderBrush = (date == selectedDate) ? Brushes.LightSlateGray : Brushes.Gray, 
-                    BorderThickness = (date == selectedDate) ? new Thickness(2) : new Thickness(1), 
+                    // BorderThickness = (date == selectedDate) ? new Thickness(2) : new Thickness(1), 
                     Margin = new Thickness(2), 
                     Padding = new Thickness(5), 
                     HorizontalContentAlignment = HorizontalAlignment.Center,
@@ -90,9 +130,50 @@ namespace TablePet.Win.Calendar
         {
             EventListBox.Items.Clear();
             var events = calendarService.GetEventsForDate(date);
-            foreach (var eventDescription in events)
+    
+            foreach (var calendarEvent in events)
             {
-                EventListBox.Items.Add(eventDescription);
+                EventListBox.Items.Add(calendarEvent);
+            }
+    
+            // 如果没有事件，显示默认消息
+            if (EventListBox.Items.Count == 0)
+            {
+                EventListBox.Items.Add("当前日期没有事件。");
+            }
+        }
+
+        
+        private void EditEvent_Click(object sender, RoutedEventArgs e)
+        {
+            if (EventListBox.SelectedItem is CalendarEvent selectedEvent)
+            {
+                var editDialog = new EditEventDialog(selectedEvent);
+                if (editDialog.ShowDialog() == true)
+                {
+                    selectedEvent.startTime = editDialog.EventStartTime;
+                    selectedEvent.description = editDialog.EventTitle;
+
+                    calendarService.UpdateEvent(selectedEvent);
+                    ShowEventsForDate(selectedDate);
+                }
+            }
+            else
+            {
+                MessageBox.Show("请选择一个事件进行修改。");
+            }
+        }
+
+        private void DeleteEvent_Click(object sender, RoutedEventArgs e)
+        {
+            if (EventListBox.SelectedItem is CalendarEvent selectedEvent)
+            {
+                calendarService.DeleteEvent(selectedEvent);
+                ShowEventsForDate(selectedDate);
+            }
+            else
+            {
+                MessageBox.Show("请选择一个事件进行删除。");
             }
         }
 
