@@ -165,7 +165,6 @@ namespace TablePet.Win.FeedReader
             FeedExt feed = (FeedExt)treeViewItem.DataContext;
 
             if (feed.feed == null) return;
-
             Items.Clear();
             foreach (FeedItem it in feed.feed.Items)
             {
@@ -185,6 +184,18 @@ namespace TablePet.Win.FeedReader
                 treeViewItem.Focus();
                 e.Handled = true;
             }
+        }
+
+        private void bt_addFolder_Click(object sender, RoutedEventArgs e)
+        {
+            AddFolder addFolder = new AddFolder(this);
+            addFolder.Show();
+        }
+
+        public void AddFolder(string name)
+        {
+            FeedExt folder = new FeedExt(null, name, null, true);
+            Feeds.Add(folder);
         }
     }
 }

@@ -43,14 +43,14 @@ namespace TablePet.Win.FeedReader
         }
 
 
-        public FeedProperties(FeedView feedView, FeedExt feed)
+        public FeedProperties(FeedView feedView, FeedExt f)
         {
             InitializeComponent();
             this.feedView = feedView;
-            this.feedOriginal = feed;
-            this.feed = feed.feed;
+            this.feedOriginal = f;
+            this.feed = f.feed;
             update = true;
-            UpdateFeedText(feed);
+            UpdateFeedText(f.feed, f.url);
         }
 
 
@@ -78,13 +78,13 @@ namespace TablePet.Win.FeedReader
         }
 
 
-        private void UpdateFeedText(FeedExt f)
+        private void UpdateFeedText(Feed f, string url)
         {
-            if (f.feed == null) return;
+            if (f == null) return;
             Dispatcher.Invoke(new Action(() =>
             {
-                if (update) cb_url.Text = f.url;
-                feed = f.feed;
+                if (update) cb_url.Text = url;
+                feed = f;
                 tb_feedTitle.Text = feed.Title;
                 lb_lastDate.Content = feedReaderService.GetTimeSpanTilNow((DateTime)feed.LastUpdatedDate);
                 lb_state.Content = "OK";
@@ -104,7 +104,7 @@ namespace TablePet.Win.FeedReader
             Task readTask = Task.Run(() =>
             {
                 Feed f = feedReaderService.ReadFeed(url);
-                UpdateFeedText(new FeedExt(f,url));
+                UpdateFeedText(f, url);
             });
         }
 
@@ -115,19 +115,19 @@ namespace TablePet.Win.FeedReader
             Task readTask = Task.Run(() =>
             {
                 Feed f = feedReaderService.ReadFeed(url);
-                UpdateFeedText(new FeedExt(f, url));
+                UpdateFeedText(f, url);
             });
         }
 
 
         private void bt_feedSave_Click(object sender, RoutedEventArgs e)
         {
-            feed.Title = tb_feedTitle.Text;
+            if (lb_state.Content.ToString() != "OK") return;
             if (update)
             {
                 feedView.Feeds.Remove(feedOriginal);
             }
-            feedView.Feeds.Add(new FeedExt(feed, cb_url.Text));
+            feedView.Feeds.Add(new FeedExt(feed, tb_feedTitle.Text, cb_url.Text));
             this.Close();
         }
 

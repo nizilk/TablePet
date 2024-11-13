@@ -113,7 +113,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="FeedReader\Temp.xaml">
+    <Page Include="FeedReader\AddFolder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -153,8 +153,8 @@
     <Compile Include="FeedReader\FeedView.xaml.cs">
       <DependentUpon>FeedView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FeedReader\Temp.xaml.cs">
-      <DependentUpon>Temp.xaml</DependentUpon>
+    <Compile Include="FeedReader\AddFolder.xaml.cs">
+      <DependentUpon>AddFolder.xaml</DependentUpon>
     </Compile>
     <Compile Include="Notes\EditNote.xaml.cs">
       <DependentUpon>EditNote.xaml</DependentUpon>

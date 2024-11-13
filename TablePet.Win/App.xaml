@@ -47,13 +47,31 @@
 
             <HierarchicalDataTemplate x:Key="FeedsTemplate">
                 <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                    </Grid.RowDefinitions>
+                    
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10"/>
                         <ColumnDefinition Width="15"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <!--Image Grid.Column="0" Name="img_icon" Source="{Binding ImageUrl}"/-->
-                    <TextBlock Grid.Column="1" Foreground="Gray" Text="{Binding feed.Title}">
+                    <Image Grid.Row="0" Grid.Column="1" Name="img_icon" Margin="0,0,5,5">
+                        <Image.Style>
+                            <Style TargetType="{x:Type Image}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding isFolder}" Value="false">
+                                        <Setter Property="Source" Value="{DynamicResource ArrowRightMaruGeometry}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding isFolder}" Value="true">
+                                        <Setter Property="Source" Value="{DynamicResource FolderPlusGeometry_Color}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Foreground="Gray" Text="{Binding title}">
                         
                     </TextBlock>
                 </Grid>

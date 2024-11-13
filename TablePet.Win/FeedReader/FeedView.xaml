@@ -17,18 +17,23 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="220"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <Border BorderBrush="LightGray"  BorderThickness="0,0,0,1" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
+
+        <Button Name="bt_addFolder" Grid.Row="0" Grid.Column="0" Background="Transparent"
+                BorderThickness="0" Margin="5,5,35,5" HorizontalAlignment="Right" Click="bt_addFolder_Click">
+            <Image Source="{DynamicResource FolderPlusGeometry_Color}" Width="20" Height="20" Stretch="Uniform"/>
+        </Button>
         
         <Button Name="bt_addFeed" Grid.Row="0" Grid.Column="0" Width="20" Height="20" Background="Transparent" 
                 BorderThickness="0" Margin="5" HorizontalAlignment="Right" Click="bt_addFeed_Click">
-            <Path x:Name="bt_addFeed_Path" Data="{StaticResource AddMaruGeometry}" Fill="Green" Stretch="Uniform"/>
+            <Path x:Name="bt_addFeed_Path" Data="{DynamicResource AddMaruGeometry}" Fill="Green" Stretch="Uniform" RenderTransformOrigin="0.583,0.598"/>
         </Button>
 
-        <ScrollViewer Grid.Row="1" Grid.Column="0" VerticalScrollBarVisibility="Hidden">
+        <ScrollViewer Grid.Row="1" Grid.Column="0" VerticalScrollBarVisibility="Hidden" Margin="0,20,0,0">
             <TreeView Name="tv_Feeds" ItemTemplate="{StaticResource FeedsTemplate}" BorderThickness="0" 
                       PreviewMouseLeftButtonDown="tv_Feeds_PreviewMouseLeftButtonDown"
                       PreviewMouseRightButtonDown="tv_Feeds_PreviewMouseRightButtonDown">
@@ -44,15 +49,9 @@
                 </TreeView.Resources>
             </TreeView>
         </ScrollViewer>
-
-        <RichTextBox Grid.Row="2" Grid.Column="0" BorderThickness="0">
-            <FlowDocument>
-                <Paragraph>
-                    <Image Source="https://imglf5.lf127.net/img/c0f390a8277f1db5/akFYeFo0L0VFMnlFb3VmMkF6dWtGVzNEVjZISmtPMFFHcWZSTVZ4d2h1Zz0.jpg" 
-                           Stretch="Uniform"/>
-                </Paragraph>
-            </FlowDocument>
-        </RichTextBox>
+        
+        <Image Source="https://imglf5.lf127.net/img/c0f390a8277f1db5/akFYeFo0L0VFMnlFb3VmMkF6dWtGVzNEVjZISmtPMFFHcWZSTVZ4d2h1Zz0.jpg"
+               Grid.Row="2" Grid.Column="0"/>
 
         <ScrollViewer Grid.Row="1" Grid.Column="1" Grid.RowSpan="2">
             <ListBox Name="lb_Entries" ItemTemplate="{StaticResource EntriesTemplate}" BorderBrush="LightGray" BorderThickness="1,0,0,0" ItemContainerStyle="{StaticResource _ListBoxItemStyle}"
