@@ -40,6 +40,7 @@ namespace TablePet.Win.FeedReader
             InitializeComponent();
             this.feedView = feedView;
             update = false;
+            LoadFolders(feedView.Folders);
         }
 
 
@@ -48,9 +49,10 @@ namespace TablePet.Win.FeedReader
             InitializeComponent();
             this.feedView = feedView;
             this.feedOriginal = f;
-            this.feed = f.feed;
+            this.feed = f.Feed;
             update = true;
-            UpdateFeedText(f.feed, f.url);
+            UpdateFeedText(f.Feed, f.Url, f.FolderID);
+            LoadFolders(feedView.Folders);
         }
 
 
@@ -78,7 +80,7 @@ namespace TablePet.Win.FeedReader
         }
 
 
-        private void UpdateFeedText(Feed f, string url)
+        private void UpdateFeedText(Feed f, string url, int folderID=0)
         {
             if (f == null) return;
             Dispatcher.Invoke(new Action(() =>
@@ -88,6 +90,7 @@ namespace TablePet.Win.FeedReader
                 tb_feedTitle.Text = feed.Title;
                 lb_lastDate.Content = feedReaderService.GetTimeSpanTilNow((DateTime)feed.LastUpdatedDate);
                 lb_state.Content = "OK";
+                cb_folders.SelectedIndex = folderID;
             }));
         }
 
@@ -120,14 +123,31 @@ namespace TablePet.Win.FeedReader
         }
 
 
+        public void LoadFolders(List<string> folders)
+        {
+            for (int i = 0; i < folders.Count; i++)
+            {
+                cb_folders.Items.Add(folders[i]);
+            }
+        }
+
+
         private void bt_feedSave_Click(object sender, RoutedEventArgs e)
         {
             if (lb_state.Content.ToString() != "OK") return;
+            int idx = cb_folders.SelectedIndex;
+            if (idx == -1) return;
+            FeedExt node = new FeedExt(Feed: feed, Title: tb_feedTitle.Text, Url: cb_url.Text, FolderID: idx);
+            
             if (update)
             {
-                feedView.Feeds.Remove(feedOriginal);
+                feedView.UpdateFeed(node, feedOriginal);
             }
-            feedView.Feeds.Add(new FeedExt(feed, tb_feedTitle.Text, cb_url.Text));
+            else
+            {
+                feedView.AddFeed(node);
+            }
+
             this.Close();
         }
 

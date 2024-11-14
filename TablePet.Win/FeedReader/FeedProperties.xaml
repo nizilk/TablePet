@@ -79,8 +79,7 @@
         <Label Grid.Row="7" Grid.Column="2" Content="min" HorizontalAlignment="Left" Margin="100,0,0,0"/>
 
         <Label Grid.Row="8" Grid.Column="1" Content="文件夹"/>
-        <ComboBox Grid.Row="8" Grid.Column="2" BorderThickness="0,0,0,1" Width="150" HorizontalAlignment="Left" IsEditable="True" IsReadOnly="True">
-            <ComboBoxItem Content="Root" Tag="-1"/>
+        <ComboBox Grid.Row="8" Grid.Column="2" Name="cb_folders" BorderThickness="0,0,0,1" Width="150" HorizontalAlignment="Left" IsEditable="True" IsReadOnly="True">
         </ComboBox>
 
         <Label Grid.Row="9" Grid.Column="1" Content="用户名"/>

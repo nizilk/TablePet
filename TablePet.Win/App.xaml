@@ -45,7 +45,7 @@
             </Style>
 
 
-            <HierarchicalDataTemplate x:Key="FeedsTemplate">
+            <HierarchicalDataTemplate x:Key="FeedsTemplate" ItemsSource="{Binding Nodes}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="20"/>
@@ -61,17 +61,17 @@
                         <Image.Style>
                             <Style TargetType="{x:Type Image}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding isFolder}" Value="false">
+                                    <DataTrigger Binding="{Binding IsFolder}" Value="false">
                                         <Setter Property="Source" Value="{DynamicResource ArrowRightMaruGeometry}"/>
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding isFolder}" Value="true">
-                                        <Setter Property="Source" Value="{DynamicResource FolderPlusGeometry_Color}"/>
+                                    <DataTrigger Binding="{Binding IsFolder}" Value="true">
+                                        <Setter Property="Source" Value="{DynamicResource FolderGeometry}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Image.Style>
                     </Image>
-                    <TextBlock Grid.Row="0" Grid.Column="2" Foreground="Gray" Text="{Binding title}">
+                    <TextBlock Grid.Row="0" Grid.Column="2" Foreground="Gray" Text="{Binding Title}">
                         
                     </TextBlock>
                 </Grid>
