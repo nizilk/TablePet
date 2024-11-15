@@ -26,8 +26,11 @@ namespace TablePet.Win.FeedReader
     public partial class FeedView : Window
     {
         public FeedReaderService feedReaderService = new FeedReaderService();
-        public ObservableCollection<FeedExt> Feeds { get; set; } = new ObservableCollection<FeedExt>();
+
+        public ObservableCollection<FeedExt> Nodes { get; set; }
+
         public ObservableCollection<FeedItemExt> Items { get; set; } = new ObservableCollection<FeedItemExt>();
+        public List<string> Folders { get; set; } = new List<string>();
 
 
         public FeedView()
@@ -36,10 +39,11 @@ namespace TablePet.Win.FeedReader
         }
 
 
-        public FeedView(ObservableCollection<FeedExt> Feeds)
+        public FeedView(ObservableCollection<FeedExt> Feeds, List<string> Folders)
         {
             InitializeComponent();
-            this.Feeds = Feeds;
+            this.Nodes = Feeds;
+            this.Folders = Folders;
         }
 
 
@@ -57,7 +61,7 @@ namespace TablePet.Win.FeedReader
         }
 
 
-        private T SearchVisualTree<T>(DependencyObject tarElem) where T : DependencyObject
+        private DependencyObject VisualDownwardSearch<T>(DependencyObject tarElem)
         {
             if (tarElem != null)
             {
@@ -69,11 +73,11 @@ namespace TablePet.Win.FeedReader
                     var child = VisualTreeHelper.GetChild(tarElem, i);
                     if (child != null && child is T)
                     {
-                        return (T)child;
+                        return child;
                     }
                     else
                     {
-                        var res = SearchVisualTree<T>(child);
+                        var res = VisualDownwardSearch<T>(child);
                         if (res != null)
                         {
                             return res;
@@ -85,13 +89,22 @@ namespace TablePet.Win.FeedReader
         }
 
 
+        static DependencyObject VisualUpwardSearch<T>(DependencyObject source)
+        {
+            while (source != null && source.GetType() != typeof(T))
+                source = VisualTreeHelper.GetParent(source);
+
+            return source;
+        }
+
+
         private void ChangeDocumentWidth()
         {
             lb_Entries.UpdateLayout();
             for (int i = 0; i < this.lb_Entries.Items.Count; i++)
             {
                 ListBoxItem it = this.lb_Entries.ItemContainerGenerator.ContainerFromIndex(i) as ListBoxItem;
-                RichTextBox rtb = SearchVisualTree<RichTextBox>(it);
+                var rtb = VisualDownwardSearch<RichTextBox>(it) as RichTextBox;
                 rtb.Document.PageWidth = rtb.ActualWidth - 20;
             }
         }
@@ -105,7 +118,7 @@ namespace TablePet.Win.FeedReader
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            lb_Feeds.ItemsSource = Feeds;
+            tv_Feeds.ItemsSource = Nodes;
             lb_Entries.ItemsSource = Items;
             ChangeDocumentWidth();
         }
@@ -118,36 +131,53 @@ namespace TablePet.Win.FeedReader
         }
 
 
-        private void lb_Feeds_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        public void AddFeed(FeedExt feed)
         {
-            if (lb_Feeds.SelectedIndex == -1)
-                return;
-
-            ListBox lb = sender as ListBox;
-            FeedExt feed = (FeedExt)lb.SelectedItem;
-            if (feed.feed == null) return;
-
-            Items.Clear();
-            foreach (FeedItem it in feed.feed.Items)
+            if (feed == null) return;
+            if (feed.IsFolder) return;
+            if (feed.FolderID == 0) Nodes.Add(feed);
+            else
             {
-                Items.Add(new FeedItemExt(it, feed.feed.Title, feedReaderService.GetCreator(feed.feed)));
+                foreach(var node in Nodes)
+                {
+                    if (!node.IsFolder) continue;
+                    if (node.ID == feed.FolderID)
+                    {
+                        Nodes.Remove(node);
+                        node.Nodes.Add(feed);
+                        Nodes.Add(node);
+                        break;
+                    }
+                }
             }
+        }
 
-            ChangeDocumentWidth();
 
-            //lb_Feeds.SelectedIndex = -1;
+        public void UpdateFeed(FeedExt feed, FeedExt oldFeed)
+        {
+            if (feed == null) return;
+            if (oldFeed.FolderID == 0)  Nodes.Remove(oldFeed);
+            else
+            {
+                foreach(var node in Nodes)
+                {
+                    if (!node.IsFolder) continue;
+                    if (node.ID == oldFeed.FolderID)    node.Nodes.Remove(oldFeed);
+                }
+            }
+            AddFeed(feed);
         }
 
 
         private void FeedUpdate_Click(object sender, RoutedEventArgs e)
         {
-            var obj = (FeedExt)lb_Feeds.SelectedItem;
+            var obj = (FeedExt)tv_Feeds.SelectedItem;
             Task readTask = Task.Run(() =>
             {
-                obj.feed = feedReaderService.ReadFeed(obj.url);
+                obj.Feed = feedReaderService.ReadFeed(obj.Url);
                 Dispatcher.Invoke(new Action(() =>
                 {
-                    lb_Entries.ItemsSource = obj.feed.Items;
+                    lb_Entries.ItemsSource = obj.Feed.Items;
                     ChangeDocumentWidth();
                 }));
             });
@@ -156,33 +186,59 @@ namespace TablePet.Win.FeedReader
 
         private void FeedDelete_Click(object sender, RoutedEventArgs e)
         {
-            var obj = (FeedExt)lb_Feeds.SelectedItem;
-            Feeds.Remove(obj);
+            var obj = (FeedExt)tv_Feeds.SelectedItem;
+            Nodes.Remove(obj);
             lb_Entries.ItemsSource = null;
         }
 
 
         private void FeedSetting_Click(object sender, RoutedEventArgs e)
         {
-            var obj = (FeedExt)lb_Feeds.SelectedItem;
+            var obj = (FeedExt)tv_Feeds.SelectedItem;
             FeedProperties feedProperties = new FeedProperties(this, obj);
             feedProperties.Show();
         }
 
-        
-        private void lb_Feeds_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+
+        private void tv_Feeds_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (lb_Feeds.SelectedItem != null)
+            var treeViewItem = VisualUpwardSearch<TreeViewItem>(e.OriginalSource as DependencyObject) as TreeViewItem;
+            if (treeViewItem == null) return;
+            FeedExt feed = (FeedExt)treeViewItem.DataContext;
+
+            if (feed.Feed == null) return;
+            Items.Clear();
+            foreach (FeedItem it in feed.Feed.Items)
             {
-                e.Handled = true; // 阻止默认的选中行为
-                lb_Feeds.ContextMenu.IsOpen = true; // 打开上下文菜单
+                Items.Add(new FeedItemExt(it, feed.Feed.Title));
             }
+
+            ChangeDocumentWidth();
+            //treeViewItem.
         }
 
 
-        private void lb_Feeds_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void tv_Feeds_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            lb_Feeds.SelectedIndex = -1;
+            var treeViewItem = VisualUpwardSearch<TreeViewItem>(e.OriginalSource as DependencyObject) as TreeViewItem;
+            if (treeViewItem != null)
+            {
+                treeViewItem.Focus();
+                e.Handled = true;
+            }
+        }
+
+        private void bt_addFolder_Click(object sender, RoutedEventArgs e)
+        {
+            AddFolder addFolder = new AddFolder(this);
+            addFolder.Show();
+        }
+
+        public void AddFolder(string name)
+        {
+            FeedExt folder = new FeedExt(ID: Folders.Count, Title: name, IsFolder: true);
+            Nodes.Add(folder);
+            Folders.Add(name);
         }
     }
 }

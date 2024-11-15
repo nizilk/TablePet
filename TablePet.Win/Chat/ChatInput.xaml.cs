@@ -35,7 +35,7 @@ namespace TablePet.Win.Chat
         private NoteService noteService;
 
         public ObservableCollection<FeedExt> Feeds;
-
+        public List<string> Folders { get; set; }
         public ChatInput()
         {
             InitializeComponent();
@@ -47,7 +47,7 @@ namespace TablePet.Win.Chat
         }
 
 
-        public ChatInput(MainWindow mainWindow, ChatService chatService, NoteService noteService, ObservableCollection<FeedExt> Feeds)
+        public ChatInput(MainWindow mainWindow, ChatService chatService, NoteService noteService, ObservableCollection<FeedExt> Feeds, List<string> Folders)
         {
             InitializeComponent();
             Task chatTask = Task.Run(() =>
@@ -59,6 +59,7 @@ namespace TablePet.Win.Chat
             this.chatService = chatService;
             this.noteService = noteService;
             this.Feeds = Feeds;
+            this.Folders = Folders;
         }
 
 
@@ -94,7 +95,7 @@ namespace TablePet.Win.Chat
                             FeedReaderService feedReaderService = new FeedReaderService();
                             Feed feed = feedReaderService.ReadFeed();
 
-                            FeedView feedView = new FeedView(Feeds);
+                            FeedView feedView = new FeedView(Feeds, Folders);
                             feedView.Show();
                         }));
                         break;
@@ -104,8 +105,6 @@ namespace TablePet.Win.Chat
                             CalendarWindow calendar = new CalendarWindow();
                             calendar.Show();
                         }));
-                        break;
-                    case "Recommend Music":
                         break;
                     case "End":
                         this.Dispatcher.Invoke(new Action(() =>

@@ -48,5 +48,20 @@ namespace TablePet.Win.Notes
             EditNote note = new EditNote(noteService);
             note.Show();
         }
+
+        private void lb_Notes_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var obj = (Note)lb_Notes.SelectedItem;
+            if (obj != null)
+            {
+                EditNote editNote = new EditNote(noteService, obj);
+                editNote.Show();
+            }
+        }
+
+        private void bt_noteClose_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

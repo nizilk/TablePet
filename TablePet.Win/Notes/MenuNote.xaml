@@ -6,30 +6,33 @@
         xmlns:local="clr-namespace:TablePet.Win.Notes"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen" AllowsTransparency="True"
-        Title="MainWindow" Height="450" Width="600" WindowStyle="None">
+        Title="MainWindow" Height="450" Width="450" WindowStyle="None" Background="AliceBlue">
     <DockPanel>
         <Grid DockPanel.Dock="Top">
             <Button Grid.Column="0" Width="20" Name="bt_folderPlus" Background="Transparent"
                     Padding="0,22,0,0" Margin="20,0,0,0" BorderThickness="0" HorizontalAlignment="Left"
                     Click="bt_folderPlus_Click">
-                <Path Data="{DynamicResource FolderPlusGeometry}" Fill="Black" Stretch="Uniform"/>
+                <Path Data="{DynamicResource FolderPlusGeometry}" Fill="Gray" Stretch="Uniform"/>
             </Button>
             <Label Grid.Column="1" Content="所有便签" HorizontalAlignment="Center" FontSize="15" Height="60" VerticalContentAlignment="Bottom"/>
             <Button Grid.Column="2" Width="20" Name="bt_noteNew" Background="Transparent"
-                    Padding="2,20,2,0" Margin="0,0,20,0" BorderThickness="0" HorizontalAlignment="Right"
+                    Padding="2,20,2,0" Margin="0,0,50,0" BorderThickness="0" HorizontalAlignment="Right"
                     Click="bt_noteNew_Click">
-                <Path Data="{DynamicResource AddGeometry}" Fill="Black" Stretch="Uniform"/>
+                <Path Data="{DynamicResource AddGeometry}" Fill="Gray" Stretch="Uniform"/>
+            </Button>
+            <Button Grid.Column="2" Width="20" Name="bt_noteClose" Background="Transparent" 
+                    Padding="3,21,3,0" Margin="0,0,20,0" BorderThickness="0" HorizontalAlignment="Right" 
+                    Click="bt_noteClose_Click">
+                <Path Data="{DynamicResource CloseGeometry}" Fill="Gray" Stretch="Uniform"/>
             </Button>
         </Grid>
-        <Border BorderBrush="Black"  BorderThickness="1" Margin="15,0,15,15">
-            <ListBox Name="lb_Notes" HorizontalAlignment="Stretch">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding NoteTitle}"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </Border>
+        <ListBox Name="lb_Notes" HorizontalAlignment="Stretch" MouseDoubleClick="lb_Notes_MouseDoubleClick" BorderThickness="0" Margin="15,0,15,15">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding NoteTitle}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
     </DockPanel>
 </Window>
