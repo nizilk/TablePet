@@ -38,6 +38,7 @@ using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 using System.IO;
+using TablePet.Win.Alarm;
 
 
 namespace TablePet.Win
@@ -66,6 +67,7 @@ namespace TablePet.Win
         private CalendarService calendarService = new CalendarService();
         FeedReaderService feedReaderService = new FeedReaderService();
         private CalendarWindow calendarWindow;
+        private AlarmsWindow alarmsWindow;
 
         public ObservableCollection<FeedExt> Feeds { get; set; } = new ObservableCollection<FeedExt>();
         public List<string> Folders { get; set; } = new List<string>() { "Root" };
@@ -130,9 +132,6 @@ namespace TablePet.Win
             noteService = new NoteService(db);
             WelcomeMessage();
             FeelingBar.Progress = SharingData.Favorability;
-            
-            calendarWindow = new CalendarWindow(calendarService);
-            calendarWindow.OnNotificationRequested += ShowNotificationHandler;
         }
         
         private void ShowNotificationHandler(string title, string message, NotificationType type)
@@ -519,7 +518,17 @@ namespace TablePet.Win
         // 日历
         private void calendar_Click(object sender, RoutedEventArgs e)
         {
+            calendarWindow = new CalendarWindow(calendarService);
+            calendarWindow.OnNotificationRequested += ShowNotificationHandler;
+
             calendarWindow.Show();
+        }
+        
+        //闹钟
+        private void alarm_Click(object sender, RoutedEventArgs e)
+        {
+            alarmsWindow = new AlarmsWindow();
+            alarmsWindow.Show();
         }
 
 

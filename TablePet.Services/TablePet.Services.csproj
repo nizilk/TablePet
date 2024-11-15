@@ -137,10 +137,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AlarmService.cs" />
     <Compile Include="Controllers\CalendarService.cs" />
     <Compile Include="Controllers\ChatService.cs" />
     <Compile Include="Controllers\FeedReaderService.cs" />
     <Compile Include="Controllers\NoteService.cs" />
+    <Compile Include="Models\Alarm.cs" />
     <Compile Include="Models\CalendarEvent.cs" />
     <Compile Include="Models\FeedExt.cs" />
     <Compile Include="Models\FeedItemExt.cs" />
