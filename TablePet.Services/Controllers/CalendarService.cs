@@ -57,9 +57,9 @@ namespace TablePet.Services.Controllers
                         {
                             CalendarEvent calendarEvent = new CalendarEvent
                             {
-                                id = reader.GetInt32("id"),
-                                startTime = reader.GetDateTime("start_time"),
-                                description = reader.GetString("description")
+                                Id = reader.GetInt32("id"),
+                                StartTime = reader.GetDateTime("start_time"),
+                                Description = reader.GetString("description")
                             };
                             events.Add(calendarEvent);
                         }
@@ -81,8 +81,8 @@ namespace TablePet.Services.Controllers
                 string query = "INSERT INTO CalendarEvents (start_time, description) VALUES (@StartTime, @Description)";
                 using (MySqlCommand cmd = new MySqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@StartTime", calendarEvent.startTime);
-                    cmd.Parameters.AddWithValue("@Description", calendarEvent.description);
+                    cmd.Parameters.AddWithValue("@StartTime", calendarEvent.StartTime);
+                    cmd.Parameters.AddWithValue("@Description", calendarEvent.Description);
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -96,9 +96,9 @@ namespace TablePet.Services.Controllers
                 var query = "UPDATE CalendarEvents SET start_time = @startTime, description = @description WHERE id = @id";
                 using (var command = new MySqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@startTime", calendarEvent.startTime);
-                    command.Parameters.AddWithValue("@description", calendarEvent.description);
-                    command.Parameters.AddWithValue("@id", calendarEvent.id);
+                    command.Parameters.AddWithValue("@startTime", calendarEvent.StartTime);
+                    command.Parameters.AddWithValue("@description", calendarEvent.Description);
+                    command.Parameters.AddWithValue("@id", calendarEvent.Id);
                     command.ExecuteNonQuery();
                 }
             }
@@ -112,7 +112,7 @@ namespace TablePet.Services.Controllers
                 var query = "DELETE FROM CalendarEvents WHERE id = @id";
                 using (var command = new MySqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@id", calendarEvent.id);
+                    command.Parameters.AddWithValue("@id", calendarEvent.Id);
                     command.ExecuteNonQuery();
                 }
             }
@@ -137,10 +137,10 @@ namespace TablePet.Services.Controllers
             foreach (var calendarEvent in eventsForToday)
             {
                 // 比较事件的开始时间与当前时间，确保精确到分钟
-                if (calendarEvent.startTime <= now && calendarEvent.startTime.AddMinutes(1) > now)
+                if (calendarEvent.StartTime <= now && calendarEvent.StartTime.AddMinutes(1) > now)
                 {
                     // 如果找到与当前时间匹配的事件，返回事件内容
-                    eventDescription = $"现在的时间是{calendarEvent.startTime:HH:mm}, 该做{calendarEvent.description}啦";
+                    eventDescription = $"现在的时间是{calendarEvent.StartTime:HH:mm}, 该做{calendarEvent.Description}啦";
                     DeleteEvent(calendarEvent);
                     break;
                 }
@@ -165,9 +165,9 @@ namespace TablePet.Services.Controllers
                         {
                             eventList.Add(new CalendarEvent
                             {
-                                id = reader.GetInt32("id"),
-                                startTime = reader.GetDateTime("start_time"),
-                                description = reader.GetString("description")
+                                Id = reader.GetInt32("id"),
+                                StartTime = reader.GetDateTime("start_time"),
+                                Description = reader.GetString("description")
                             });
                         }
                     }

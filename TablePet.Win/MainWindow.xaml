@@ -51,6 +51,7 @@
                     <MenuItem Name="mi_feed" Header="Feed Reader" Click="mi_feed_Click"/>
                     <MenuItem Name="test" Header="测试" Click="test_Click"/>
                     <MenuItem Name="calendar" Header="日历" Click="calendar_Click"/>
+                    <MenuItem Name="alarm" Header="闹钟" Click="alarm_Click"/>
                     <Separator/>
                     <MenuItem Name="exit" Header="退出" Click="exit_Click"/>
                 </ContextMenu>

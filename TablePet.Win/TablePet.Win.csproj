@@ -63,6 +63,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -87,10 +88,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Alarms\AddAlarmDialog.cs" />
+    <Compile Include="Alarms\AlarmDialogBase.xaml.cs">
+      <DependentUpon>AlarmDialogBase.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Alarms\AlarmsWindow.xaml.cs">
+      <DependentUpon>AlarmsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Alarms\EditAlarmDialog.cs" />
+    <Compile Include="Alarms\StatusToColorConverter.cs" />
     <Compile Include="Calendar\EditEventDialog.xaml.cs">
       <DependentUpon>EditEventDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="SharingData\SharingData.cs" />
+    <Page Include="Alarms\AlarmDialogBase.xaml" />
+    <Page Include="Alarms\AlarmsWindow.xaml" />
     <Page Include="Calendar\AddEventDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

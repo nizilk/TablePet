@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:TablePet.Win"
              xmlns:conv ="clr-namespace:TablePet.Win.CustomCon"
+             xmlns:alarms="clr-namespace:TablePet.Win.Alarms"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
@@ -12,6 +13,8 @@
 
             <conv:DocumentConverter x:Key="DocConverter"/>
             <conv:IndexConverter x:Key="IndexConverter"/>
+            <alarms:StatusToColorConverter x:Key="StatusToColorConverter" />
+
 
             <Style x:Key="TextBoxPlaceHolder" TargetType="{x:Type TextBox}">
                 <Setter Property="Template">

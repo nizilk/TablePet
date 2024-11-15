@@ -14,8 +14,8 @@ namespace TablePet.Win.Calendar
             InitializeComponent();
 
             // 设置初始事件数据
-            EventTitle = calendarEvent.description;
-            EventStartTime = calendarEvent.startTime;
+            EventTitle = calendarEvent.Description;
+            EventStartTime = calendarEvent.StartTime;
 
             // 初始化控件数据
             EventTitleTextBox.Text = EventTitle;

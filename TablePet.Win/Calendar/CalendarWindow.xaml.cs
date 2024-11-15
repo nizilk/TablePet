@@ -151,8 +151,8 @@ namespace TablePet.Win.Calendar
                 var editDialog = new EditEventDialog(selectedEvent);
                 if (editDialog.ShowDialog() == true)
                 {
-                    selectedEvent.startTime = editDialog.EventStartTime;
-                    selectedEvent.description = editDialog.EventTitle;
+                    selectedEvent.StartTime = editDialog.EventStartTime;
+                    selectedEvent.Description = editDialog.EventTitle;
 
                     calendarService.UpdateEvent(selectedEvent);
                     ShowEventsForDate(selectedDate);
@@ -187,8 +187,8 @@ namespace TablePet.Win.Calendar
             {
                 var newEvent = new CalendarEvent
                 {
-                    startTime = dialog.EventStartTime,  // 用户选择的时间
-                    description = dialog.EventTitle      // 用户输入的事件描述
+                    StartTime = dialog.EventStartTime,  // 用户选择的时间
+                    Description = dialog.EventTitle      // 用户输入的事件描述
                 };
 
                 // 调用 CalendarService 中的方法保存事件到数据库
