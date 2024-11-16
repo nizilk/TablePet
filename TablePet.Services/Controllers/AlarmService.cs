@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using MySql.Data.MySqlClient;
 using TablePet.Services.Models;
@@ -8,12 +9,7 @@ namespace TablePet.Services.Controllers
 {
     public class AlarmService
     {
-        private string connectionString;
-
-        public AlarmService(string dbConnectionString)
-        {
-            connectionString = dbConnectionString;
-        }
+        private string connectionString = ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString;
 
         // Helper method: Convert DayOfWeek list to comma-separated string
         private string CustomDaysToString(List<DayOfWeek> days)
@@ -33,8 +29,7 @@ namespace TablePet.Services.Controllers
                        .Select(d => d.Value)
                        .ToList();
         }
-
-        // 1. 获取所有闹钟
+        
         public List<Alarm> GetAllAlarms()
         {
             var alarms = new List<Alarm>();
@@ -42,7 +37,7 @@ namespace TablePet.Services.Controllers
             using (var conn = new MySqlConnection(connectionString))
             {
                 conn.Open();
-                var query = "SELECT * FROM Alarms";
+                var query = "SELECT * FROM Alarms ORDER BY time";
                 using (var cmd = new MySqlCommand(query, conn))
                 {
                     using (var reader = cmd.ExecuteReader())
@@ -59,6 +54,7 @@ namespace TablePet.Services.Controllers
                                     ? StringToCustomDays(reader.GetString("custom_days")) 
                                     : new List<DayOfWeek>()
                             };
+                            alarm.SetDescription();
                             alarms.Add(alarm);
                         }
                     }
@@ -66,8 +62,7 @@ namespace TablePet.Services.Controllers
             }
             return alarms;
         }
-
-        // 2. 添加新闹钟
+        
         public void AddAlarm(Alarm alarm)
         {
             var customDaysStr = CustomDaysToString(alarm.CustomDays);
@@ -86,8 +81,7 @@ namespace TablePet.Services.Controllers
                 }
             }
         }
-
-        // 3. 更新现有闹钟
+        
         public void UpdateAlarm(Alarm alarm)
         {
             var customDaysStr = CustomDaysToString(alarm.CustomDays);
@@ -107,8 +101,7 @@ namespace TablePet.Services.Controllers
                 }
             }
         }
-
-        // 4. 删除指定闹钟
+        
         public void DeleteAlarm(int id)
         {
             using (var conn = new MySqlConnection(connectionString))
@@ -123,20 +116,43 @@ namespace TablePet.Services.Controllers
             }
         }
 
-        // 5. 启用/禁用闹钟
-        public void ToggleAlarmStatus(int id, bool isActive)
+        public string CheckAlarm()
         {
-            using (var conn = new MySqlConnection(connectionString))
+            var currentTime = DateTime.Now.TimeOfDay;
+            string currentTimeFormatted = $"{currentTime.Hours:D2}:{currentTime.Minutes:D2}";
+            var currentDay = DateTime.Now.DayOfWeek;
+            var alarms = GetAllAlarms();
+            foreach (var alarm in alarms)
             {
-                conn.Open();
-                var query = "UPDATE Alarms SET status = @is_active WHERE id = @id";
-                using (var cmd = new MySqlCommand(query, conn))
+                if (alarm.Status)
                 {
-                    cmd.Parameters.AddWithValue("@id", id);
-                    cmd.Parameters.AddWithValue("@is_active", isActive);
-                    cmd.ExecuteNonQuery();
+                    if (alarm.Time.Hours == currentTime.Hours && alarm.Time.Minutes == currentTime.Minutes)
+                    {
+                        string alarmMessage = "闹钟响啦！！！现在的时间是：" + currentTimeFormatted;
+                        switch (alarm.RepeatMode)
+                        {
+                            case "仅一次":
+                                alarm.Status = alarm.Status != true;
+                                UpdateAlarm(alarm);
+                                return alarmMessage;
+
+                            case "每天":
+                                return alarmMessage;
+
+                            case "自定义":
+                                if (alarm.CustomDays.Contains(currentDay))
+                                {
+                                    return alarmMessage;
+                                }
+                                break;
+                        }
+                    }
                 }
             }
+
+            // 如果没有触发的闹钟，返回空字符串
+            return string.Empty;
         }
+
     }
 }

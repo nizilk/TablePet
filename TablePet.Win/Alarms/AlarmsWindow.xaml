@@ -4,9 +4,36 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:TablePet.Win.Alarm"
+        xmlns:alarms="clr-namespace:TablePet.Win.Alarms"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="AlarmListWindow" Height="400" Width="400">
+        Title="AlarmListWindow" Height="400" Width="420">
+    <Window.Resources>
+        <!-- 自定义按钮样式 -->
+        <Style x:Key="NoBorderButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+
+        <!-- 自定义ToggleButton样式 -->
+        <Style x:Key="NoBorderToggleButtonStyle" TargetType="ToggleButton">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+    </Window.Resources>
+
     <Grid>
         <!-- 标题部分 -->
         <TextBlock Text="闹钟" FontSize="24" FontWeight="Bold" 
@@ -25,14 +52,41 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,5">
-                        <TextBlock Text="{Binding Time}" 
-                                   Foreground="{Binding Status, Converter={StaticResource StatusToColorConverter}}" 
-                                   FontSize="16" />
-                        <TextBlock Text="{Binding RepeatMode}" Margin="10,0" FontSize="14" />
-                        <ToggleButton IsChecked="{Binding Status}" Checked="ToggleStatus" Unchecked="ToggleStatus" 
-                                      Content="开关" Margin="10,0" Width="50"/>
-                        <Button Content="修改" Width="50" Margin="10,0" Click="EditAlarm_Click" />
-                        <Button Content="删除" Width="50" Margin="10,0" Click="DeleteAlarm_Click" />
+                        <StackPanel Orientation="Vertical" Margin="0,5">
+                            <!-- Time 部分 -->
+                            <TextBlock Text="{Binding Time, Converter={StaticResource TimeToHourMinuteConverter}}" 
+                                       Foreground="{Binding Status, Converter={StaticResource StatusToColorConverter}}" 
+                                       FontSize="25" />
+
+                            <!-- Description 部分 -->
+                            <TextBlock Text="{Binding Description}" 
+                                       Margin="0,0" 
+                                       FontSize="10" 
+                                       HorizontalAlignment="Left"
+                                       Width="170" 
+                                       TextTrimming="CharacterEllipsis"/> <!-- 如果溢出，显示省略号 -->
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5">
+                            <!-- 开关按钮 -->
+                            <ToggleButton IsChecked="{Binding Status}" Width="45" Margin="10,0" Checked="ToggleStatus" Unchecked="ToggleStatus" 
+                                          Style="{StaticResource NoBorderToggleButtonStyle}">
+                                <ToggleButton.Content>
+                                    <Binding Path="Status">
+                                        <Binding.Converter>
+                                            <alarms:StatusToTextConverter />
+                                        </Binding.Converter>
+                                    </Binding>
+                                </ToggleButton.Content>
+                            </ToggleButton>
+
+
+                            <!-- 修改按钮 -->
+                            <Button Content="修改" Width="45" Margin="10,0" Click="EditAlarm_Click" Style="{StaticResource NoBorderButtonStyle}"/>
+
+                            <!-- 删除按钮 -->
+                            <Button Content="删除" Width="45" Margin="10,0" Click="DeleteAlarm_Click" Style="{StaticResource NoBorderButtonStyle}"/>
+                        </StackPanel>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

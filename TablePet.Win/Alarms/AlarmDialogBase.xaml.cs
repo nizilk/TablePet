@@ -16,10 +16,8 @@ namespace TablePet.Win.Alarms
         {
             InitializeComponent();
             CustomDays = new List<DayOfWeek>();
-
-            // Initialize the RepeatModeComboBox with options
+            
             RepeatModeComboBox.ItemsSource = new List<string> { "仅一次", "每天", "自定义" };
-            RepeatModeComboBox.SelectionChanged += RepeatModeComboBox_SelectionChanged;
             PopulateTimeComboBoxes();
         }
         
@@ -38,9 +36,10 @@ namespace TablePet.Win.Alarms
             }
         }
 
-        private void RepeatModeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        public void RepeatModeComboBox_DropDownClosed(object sender, EventArgs e)
         {
-            if (RepeatModeComboBox.SelectedItem as string == "自定义")
+            string selectedMode = RepeatModeComboBox.SelectedItem as string;
+            if (selectedMode == "自定义" )
             {
                 OpenCustomDaysSelection();
             }
@@ -48,12 +47,12 @@ namespace TablePet.Win.Alarms
 
         private void OpenCustomDaysSelection()
         {
-            /*// Open the custom days selection dialog
+            // Open the custom days selection dialog
             var customDaysDialog = new CustomDaysDialog(CustomDays);
             if (customDaysDialog.ShowDialog() == true)
             {
                 CustomDays = customDaysDialog.SelectedDays;
-            }*/
+            }
         }
 
         
