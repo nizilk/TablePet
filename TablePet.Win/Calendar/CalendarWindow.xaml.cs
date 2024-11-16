@@ -26,8 +26,7 @@ namespace TablePet.Win.Calendar
     {
         private DateTime currentMonth;
         private CalendarService calendarService;
-        private DateTime selectedDate;
-        private DispatcherTimer timerEvent = new DispatcherTimer();
+        public DateTime SelectedDate;
         
         public CalendarWindow()
         {
@@ -37,47 +36,10 @@ namespace TablePet.Win.Calendar
         public CalendarWindow(CalendarService calendarService)
         {
             InitializeComponent();
-            timerEvent.Tick += timerEvent_Tick;
-            StartTimerAtNextWholeMinute();
 
             this.calendarService = calendarService;
             currentMonth = DateTime.Today;
             UpdateCalendar();
-        }
-        
-        public delegate void NotificationEventHandler(string title, string message, NotificationType type);
-        public event NotificationEventHandler OnNotificationRequested;
-        
-        private void timerEvent_Tick(object sender, EventArgs e)
-        {
-            string eventMessage = calendarService.CheckTodaysEvents();
-
-            // 如果事件信息不为空，则显示通知
-            if (!string.IsNullOrEmpty(eventMessage))
-            {
-                OnNotificationRequested?.Invoke("事件通知", eventMessage, NotificationType.Information);
-                ShowEventsForDate(selectedDate);
-            }
-            
-            timerEvent.Interval = TimeSpan.FromMinutes(1);
-        }
-        
-        private void StartTimerAtNextWholeMinute()
-        {
-            // 获取当前时间
-            DateTime now = DateTime.Now;
-
-            // 计算下一分钟的零秒
-            DateTime nextMinute = now.AddMinutes(1).AddSeconds(-now.Second).AddMilliseconds(-now.Millisecond);
-
-            // 计算距离下一分钟零秒的时间间隔
-            TimeSpan timeToNextMinute = nextMinute - now;
-
-            // 设置定时器的初始启动时间
-            timerEvent.Interval = timeToNextMinute;
-
-            // 启动定时器
-            timerEvent.Start();
         }
         
         private void UpdateCalendar()
@@ -104,7 +66,7 @@ namespace TablePet.Win.Calendar
                     Content = day.ToString(),
                     Tag = date, 
                     Background = date == today ? Brushes.LightBlue : Brushes.White, 
-                    BorderBrush = (date == selectedDate) ? Brushes.LightSlateGray : Brushes.Gray, 
+                    BorderBrush = (date == SelectedDate) ? Brushes.LightSlateGray : Brushes.Gray, 
                     // BorderThickness = (date == selectedDate) ? new Thickness(2) : new Thickness(1), 
                     Margin = new Thickness(2), 
                     Padding = new Thickness(5), 
@@ -114,7 +76,7 @@ namespace TablePet.Win.Calendar
                 
                 dayButton.Click += (sender, e) => 
                 {
-                    selectedDate = date; 
+                    SelectedDate = date; 
                     UpdateCalendar(); 
                     ShowEventsForDate(date); 
                 };
@@ -126,7 +88,7 @@ namespace TablePet.Win.Calendar
         }
 
 
-        private void ShowEventsForDate(DateTime date)
+        public void ShowEventsForDate(DateTime date)
         {
             EventListBox.Items.Clear();
             var events = calendarService.GetEventsForDate(date);
@@ -155,7 +117,7 @@ namespace TablePet.Win.Calendar
                     selectedEvent.Description = editDialog.EventTitle;
 
                     calendarService.UpdateEvent(selectedEvent);
-                    ShowEventsForDate(selectedDate);
+                    ShowEventsForDate(SelectedDate);
                 }
             }
             else
@@ -169,7 +131,7 @@ namespace TablePet.Win.Calendar
             if (EventListBox.SelectedItem is CalendarEvent selectedEvent)
             {
                 calendarService.DeleteEvent(selectedEvent);
-                ShowEventsForDate(selectedDate);
+                ShowEventsForDate(SelectedDate);
             }
             else
             {

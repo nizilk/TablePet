@@ -14,7 +14,7 @@
             <conv:DocumentConverter x:Key="DocConverter"/>
             <conv:IndexConverter x:Key="IndexConverter"/>
             <alarms:StatusToColorConverter x:Key="StatusToColorConverter" />
-
+            <alarms:TimeToHourMinuteConverter x:Key="TimeToHourMinuteConverter" />
 
             <Style x:Key="TextBoxPlaceHolder" TargetType="{x:Type TextBox}">
                 <Setter Property="Template">
