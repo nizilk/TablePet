@@ -1,9 +1,12 @@
 ﻿using CodeHollow.FeedReader;
+using Org.BouncyCastle.Utilities.IO;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -55,14 +58,60 @@ namespace TablePet.Services.Controllers
             var readerTask = FeedReader.ReadAsync(url);
             readerTask.ConfigureAwait(false);
             Feed feed = readerTask.Result;
+
             foreach (var item in feed.Items)
             {
-                DateTime pd = (DateTime)item.PublishingDate;
-                item.PublishingDateString = pd.ToString("ddd MMM dd yyyy HH:mm:ss", new System.Globalization.CultureInfo("en-us"));
-                item.PublishingDateString += " (" + GetTimeSpanTilNow(pd) + ")";   // Sat Aug 10 2024 23:59:00 (2 months)
+                if (item.Author == null)
+                {
+                    item.Author = GetCreator(feed);
+                }
+                if (item.PublishingDate != null)
+                {
+                    DateTime pd = (DateTime)item.PublishingDate;
+                    item.PublishingDateString = pd.ToString("ddd MMM dd yyyy HH:mm:ss", new System.Globalization.CultureInfo("en-us"));
+                    item.PublishingDateString += " (" + GetTimeSpanTilNow(pd) + ")";   // Sat Aug 10 2024 23:59:00 (2 months)
+                }
+                if (item.Content == null)
+                {
+                    item.Content = item.Description;
+                }
                 item.Content = FiltContent(item.Content);
             }
             return feed;
+        }
+
+
+        public string DownloadHtml(string url)
+        {
+            string html = "";
+            if (url is null || url == "") return html;
+            try
+            {
+                HttpWebRequest Myrq = WebRequest.Create(url) as HttpWebRequest;
+                Myrq.KeepAlive = false;//持续连接
+                Myrq.Timeout = 30 * 1000;//30秒，*1000是因为基础单位为毫秒
+                Myrq.Method = "GET";//请求方法
+                Myrq.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3";//自己去network里面找
+                Myrq.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/113.0";
+
+                //接受返回
+                HttpWebResponse Myrp = (HttpWebResponse)Myrq.GetResponse();
+                if (Myrp.StatusCode != HttpStatusCode.OK)
+                {
+                    return html;
+                }
+
+                using (Stream rst = Myrp.GetResponseStream())//展开一个流
+                {
+                    using (StreamReader sr = new StreamReader(rst))
+                    {
+                        html = sr.ReadToEnd();
+                    }
+                }
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            
+            return html;
         }
 
 
@@ -94,12 +143,6 @@ namespace TablePet.Services.Controllers
 
         public string FiltContent(string content)
         {
-            content = "<FlowDocument LineHeight=\"10\" FontSize=\"14\" " +
-                "xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" " +
-                "xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">" + 
-                content + 
-                "</FlowDocument>";
-
             content = content.Replace("<p>", "<Paragraph>");
             content = content.Replace("</p>", "</Paragraph>");
 
@@ -109,8 +152,18 @@ namespace TablePet.Services.Controllers
             // content = content.Replace("\"", "&quot;");
             // content = content.Replace("\'", "&apos;");
 
+            content = content.Replace("<ul>", "<List>");
+            content = content.Replace("</ul>", "</List>");
+            content = content.Replace("<li>", "<ListItem><Paragraph>");
+            content = content.Replace("</li>", "</Paragraph></ListItem>");
+
+            content = content.Replace("<em>", "<Italic>");
+            content = content.Replace("</em>", "</Italic>");
+            content = content.Replace("<b>", "<Bold>");
+            content = content.Replace("</b>", "</Bold>");
+
             content = content.Replace("</a>", "</Hyperlink>");
-            string pattern_href = @"<a href=""([^"">]*)""[^>]*>";
+            string pattern_href = @"<a[^>]*href=""([^"">]*)""[^>]*>";
             content = Regex.Replace(content, pattern_href, "<Hyperlink Foreground=\"Blue\" NavigateUri=\"${1}\">");
 
             string pattern_head = @"<h2[^>]*>(.*)</h2>";
@@ -122,8 +175,46 @@ namespace TablePet.Services.Controllers
             string pattern_ent = @"(<br>|</br>|<br/>|<br />)";
             content = Regex.Replace(content, pattern_ent, "</Paragraph> <Paragraph>");
 
-            string pattern_blk = @"(<div[^>]*>(.|\n)*</div>|<p>|</p>)";
-            content = Regex.Replace(content, pattern_blk, "");
+            string pattern_blk = @"<div[^>]*>((.|\n)*?)</div>";
+            content = Regex.Replace(content, pattern_blk, "<Section><Paragraph>${1}</Paragraph></Section>");
+
+            /*
+            string pattern_divc = @"<div class=""([^""]+)"">(.|\n)*</div>";
+            string cls;
+            MatchCollection collection = Regex.Matches(content, pattern_divc);
+            foreach (Match match in collection)
+            {
+                cls = match.Groups[1].Value;
+            }
+            */
+
+            content = content.Replace("<blockquote>", "");
+            content = content.Replace("</blockquote>", "");
+
+            string pattern_fgr = @"<figure[^>]*>(.*?)</figure>";
+            content = Regex.Replace(content, pattern_fgr, "${1}");
+
+            string pattern_img = @"<img[^>]*src=""([^""]+)""[^>]*>";
+            content = Regex.Replace(content, pattern_img, "<Image Source=\"${1}\"/>");
+
+            string pattern_np = @"^(\n)*(<Paragraph>|<Section>|<List>)(.|\n)*(</Paragraph>|</Section>|</List>)(\n)*$";
+            if (!Regex.IsMatch(content, pattern_np))
+            {
+                content = "<Paragraph>" + content + "</Paragraph>";
+            }
+
+            string pattern_mpl = @"(<Paragraph>\s*<Paragraph>\s*)+";
+            content = Regex.Replace(content, pattern_mpl, "<Paragraph>");
+
+            string pattern_mpr = @"(</Paragraph>\s*</Paragraph>\s*)+";
+            content = Regex.Replace(content, pattern_mpr, "</Paragraph>");
+
+            content = "<FlowDocument LineHeight=\"10\" FontSize=\"14\" " + 
+                "xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" " +
+                "xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">" +
+                content +
+                "</FlowDocument>";
+
             return content;
         }
     }

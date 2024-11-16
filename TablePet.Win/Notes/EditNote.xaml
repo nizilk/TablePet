@@ -11,15 +11,15 @@
         <DockPanel Background="#f0deff">
             <DockPanel DockPanel.Dock="Top" Height="40" Background="#e6cbfd">
                 <Button DockPanel.Dock="Left" Width="25" Name="bt_noteNew" Background="Transparent" Click="bt_noteNew_Click" Padding="5,0,5,0" BorderThickness="0">
-                    <Path Data="{DynamicResource AddGeometry}" Fill="Black" Stretch="Uniform"/>
+                    <Path Data="{DynamicResource AddGeometry}" Fill="Gray" Stretch="Uniform"/>
                 </Button>
                 <TextBox Name="tb_noteTitle" Style="{StaticResource TextBoxPlaceHolder}" Tag="标题..." 
                          Width="175" FontSize="13" VerticalAlignment="Center" Padding="5,0,0,0"/>
                 <Button DockPanel.Dock="Right" Width="25" Name="bt_noteClose" Background="Transparent" Click="bt_noteClose_Click" Padding="5,0,5,0" BorderThickness="0">
-                    <Path Data="{DynamicResource CloseGeometry}" Fill="Black" Stretch="Uniform"/>
+                    <Path Data="{DynamicResource CloseGeometry}" Fill="Gray" Stretch="Uniform"/>
                 </Button>
                 <Button DockPanel.Dock="Right" Width="25" Name="bt_noteSave" Background="Transparent" Click="bt_noteSave_Click" Padding="5,0,5,0" BorderThickness="0">
-                    <Path Data="{DynamicResource SaveGeometry}" Fill="Black" Stretch="Uniform"/>
+                    <Path Data="{DynamicResource SaveGeometry}" Fill="Gray" Stretch="Uniform"/>
                 </Button>
             </DockPanel>
             <TextBox Name="tb_noteContent" TextWrapping="Wrap" Style="{StaticResource TextBoxPlaceHolder}" Tag="内容..."

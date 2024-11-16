@@ -41,9 +41,9 @@ namespace TablePet.Services.Controllers
 
         public void RemoveNote(Note note) => Notes.Remove(note);
 
-        public void UpdateNote(Note note)
+        public void UpdateNote(Note note, Note note_org)
         {
-            RemoveNote(note);
+            RemoveNote(note_org);
             AddNote(note);
         }
     }

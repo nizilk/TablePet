@@ -74,6 +74,7 @@ namespace TablePet.Win
         private AlarmsWindow alarmsWindow;
 
         public ObservableCollection<FeedExt> Feeds { get; set; } = new ObservableCollection<FeedExt>();
+        public List<string> Folders { get; set; } = new List<string>() { "Root" };
 
         // 全部动画资源的路径 -- 只用一次的
         public Uri[] ResourceOnce = {
@@ -539,7 +540,7 @@ namespace TablePet.Win
         // 对话
         private void chatIn_Click(object sender, RoutedEventArgs e)
         {
-            ChatInput chatInput = new ChatInput(this, chatService, noteService, Feeds);
+            ChatInput chatInput = new ChatInput(this, chatService, noteService, Feeds, Folders);
             chatInput.Show();
         }
 
@@ -563,10 +564,7 @@ namespace TablePet.Win
         // Feed Reader
         private void mi_feed_Click(object sender, RoutedEventArgs e)
         {
-            // FeedReaderService feedReaderService = new FeedReaderService();
-            // Feed feed = feedReaderService.ReadFeed();
-            // feedReaderService.ParseFeedItems(feed);
-            FeedView feedView = new FeedView(Feeds);
+            FeedView feedView = new FeedView(Feeds, Folders);
             feedView.Show();
         }
 

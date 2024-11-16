@@ -24,6 +24,7 @@ namespace TablePet.Win.Notes
     {
         private NoteService noteService;
         private NoteContext db;
+        private Note note_org = null;
         public EditNote()
         {
             InitializeComponent();
@@ -35,6 +36,15 @@ namespace TablePet.Win.Notes
             noteService = sv;
         }
 
+        public EditNote(NoteService sv, Note note)
+        {
+            InitializeComponent();
+            noteService = sv;
+            note_org = note;
+            tb_noteTitle.Text = note.NoteTitle;
+            tb_noteContent.Text = note.NoteContent;
+        }
+
 
         // 保存按钮
         private void bt_noteSave_Click(object sender, RoutedEventArgs e)
@@ -42,7 +52,8 @@ namespace TablePet.Win.Notes
             Note note = new Note();
             note.NoteTitle = tb_noteTitle.Text;
             note.NoteContent = tb_noteContent.Text;
-            noteService.UpdateNote(note);
+            noteService.UpdateNote(note, note_org);
+            this.Close();
         }
 
         // 新建按钮
