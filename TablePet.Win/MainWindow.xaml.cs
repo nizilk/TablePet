@@ -60,11 +60,15 @@ namespace TablePet.Win
         private DispatcherTimer timer = new DispatcherTimer();
         private DispatcherTimer timerMove = new DispatcherTimer();
         private DispatcherTimer timerinfo = new DispatcherTimer();
+        private DispatcherTimer timerAlarm = new DispatcherTimer();
+        private DispatcherTimer timerEvent = new DispatcherTimer();
+
 
         public NoteContext db = new NoteContext();
         public NoteService noteService;
         private ChatService chatService = new ChatService();
         private CalendarService calendarService = new CalendarService();
+        private AlarmService alarmService = new AlarmService();
         FeedReaderService feedReaderService = new FeedReaderService();
         private CalendarWindow calendarWindow;
         private AlarmsWindow alarmsWindow;
@@ -128,9 +132,59 @@ namespace TablePet.Win
             timerMove.Start();
             timerinfo.Start();
             
+            timerAlarm.Tick += timerAlarm_Tick;
+            timerEvent.Tick += timerEvent_Tick;
+
+            StartTimerAtNextWholeMinute();
+            
             noteService = new NoteService(db);
             WelcomeMessage();
             FeelingBar.Progress = SharingData.Favorability;
+        }
+        
+        private void timerAlarm_Tick(object sender, EventArgs e)
+        {
+            string alarmMessage = alarmService.CheckAlarm();
+
+            // 如果事件信息不为空，则显示通知
+            if (!string.IsNullOrEmpty(alarmMessage))
+            {
+                if (alarmsWindow != null)
+                {
+                    alarmsWindow.LoadAlarms();
+                }
+                showNotification("事件通知", alarmMessage, NotificationType.Information);
+            }
+            
+            timerAlarm.Interval = TimeSpan.FromMinutes(1);
+        }
+        
+        private void timerEvent_Tick(object sender, EventArgs e)
+        {
+            string eventMessage = calendarService.CheckTodaysEvents();
+
+            // 如果事件信息不为空，则显示通知
+            if (!string.IsNullOrEmpty(eventMessage))
+            {
+                if (calendarWindow != null)
+                {
+                    calendarWindow.ShowEventsForDate(calendarWindow.SelectedDate);;
+                }
+                showNotification("事件通知", eventMessage, NotificationType.Information);
+            }
+            
+            timerEvent.Interval = TimeSpan.FromMinutes(1);
+        }
+        
+        private void StartTimerAtNextWholeMinute()
+        {
+            DateTime now = DateTime.Now;
+            DateTime nextMinute = now.AddMinutes(1).AddSeconds(-now.Second).AddMilliseconds(-now.Millisecond);
+            TimeSpan timeToNextMinute = nextMinute - now;
+            timerAlarm.Interval = timeToNextMinute;
+            timerAlarm.Start();
+            timerEvent.Interval = timeToNextMinute;
+            timerEvent.Start();
         }
         
         private void ShowNotificationHandler(string title, string message, NotificationType type)
@@ -521,8 +575,6 @@ namespace TablePet.Win
         private void calendar_Click(object sender, RoutedEventArgs e)
         {
             calendarWindow = new CalendarWindow(calendarService);
-            calendarWindow.OnNotificationRequested += ShowNotificationHandler;
-
             calendarWindow.Show();
         }
         

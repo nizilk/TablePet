@@ -1,7 +1,12 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls.Primitives;
 using TablePet.Services.Controllers;
 using System.Configuration;
+using System.Linq;
+using System.Windows.Threading;
+using Notifications.Wpf;
 using TablePet.Win.Alarms;
 using TablePet.Services.Models;
 
@@ -11,20 +16,20 @@ namespace TablePet.Win.Alarm
     public partial class AlarmsWindow : Window
     {
         private AlarmService alarmService;
-        private string connectionString = ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString;
 
         public AlarmsWindow()
         {
             InitializeComponent();
-            alarmService = new AlarmService(connectionString);
+            alarmService = new AlarmService();
             LoadAlarms();
         }
-
-        private void LoadAlarms()
+        
+        public void LoadAlarms()
         {
             var alarms = alarmService.GetAllAlarms();
             AlarmList.ItemsSource = alarms;
         }
+
 
         private void AddAlarm_Click(object sender, RoutedEventArgs e)
         {
