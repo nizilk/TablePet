@@ -33,33 +33,36 @@ namespace TablePet.Services.Controllers
         public List<Alarm> GetAllAlarms()
         {
             var alarms = new List<Alarm>();
-
-            using (var conn = new MySqlConnection(connectionString))
+            try
             {
-                conn.Open();
-                var query = "SELECT * FROM Alarms ORDER BY time";
-                using (var cmd = new MySqlCommand(query, conn))
+                using (var conn = new MySqlConnection(connectionString))
                 {
-                    using (var reader = cmd.ExecuteReader())
+                    conn.Open();
+                    var query = "SELECT * FROM Alarms ORDER BY time";
+                    using (var cmd = new MySqlCommand(query, conn))
                     {
-                        while (reader.Read())
+                        using (var reader = cmd.ExecuteReader())
                         {
-                            var alarm = new Alarm
+                            while (reader.Read())
                             {
-                                Id = reader.GetInt32("id"),
-                                Time = reader.GetTimeSpan("time"),
-                                Status = reader.GetBoolean("status"),
-                                RepeatMode = reader.GetString("repeat_mode"),
-                                CustomDays = reader["custom_days"] != DBNull.Value 
-                                    ? StringToCustomDays(reader.GetString("custom_days")) 
-                                    : new List<DayOfWeek>()
-                            };
-                            alarm.SetDescription();
-                            alarms.Add(alarm);
+                                var alarm = new Alarm
+                                {
+                                    Id = reader.GetInt32("id"),
+                                    Time = reader.GetTimeSpan("time"),
+                                    Status = reader.GetBoolean("status"),
+                                    RepeatMode = reader.GetString("repeat_mode"),
+                                    CustomDays = reader["custom_days"] != DBNull.Value
+                                        ? StringToCustomDays(reader.GetString("custom_days"))
+                                        : new List<DayOfWeek>()
+                                };
+                                alarm.SetDescription();
+                                alarms.Add(alarm);
+                            }
                         }
                     }
-                }
-            }
+                }            
+            } catch { }
+
             return alarms;
         }
         

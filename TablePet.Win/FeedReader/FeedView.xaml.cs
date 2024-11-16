@@ -26,10 +26,7 @@ namespace TablePet.Win.FeedReader
     public partial class FeedView : Window
     {
         private FeedReaderService feedReaderService;
-
-        public ObservableCollection<FeedItemExt> Items { get; set; } = new ObservableCollection<FeedItemExt>();
         
-
 
         public FeedView()
         {
@@ -116,7 +113,6 @@ namespace TablePet.Win.FeedReader
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             tv_Feeds.ItemsSource = feedReaderService.Feeds;
-            lb_Entries.ItemsSource = Items;
             ChangeDocumentWidth();
         }
 
@@ -166,11 +162,10 @@ namespace TablePet.Win.FeedReader
             FeedExt feed = (FeedExt)treeViewItem.DataContext;
 
             if (feed.Feed == null) return;
-            Items.Clear();
-            foreach (FeedItem it in feed.Feed.Items)
-            {
-                Items.Add(new FeedItemExt(it, feed.Feed.Title));
-            }
+
+            lb_Entries.ItemsSource = null;
+            lb_Entries.Items.Clear();
+            lb_Entries.ItemsSource = feed.Items;
 
             ChangeDocumentWidth();
         }
@@ -191,6 +186,12 @@ namespace TablePet.Win.FeedReader
         {
             AddFolder addFolder = new AddFolder(feedReaderService);
             addFolder.Show();
+        }
+
+        private void lbi_star_Selected(object sender, RoutedEventArgs e)
+        {
+
+            ChangeDocumentWidth();
         }
     }
 }

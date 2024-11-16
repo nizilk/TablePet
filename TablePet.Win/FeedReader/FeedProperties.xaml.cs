@@ -87,7 +87,10 @@ namespace TablePet.Win.FeedReader
                 if (update) cb_url.Text = url;
                 feed = f;
                 tb_feedTitle.Text = feed.Title;
-                lb_lastDate.Content = feedReaderService.GetTimeSpanTilNow((DateTime)feed.LastUpdatedDate);
+                if (feed.LastUpdatedDate != null)
+                {
+                    lb_lastDate.Content = feedReaderService.GetTimeSpanTilNow((DateTime)feed.LastUpdatedDate);
+                }
                 lb_state.Content = "OK";
                 cb_folders.SelectedIndex = folderID;
             }));

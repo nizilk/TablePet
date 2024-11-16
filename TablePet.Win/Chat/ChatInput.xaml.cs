@@ -104,7 +104,6 @@ namespace TablePet.Win.Chat
                         this.Dispatcher.Invoke(new Action(() =>
                         {
                             CalendarWindow calendar = new CalendarWindow(calendarService);
-                            calendar.OnNotificationRequested += (title, message, type) => mainWindow.showNotification(title, message, type);
                             calendar.Show();
                         }));
                         break;

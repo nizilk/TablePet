@@ -11,7 +11,7 @@
         Loaded="Window_Loaded" SizeChanged="Window_SizeChanged">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="20"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -34,13 +34,23 @@
             <Path x:Name="bt_addFeed_Path" Data="{DynamicResource AddMaruGeometry}" Fill="Green" Stretch="Uniform" RenderTransformOrigin="0.583,0.598"/>
         </Button>
 
-        <ListBox Name="lb_star" Grid.Row="1" Grid.Column="0">
-            <ListBoxItem>
-                
+        <ListBox Grid.Row="1" Grid.Column="0" Margin="0,10,0,0" BorderThickness="0,0,0,1" BorderBrush="LightGray">
+            <ListBoxItem Height="20" Name="lbi_star" Selected="lbi_star_Selected">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="15"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Image Grid.Row="0" Grid.Column="1" Name="img_icon" Margin="0,0,5,0" Source="{DynamicResource FolderStarGeometry}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Foreground="Gray" Text="收藏"/>
+
+                </Grid>
             </ListBoxItem>
         </ListBox>
 
-        <ScrollViewer Grid.Row="2" Grid.Column="0" VerticalScrollBarVisibility="Hidden" Margin="0,20,0,0">
+        <ScrollViewer Grid.Row="2" Grid.Column="0" VerticalScrollBarVisibility="Hidden" Margin="0,10,0,0">
             <TreeView Name="tv_Feeds" ItemTemplate="{StaticResource FeedsTemplate}" BorderThickness="0" 
                       PreviewMouseLeftButtonDown="tv_Feeds_PreviewMouseLeftButtonDown"
                       PreviewMouseRightButtonDown="tv_Feeds_PreviewMouseRightButtonDown">

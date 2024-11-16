@@ -24,6 +24,8 @@ namespace TablePet.Services.Models
 
         public ObservableCollection<FeedExt> Nodes { get; set; } = new ObservableCollection<FeedExt>();
 
+        public ObservableCollection<FeedItemExt> Items { get; set; } = new ObservableCollection<FeedItemExt>();
+
         public FeedExt(int ID=-1, Feed Feed=null, string Title=null, string Url=null, int FolderID=0, bool IsFolder=false)
         {
             this.ID = ID;
@@ -35,6 +37,10 @@ namespace TablePet.Services.Models
             if (Feed != null && Title == null)
             {
                 this.Title = Feed.Title;
+            }
+            foreach (FeedItem it in Feed.Items)
+            {
+                Items.Add(new FeedItemExt(it, Title));
             }
         }
     }

@@ -23,7 +23,7 @@ namespace TablePet.Services.Controllers
 
         public FeedReaderService() { }
 
-        // public ObservableCollection<FeedItem> Items { get; set; } = new ObservableCollection<FeedItem>();
+        public ObservableCollection<FeedItemExt> StarItems { get; set; } = new ObservableCollection<FeedItemExt>();
         
         public void AddFeed(FeedExt feed)
         {
@@ -73,6 +73,16 @@ namespace TablePet.Services.Controllers
             folder.ID = Folders.Count;
             Feeds.Add(folder);
             Folders.Add(folder.Title);
+        }
+
+        public void AddStar(FeedItemExt item)
+        {
+            StarItems.Add(item);
+        }
+
+        public void DelStar(FeedItemExt item)
+        {
+            StarItems.Remove(item);
         }
 
         public List<string> FindFeed(string url = "https://youkilee.top/")
@@ -196,7 +206,8 @@ namespace TablePet.Services.Controllers
 
         public string FiltContent(string content)
         {
-            content = content.Replace("<p>", "<Paragraph>");
+            string pattern_p = @"<p[^>]*>";
+            content = Regex.Replace(content, pattern_p, "<Paragraph>");
             content = content.Replace("</p>", "</Paragraph>");
 
             content = content.Replace("&", "&amp;");
@@ -214,10 +225,13 @@ namespace TablePet.Services.Controllers
             content = content.Replace("</em>", "</Italic>");
             content = content.Replace("<b>", "<Bold>");
             content = content.Replace("</b>", "</Bold>");
+            //content = content.Replace("<strong>", "<Paragraph><Bold>");
+            //content = content.Replace("</strong>", "</Bold></Paragraph>");
+            string pattern_strong = @"<strong[^>]*(text-align: (?<ta>\w+))?[^>]*>(?<cnt>.*?)</strong>";
+            content = Regex.Replace(content, pattern_strong, "<Paragraph><Bold>${cnt}</Bold></Paragraph>");
 
-            content = content.Replace("</a>", "</Hyperlink>");
-            string pattern_href = @"<a[^>]*href=""([^"">]*)""[^>]*>";
-            content = Regex.Replace(content, pattern_href, "<Hyperlink Foreground=\"Blue\" NavigateUri=\"${1}\">");
+            string pattern_href = @"<a[^>]*href=""([^"">]*)""[^>]*>((.|\n)*?)</a>";
+            content = Regex.Replace(content, pattern_href, "<Paragraph><Hyperlink Foreground=\"Blue\" NavigateUri=\"${1}\">${2}</Hyperlink></Paragraph>");
 
             string pattern_head = @"<h2[^>]*>(.*)</h2>";
             content = Regex.Replace(content, pattern_head, "<Paragraph FontSize=\"18\"><Bold>${1}</Bold></Paragraph>");     // LineHeight=\"20\"
@@ -228,8 +242,11 @@ namespace TablePet.Services.Controllers
             string pattern_ent = @"(<br>|</br>|<br/>|<br />)";
             content = Regex.Replace(content, pattern_ent, "</Paragraph> <Paragraph>");
 
-            string pattern_blk = @"<div[^>]*>((.|\n)*?)</div>";
-            content = Regex.Replace(content, pattern_blk, "<Section><Paragraph>${1}</Paragraph></Section>");
+            //string pattern_blk = @"<div[^>]*>((.|\n)*?)</div>";
+            //content = Regex.Replace(content, pattern_blk, "<Section><Paragraph>${1}</Paragraph></Section>");
+
+            string pattern_blk = @"(<div[^>]*>|<div>|</div>|<section[^>]*>|<section>|</section>|<span[^>]*>|</span>)";
+            content = Regex.Replace(content, pattern_blk, "");
 
             /*
             string pattern_divc = @"<div class=""([^""]+)"">(.|\n)*</div>";
@@ -247,8 +264,11 @@ namespace TablePet.Services.Controllers
             string pattern_fgr = @"<figure[^>]*>(.*?)</figure>";
             content = Regex.Replace(content, pattern_fgr, "${1}");
 
+            string pattern_svg = @"<svg[^>]*>(.*?)</svg>";
+            content = Regex.Replace(content, pattern_svg, "${1}");
+
             string pattern_img = @"<img[^>]*src=""([^""]+)""[^>]*>";
-            content = Regex.Replace(content, pattern_img, "<Image Source=\"${1}\"/>");
+            content = Regex.Replace(content, pattern_img, "<Paragraph><Image Source=\"${1}\"/></Paragraph>");
 
             string pattern_np = @"^(\n)*(<Paragraph>|<Section>|<List>)(.|\n)*(</Paragraph>|</Section>|</List>)(\n)*$";
             if (!Regex.IsMatch(content, pattern_np))
@@ -256,11 +276,17 @@ namespace TablePet.Services.Controllers
                 content = "<Paragraph>" + content + "</Paragraph>";
             }
 
-            string pattern_mpl = @"(<Paragraph>\s*<Paragraph>\s*)+";
-            content = Regex.Replace(content, pattern_mpl, "<Paragraph>");
-
-            string pattern_mpr = @"(</Paragraph>\s*</Paragraph>\s*)+";
-            content = Regex.Replace(content, pattern_mpr, "</Paragraph>");
+            string pattern_mpl = @"<Paragraph>([^(</Paragraph>)]*?)<Paragraph>";
+            while (Regex.IsMatch (content, pattern_mpl))
+            {
+                content = Regex.Replace(content, pattern_mpl, "<Paragraph>${1}");
+            }
+            
+            string pattern_mpr = @"</Paragraph>([^(<Paragraph>)]*?)</Paragraph>";
+            while (Regex.IsMatch(content, pattern_mpr))
+            {
+                content = Regex.Replace(content, pattern_mpr, "${1}</Paragraph>");
+            }
 
             content = "<FlowDocument LineHeight=\"10\" FontSize=\"14\" " + 
                 "xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" " +
