@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:TablePet.Win.Notes"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen" AllowsTransparency="True"
-        Title="Note" Height="300" Width="250" WindowStyle="None">
+        Title="Note" Height="300" Width="250" WindowStyle="None"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown">
     <Grid>
         <DockPanel Background="#f0deff">
             <DockPanel DockPanel.Dock="Top" Height="40" Background="#e6cbfd">

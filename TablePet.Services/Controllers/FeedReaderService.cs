@@ -11,17 +11,69 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using TablePet.Services.Models;
 
 namespace TablePet.Services.Controllers
 {
     public class FeedReaderService
     {
+        public ObservableCollection<FeedExt> Feeds { get; set; } = new ObservableCollection<FeedExt>();
+
+        public List<string> Folders { get; set; } = new List<string>() { "Root" };
+
         public FeedReaderService() { }
 
-        // public ObservableCollection<Feed> Feeds { get; set; } = new ObservableCollection<Feed>();
-
         // public ObservableCollection<FeedItem> Items { get; set; } = new ObservableCollection<FeedItem>();
+        
+        public void AddFeed(FeedExt feed)
+        {
+            if (feed == null) return;
+            if (feed.IsFolder) return;
+            if (feed.FolderID == 0) Feeds.Add(feed);
+            else
+            {
+                foreach (var node in Feeds)
+                {
+                    if (!node.IsFolder) continue;
+                    if (node.ID == feed.FolderID)
+                    {
+                        Feeds.Remove(node);
+                        node.Nodes.Add(feed);
+                        Feeds.Add(node);
+                        break;
+                    }
+                }
+            }
+        }
 
+        public void UpdateFeed(FeedExt feed, FeedExt oldFeed)
+        {
+            if (feed == null) return;
+            if (oldFeed.FolderID == 0) Feeds.Remove(oldFeed);
+            else
+            {
+                foreach (var node in Feeds)
+                {
+                    if (!node.IsFolder) continue;
+                    if (node.ID == oldFeed.FolderID) node.Nodes.Remove(oldFeed);
+                }
+            }
+            AddFeed(feed);
+        }
+
+        public void DelFeed(FeedExt feed)
+        {
+            Feeds.Remove(feed);
+        }
+
+        public void AddFolder(string name)
+        {
+            FeedExt folder = new FeedExt(ID: Folders.Count, Title: name, IsFolder: true);
+            if (folder == null) return;
+            folder.ID = Folders.Count;
+            Feeds.Add(folder);
+            Folders.Add(folder.Title);
+        }
 
         public List<string> FindFeed(string url = "https://youkilee.top/")
         {
@@ -140,6 +192,7 @@ namespace TablePet.Services.Controllers
             else
                 return (now.Second - dt.Second).ToString() + " seconds";
         }
+
 
         public string FiltContent(string content)
         {

@@ -22,6 +22,8 @@ using TablePet.Win.FeedReader;
 using TablePet.Win.Messagebox;
 using TablePet.Win.Notes;
 using TablePet.Services.Models;
+using TablePet.Win.Alarm;
+using Notifications.Wpf;
 
 namespace TablePet.Win.Chat
 {
@@ -33,6 +35,8 @@ namespace TablePet.Win.Chat
         private MainWindow mainWindow;
         private ChatService chatService;
         private NoteService noteService;
+        private FeedReaderService feedReaderService;
+        private CalendarService calendarService;
 
         public ObservableCollection<FeedExt> Feeds;
         public List<string> Folders { get; set; }
@@ -47,7 +51,7 @@ namespace TablePet.Win.Chat
         }
 
 
-        public ChatInput(MainWindow mainWindow, ChatService chatService, NoteService noteService, ObservableCollection<FeedExt> Feeds, List<string> Folders)
+        public ChatInput(MainWindow mainWindow, ChatService chatService, NoteService noteService, FeedReaderService feedReaderService, CalendarService calendarService)
         {
             InitializeComponent();
             Task chatTask = Task.Run(() =>
@@ -58,8 +62,8 @@ namespace TablePet.Win.Chat
             this.mainWindow = mainWindow;
             this.chatService = chatService;
             this.noteService = noteService;
-            this.Feeds = Feeds;
-            this.Folders = Folders;
+            this.feedReaderService = feedReaderService;
+            this.calendarService = calendarService;
         }
 
 
@@ -92,18 +96,23 @@ namespace TablePet.Win.Chat
                     case "Feed Reader":
                         this.Dispatcher.Invoke(new Action(() =>
                         {
-                            FeedReaderService feedReaderService = new FeedReaderService();
-                            Feed feed = feedReaderService.ReadFeed();
-
-                            FeedView feedView = new FeedView(Feeds, Folders);
+                            FeedView feedView = new FeedView(feedReaderService);
                             feedView.Show();
                         }));
                         break;
                     case "Calendar":
                         this.Dispatcher.Invoke(new Action(() =>
                         {
-                            CalendarWindow calendar = new CalendarWindow();
+                            CalendarWindow calendar = new CalendarWindow(calendarService);
+                            calendar.OnNotificationRequested += (title, message, type) => mainWindow.showNotification(title, message, type);
                             calendar.Show();
+                        }));
+                        break;
+                    case "Alarm":
+                        this.Dispatcher.Invoke(new Action(() =>
+                        {
+                            AlarmsWindow alarmsWindow = new AlarmsWindow();
+                            alarmsWindow.Show();
                         }));
                         break;
                     case "End":

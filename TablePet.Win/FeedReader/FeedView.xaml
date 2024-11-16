@@ -12,6 +12,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -33,7 +34,13 @@
             <Path x:Name="bt_addFeed_Path" Data="{DynamicResource AddMaruGeometry}" Fill="Green" Stretch="Uniform" RenderTransformOrigin="0.583,0.598"/>
         </Button>
 
-        <ScrollViewer Grid.Row="1" Grid.Column="0" VerticalScrollBarVisibility="Hidden" Margin="0,20,0,0">
+        <ListBox Name="lb_star" Grid.Row="1" Grid.Column="0">
+            <ListBoxItem>
+                
+            </ListBoxItem>
+        </ListBox>
+
+        <ScrollViewer Grid.Row="2" Grid.Column="0" VerticalScrollBarVisibility="Hidden" Margin="0,20,0,0">
             <TreeView Name="tv_Feeds" ItemTemplate="{StaticResource FeedsTemplate}" BorderThickness="0" 
                       PreviewMouseLeftButtonDown="tv_Feeds_PreviewMouseLeftButtonDown"
                       PreviewMouseRightButtonDown="tv_Feeds_PreviewMouseRightButtonDown">
@@ -51,9 +58,9 @@
         </ScrollViewer>
         
         <Image Source="https://imglf5.lf127.net/img/c0f390a8277f1db5/akFYeFo0L0VFMnlFb3VmMkF6dWtGVzNEVjZISmtPMFFHcWZSTVZ4d2h1Zz0.jpg"
-               Grid.Row="2" Grid.Column="0"/>
+               Grid.Row="3" Grid.Column="0"/>
 
-        <ScrollViewer Grid.Row="1" Grid.Column="1" Grid.RowSpan="2">
+        <ScrollViewer Grid.Row="1" Grid.Column="1" Grid.RowSpan="3">
             <ListBox Name="lb_Entries" ItemTemplate="{StaticResource EntriesTemplate}" BorderBrush="LightGray" BorderThickness="1,0,0,0" ItemContainerStyle="{StaticResource _ListBoxItemStyle}"
                      HorizontalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" PreviewMouseWheel="HandlePreviewMouseWheel">
                 <ListBox.Resources>

@@ -25,12 +25,10 @@ namespace TablePet.Win.FeedReader
     /// </summary>
     public partial class FeedView : Window
     {
-        public FeedReaderService feedReaderService = new FeedReaderService();
-
-        public ObservableCollection<FeedExt> Nodes { get; set; }
+        private FeedReaderService feedReaderService;
 
         public ObservableCollection<FeedItemExt> Items { get; set; } = new ObservableCollection<FeedItemExt>();
-        public List<string> Folders { get; set; } = new List<string>();
+        
 
 
         public FeedView()
@@ -39,11 +37,10 @@ namespace TablePet.Win.FeedReader
         }
 
 
-        public FeedView(ObservableCollection<FeedExt> Feeds, List<string> Folders)
+        public FeedView(FeedReaderService service)
         {
             InitializeComponent();
-            this.Nodes = Feeds;
-            this.Folders = Folders;
+            this.feedReaderService = service;
         }
 
 
@@ -118,7 +115,7 @@ namespace TablePet.Win.FeedReader
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            tv_Feeds.ItemsSource = Nodes;
+            tv_Feeds.ItemsSource = feedReaderService.Feeds;
             lb_Entries.ItemsSource = Items;
             ChangeDocumentWidth();
         }
@@ -126,46 +123,8 @@ namespace TablePet.Win.FeedReader
 
         private void bt_addFeed_Click(object sender, RoutedEventArgs e)
         {
-            FeedProperties feedProperties = new FeedProperties(this);
+            FeedProperties feedProperties = new FeedProperties(feedReaderService);
             feedProperties.Show();
-        }
-
-
-        public void AddFeed(FeedExt feed)
-        {
-            if (feed == null) return;
-            if (feed.IsFolder) return;
-            if (feed.FolderID == 0) Nodes.Add(feed);
-            else
-            {
-                foreach(var node in Nodes)
-                {
-                    if (!node.IsFolder) continue;
-                    if (node.ID == feed.FolderID)
-                    {
-                        Nodes.Remove(node);
-                        node.Nodes.Add(feed);
-                        Nodes.Add(node);
-                        break;
-                    }
-                }
-            }
-        }
-
-
-        public void UpdateFeed(FeedExt feed, FeedExt oldFeed)
-        {
-            if (feed == null) return;
-            if (oldFeed.FolderID == 0)  Nodes.Remove(oldFeed);
-            else
-            {
-                foreach(var node in Nodes)
-                {
-                    if (!node.IsFolder) continue;
-                    if (node.ID == oldFeed.FolderID)    node.Nodes.Remove(oldFeed);
-                }
-            }
-            AddFeed(feed);
         }
 
 
@@ -187,7 +146,7 @@ namespace TablePet.Win.FeedReader
         private void FeedDelete_Click(object sender, RoutedEventArgs e)
         {
             var obj = (FeedExt)tv_Feeds.SelectedItem;
-            Nodes.Remove(obj);
+            feedReaderService.DelFeed(obj);
             lb_Entries.ItemsSource = null;
         }
 
@@ -195,7 +154,7 @@ namespace TablePet.Win.FeedReader
         private void FeedSetting_Click(object sender, RoutedEventArgs e)
         {
             var obj = (FeedExt)tv_Feeds.SelectedItem;
-            FeedProperties feedProperties = new FeedProperties(this, obj);
+            FeedProperties feedProperties = new FeedProperties(feedReaderService, obj);
             feedProperties.Show();
         }
 
@@ -214,7 +173,6 @@ namespace TablePet.Win.FeedReader
             }
 
             ChangeDocumentWidth();
-            //treeViewItem.
         }
 
 
@@ -228,17 +186,11 @@ namespace TablePet.Win.FeedReader
             }
         }
 
+
         private void bt_addFolder_Click(object sender, RoutedEventArgs e)
         {
-            AddFolder addFolder = new AddFolder(this);
+            AddFolder addFolder = new AddFolder(feedReaderService);
             addFolder.Show();
-        }
-
-        public void AddFolder(string name)
-        {
-            FeedExt folder = new FeedExt(ID: Folders.Count, Title: name, IsFolder: true);
-            Nodes.Add(folder);
-            Folders.Add(name);
         }
     }
 }

@@ -23,8 +23,7 @@ namespace TablePet.Win.FeedReader
     /// </summary>
     public partial class FeedProperties : Window
     {
-        private FeedReaderService feedReaderService = new FeedReaderService();
-        private FeedView feedView;
+        private FeedReaderService feedReaderService;
         private Feed feed;
         private FeedExt feedOriginal;
         private bool update = false;
@@ -35,24 +34,24 @@ namespace TablePet.Win.FeedReader
         }
 
 
-        public FeedProperties(FeedView feedView)
+        public FeedProperties(FeedReaderService service)
         {
             InitializeComponent();
-            this.feedView = feedView;
+            this.feedReaderService = service;
             update = false;
-            LoadFolders(feedView.Folders);
+            LoadFolders(feedReaderService.Folders);
         }
 
 
-        public FeedProperties(FeedView feedView, FeedExt f)
+        public FeedProperties(FeedReaderService service, FeedExt f)
         {
             InitializeComponent();
-            this.feedView = feedView;
+            this.feedReaderService = service;
             this.feedOriginal = f;
             this.feed = f.Feed;
             update = true;
             UpdateFeedText(f.Feed, f.Url, f.FolderID);
-            LoadFolders(feedView.Folders);
+            LoadFolders(feedReaderService.Folders);
         }
 
 
@@ -141,11 +140,11 @@ namespace TablePet.Win.FeedReader
             
             if (update)
             {
-                feedView.UpdateFeed(node, feedOriginal);
+                feedReaderService.UpdateFeed(node, feedOriginal);
             }
             else
             {
-                feedView.AddFeed(node);
+                feedReaderService.AddFeed(node);
             }
 
             this.Close();

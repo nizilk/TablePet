@@ -65,12 +65,9 @@ namespace TablePet.Win
         public NoteService noteService;
         private ChatService chatService = new ChatService();
         private CalendarService calendarService = new CalendarService();
-        FeedReaderService feedReaderService = new FeedReaderService();
+        private FeedReaderService feedReaderService = new FeedReaderService();
         private CalendarWindow calendarWindow;
         private AlarmsWindow alarmsWindow;
-
-        public ObservableCollection<FeedExt> Feeds { get; set; } = new ObservableCollection<FeedExt>();
-        public List<string> Folders { get; set; } = new List<string>() { "Root" };
 
         // 全部动画资源的路径 -- 只用一次的
         public Uri[] ResourceOnce = {
@@ -304,7 +301,7 @@ namespace TablePet.Win
         }
 
 
-        // 单击触发随机对话, 通过通知显示, 后续需改进
+        // 单击触发随机对话, 通过通知显示
         private void pet_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)  
         {
             Random random = new Random();
@@ -344,7 +341,7 @@ namespace TablePet.Win
         
 
         // 气泡显示 or 右下角通知
-        private void showNotification(string title, string message, NotificationType type = NotificationType.Information)
+        public void showNotification(string title, string message, NotificationType type = NotificationType.Information)
         {
             if (type == NotificationType.Information)
             {
@@ -486,7 +483,7 @@ namespace TablePet.Win
         // 对话
         private void chatIn_Click(object sender, RoutedEventArgs e)
         {
-            ChatInput chatInput = new ChatInput(this, chatService, noteService, Feeds, Folders);
+            ChatInput chatInput = new ChatInput(this, chatService, noteService, feedReaderService, calendarService);
             chatInput.Show();
         }
 
@@ -510,7 +507,7 @@ namespace TablePet.Win
         // Feed Reader
         private void mi_feed_Click(object sender, RoutedEventArgs e)
         {
-            FeedView feedView = new FeedView(Feeds, Folders);
+            FeedView feedView = new FeedView(feedReaderService);
             feedView.Show();
         }
 

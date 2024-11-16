@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TablePet.Win.Notes"
         mc:Ignorable="d"
-        WindowStartupLocation="CenterScreen" AllowsTransparency="True"
-        Title="MainWindow" Height="450" Width="450" WindowStyle="None" Background="AliceBlue">
+        WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None"
+        Title="MainWindow" Height="450" Width="450" Background="AliceBlue"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown">
     <DockPanel>
         <Grid DockPanel.Dock="Top">
             <Button Grid.Column="0" Width="20" Name="bt_folderPlus" Background="Transparent"

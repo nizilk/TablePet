@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using TablePet.Services.Controllers;
 
 namespace TablePet.Win.FeedReader
 {
@@ -19,24 +20,24 @@ namespace TablePet.Win.FeedReader
     /// </summary>
     public partial class AddFolder : Window
     {
-        FeedView parent;
+        private FeedReaderService feedReaderService;
 
         public AddFolder()
         {
             InitializeComponent();
         }
 
-        public AddFolder(FeedView parent)
+        public AddFolder(FeedReaderService service)
         {
             InitializeComponent();
-            this.parent = parent;
+            this.feedReaderService = service;
         }
 
         private void bt_folderOK_Click(object sender, RoutedEventArgs e)
         {
             string name = tb_FolderName.Text;
             if (name is null || name == "") return;
-            parent.AddFolder(name);
+            feedReaderService.AddFolder(name);
             this.Close();
         }
 
