@@ -1,2 +1,2 @@
-此电脑|explorer.exe
-计算器|calc.exe
+Xmind|C:\Users\PR0PHECY\AppData\Local\Programs\Xmind\Xmind.exe
+cmd|C:\WINDOWS\system32\cmd.exe

@@ -294,6 +294,10 @@ namespace TablePet.Win
 
         private void timerinfo_Tick(object sender, EventArgs e)
         {
+            Random random = new Random();
+            int temp = random.Next(1, 8);
+            if(temp == 1) SharingData.Favorability -= 5;
+            
             Task infoTask = Task.Run(() =>
             {
                 var cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
@@ -362,6 +366,7 @@ namespace TablePet.Win
         // 单击触发随机对话, 通过通知显示
         private void pet_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)  
         {
+            SharingData.Favorability += 2;
             Random random = new Random();
             int messageProbability = random.Next(1, 5);
             if (messageProbability != 1) return;
