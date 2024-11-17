@@ -580,27 +580,6 @@ namespace TablePet.Win
             alarmsWindow.Show();
         }
 
-
-        // 测试功能时用，后续需删除
-        private void test_Click(object sender, RoutedEventArgs e)
-        {
-            // MessageBox.Show(Directory.GetCurrentDirectory());   // D:\Documents\GitHub\TablePet\TablePet.Win\bin\Debug
-            // MessageBox.Show(AppDomain.CurrentDomain.BaseDirectory);     // D:\Documents\GitHub\TablePet\TablePet.Win\bin\Debug\
-            // MessageBox.Show(Environment.CurrentDirectory);      // D:\Documents\GitHub\TablePet\TablePet.Win\bin\Debug
-
-            // FeedReaderService feedReaderService = new FeedReaderService();
-            // Feed feed = feedReaderService.ReadFeed();
-            // string origDoc = feed.OriginalDocument;
-            // string pattern = @"<dc:creator><!\[CDATA\[([^\]]+)\]\]></dc:creator>";
-            // string creater = Regex.Match(origDoc, pattern).Groups[1].Value;
-            // MessageBox.Show(creater);
-            // FeedItem smp = feed.Items[0];
-            // MessageBox.Show(smp.Content);
-
-            //var xml = XElement.Parse("<root>"+smp.Content+"</root>");
-            //MessageBox.Show(xml.Value);
-        }
-
         /*---------- 扩展功能入口 ----------*/
 
 

@@ -148,6 +148,7 @@
     <Compile Include="Models\FeedItemExt.cs" />
     <Compile Include="Models\Note.cs" />
     <Compile Include="Models\NoteContext.cs" />
+    <Compile Include="Models\RelayCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

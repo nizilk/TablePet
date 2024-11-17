@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TablePet.Services.Controllers;
 
 namespace TablePet.Services.Models
 {
@@ -26,7 +27,7 @@ namespace TablePet.Services.Models
 
         public ObservableCollection<FeedItemExt> Items { get; set; } = new ObservableCollection<FeedItemExt>();
 
-        public FeedExt(int ID=-1, Feed Feed=null, string Title=null, string Url=null, int FolderID=0, bool IsFolder=false)
+        public FeedExt(int ID=-1, Feed Feed=null, string Title=null, string Url=null, int FolderID=0, bool IsFolder=false, FeedReaderService service=null)
         {
             this.ID = ID;
             this.Feed = Feed;
@@ -34,13 +35,14 @@ namespace TablePet.Services.Models
             this.Url = Url;
             this.FolderID = FolderID;
             this.IsFolder = IsFolder;
-            if (Feed != null && Title == null)
+            if (Feed == null) return;
+            if (Title == null)
             {
                 this.Title = Feed.Title;
             }
             foreach (FeedItem it in Feed.Items)
             {
-                Items.Add(new FeedItemExt(it, Title));
+                Items.Add(new FeedItemExt(it, Title, this, service));
             }
         }
     }

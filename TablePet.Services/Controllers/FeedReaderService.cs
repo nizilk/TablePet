@@ -231,7 +231,7 @@ namespace TablePet.Services.Controllers
             content = Regex.Replace(content, pattern_strong, "<Paragraph><Bold>${cnt}</Bold></Paragraph>");
 
             string pattern_href = @"<a[^>]*href=""([^"">]*)""[^>]*>((.|\n)*?)</a>";
-            content = Regex.Replace(content, pattern_href, "<Paragraph><Hyperlink Foreground=\"Blue\" NavigateUri=\"${1}\">${2}</Hyperlink></Paragraph>");
+            content = Regex.Replace(content, pattern_href, "<Hyperlink Foreground=\"Blue\" NavigateUri=\"${1}\">${2}</Hyperlink>");
 
             string pattern_head = @"<h2[^>]*>(.*)</h2>";
             content = Regex.Replace(content, pattern_head, "<Paragraph FontSize=\"18\"><Bold>${1}</Bold></Paragraph>");     // LineHeight=\"20\"
@@ -287,6 +287,9 @@ namespace TablePet.Services.Controllers
             {
                 content = Regex.Replace(content, pattern_mpr, "${1}</Paragraph>");
             }
+
+            string pattern_a_p = @"<Hyperlink[^>]*><Paragraph>((.|\n)*?)</Paragraph></Hyperlink>";
+            content = Regex.Replace(content, pattern_a_p, "${1}");
 
             content = "<FlowDocument LineHeight=\"10\" FontSize=\"14\" " + 
                 "xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" " +

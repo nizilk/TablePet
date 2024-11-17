@@ -104,12 +104,11 @@ namespace TablePet.Win.FeedReader
             {
                 List<string> urls = feedReaderService.FindFeed(url);
                 UpdateUrl(urls);
-            });
-
-            Task readTask = Task.Run(() =>
-            {
-                Feed f = feedReaderService.ReadFeed(url);
-                UpdateFeedText(f, url);
+                if (urls.Count == 1)
+                {
+                    Feed f = feedReaderService.ReadFeed(urls[0]);
+                    UpdateFeedText(f, url);
+                }
             });
         }
 
@@ -139,7 +138,7 @@ namespace TablePet.Win.FeedReader
             if (lb_state.Content.ToString() != "OK") return;
             int idx = cb_folders.SelectedIndex;
             if (idx == -1) return;
-            FeedExt node = new FeedExt(Feed: feed, Title: tb_feedTitle.Text, Url: cb_url.Text, FolderID: idx);
+            FeedExt node = new FeedExt(Feed: feed, Title: tb_feedTitle.Text, Url: cb_url.Text, FolderID: idx, service:feedReaderService);
             
             if (update)
             {

@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:TablePet.Win"
              xmlns:conv ="clr-namespace:TablePet.Win.CustomCon"
              xmlns:alarms="clr-namespace:TablePet.Win.Alarms"
+             xmlns:feed="clr-namespace:TablePet.Win.FeedReader"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
@@ -108,8 +109,22 @@
                             <Run Text="{Binding FeedItem.Title}"/>
                         </Hyperlink>
                     </Label>
-                    <Button Grid.Row="1" Grid.Column="6" Height="20" Width="20" Name="bt_starEntry" Background="Transparent" Margin="0,0,15,0" BorderThickness="0" Tag="0">
-                        <Path x:Name="bt_starEntry_Path" Data="{DynamicResource StarGeometry}" Fill="#999999" Stretch="Uniform"/>
+                    <Button Grid.Row="1" Grid.Column="6" Height="20" Width="20" Name="bt_starEntry" Background="Transparent" Margin="0,0,15,0" BorderThickness="0" Tag="0"
+                            Command="{Binding StarCommand}">
+                        <Image>
+                            <Image.Style>
+                                <Style TargetType="{x:Type Image}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsStarred}" Value="false">
+                                            <Setter Property="Source" Value="{DynamicResource StarGeometry}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsStarred}" Value="true">
+                                            <Setter Property="Source" Value="{DynamicResource StarGeometry_Already}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
                     </Button>
 
                     <Button Grid.Row="1" Grid.Column="7" Height="20" Width="20" Name="bt_delEntry" Background="Transparent"  BorderThickness="0">
@@ -145,7 +160,7 @@
                     <Border Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="9" BorderBrush="LightGray"  BorderThickness="0.2" SnapsToDevicePixels="True" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                 </Grid>
             </DataTemplate>
-
+            
 
             <!--以下想做Listbox的模版切换，但还未实现-->
             <Style x:Key="SettingSelectorStyle" TargetType="{x:Type ContentControl}">
@@ -173,6 +188,7 @@
                                 </Trigger>
                                 <Trigger Property="IsMouseOver" Value="true">
                                     <Setter TargetName="_Border" Property="Background" Value="Transparent"/>
+                                    <Setter Property="IsSelected" Value="True"/>
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>

@@ -11,8 +11,8 @@
         Loaded="Window_Loaded" SizeChanged="Window_SizeChanged">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -34,23 +34,12 @@
             <Path x:Name="bt_addFeed_Path" Data="{DynamicResource AddMaruGeometry}" Fill="Green" Stretch="Uniform" RenderTransformOrigin="0.583,0.598"/>
         </Button>
 
-        <ListBox Grid.Row="1" Grid.Column="0" Margin="0,10,0,0" BorderThickness="0,0,0,1" BorderBrush="LightGray">
-            <ListBoxItem Height="20" Name="lbi_star" Selected="lbi_star_Selected">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="16"/>
-                        <ColumnDefinition Width="15"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+        <Border Grid.Row="1" Grid.Column="0" BorderThickness="0,0,0,1" BorderBrush="LightGray"/>
 
-                    <Image Grid.Row="0" Grid.Column="1" Name="img_icon" Margin="0,0,5,0" Source="{DynamicResource FolderStarGeometry}"/>
-                    <TextBlock Grid.Row="0" Grid.Column="2" Foreground="Gray" Text="收藏"/>
+        <Image Grid.Row="1" Grid.Column="0" Height="10" Name="img_icon" Margin="21,0,0,1" Source="{DynamicResource FolderStarGeometry}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <Button Grid.Row="1" Grid.Column="0" Name="bt_stars" Foreground="Gray" Content="收藏" Background="Transparent" BorderThickness="0" HorizontalContentAlignment="Left" Margin="40,0,0,0" Click="bt_stars_Click"/>
 
-                </Grid>
-            </ListBoxItem>
-        </ListBox>
-
-        <ScrollViewer Grid.Row="2" Grid.Column="0" VerticalScrollBarVisibility="Hidden" Margin="0,10,0,0">
+            <ScrollViewer Grid.Row="2" Grid.Column="0" VerticalScrollBarVisibility="Hidden" Margin="0,10,0,0">
             <TreeView Name="tv_Feeds" ItemTemplate="{StaticResource FeedsTemplate}" BorderThickness="0" 
                       PreviewMouseLeftButtonDown="tv_Feeds_PreviewMouseLeftButtonDown"
                       PreviewMouseRightButtonDown="tv_Feeds_PreviewMouseRightButtonDown">
@@ -71,8 +60,10 @@
                Grid.Row="3" Grid.Column="0"/>
 
         <ScrollViewer Grid.Row="1" Grid.Column="1" Grid.RowSpan="3">
-            <ListBox Name="lb_Entries" ItemTemplate="{StaticResource EntriesTemplate}" BorderBrush="LightGray" BorderThickness="1,0,0,0" ItemContainerStyle="{StaticResource _ListBoxItemStyle}"
-                     HorizontalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" PreviewMouseWheel="HandlePreviewMouseWheel">
+            <ListBox Name="lb_Entries" ItemTemplate="{StaticResource EntriesTemplate}" BorderBrush="LightGray" BorderThickness="1,0,0,0" 
+                     ItemContainerStyle="{StaticResource _ListBoxItemStyle}"
+                     HorizontalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+                     PreviewMouseWheel="HandlePreviewMouseWheel">
                 <ListBox.Resources>
                     <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
                 </ListBox.Resources>

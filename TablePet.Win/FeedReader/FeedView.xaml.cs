@@ -83,6 +83,36 @@ namespace TablePet.Win.FeedReader
         }
 
 
+        private List<T> VisualDownwardSearch_List<T>(DependencyObject tarElem) where T : DependencyObject
+        {
+            List<T> children = new List<T>();
+            if (tarElem != null)
+            {
+                var count = VisualTreeHelper.GetChildrenCount(tarElem);
+                if (count == 0)
+                    return null;
+                for (int i = 0; i < count; ++i)
+                {
+                    var child = VisualTreeHelper.GetChild(tarElem, i);
+                    if (child != null && child is T)
+                    {
+                        children.Add(child as T);
+                    }
+                    else
+                    {
+                        var res = VisualDownwardSearch_List<T>(child);
+                        if (res != null)
+                        {
+                            children.AddRange(res);
+                        }
+                    }
+                }
+                return children;
+            }
+            return null;
+        }
+
+
         static DependencyObject VisualUpwardSearch<T>(DependencyObject source)
         {
             while (source != null && source.GetType() != typeof(T))
@@ -188,9 +218,12 @@ namespace TablePet.Win.FeedReader
             addFolder.Show();
         }
 
-        private void lbi_star_Selected(object sender, RoutedEventArgs e)
-        {
 
+        private void bt_stars_Click(object sender, RoutedEventArgs e)
+        {
+            lb_Entries.ItemsSource = null;
+            lb_Entries.Items.Clear();
+            lb_Entries.ItemsSource = feedReaderService.StarItems;
             ChangeDocumentWidth();
         }
     }
