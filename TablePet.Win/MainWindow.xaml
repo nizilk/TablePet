@@ -43,14 +43,14 @@
                     <MenuItem Name="sit" Header="坐下" Click="sit_Click"/>
                     <MenuItem Name="sleep" Header="睡觉" Click="sleep_Click"/>
                     <Separator/>
+                    <MenuItem Header="快捷启动" Name="LaunchMenu" Loaded="LaunchMenu_Loaded">
+                    </MenuItem>
+                    <Separator/>
                     <MenuItem Name="chatIn" Header="对话" Click="chatIn_Click"/>
                     <MenuItem Header="便签">
                         <MenuItem Name="note_all" Header="菜单" Click="note_all_Click"/>
                         <MenuItem Name="note_new" Header="新建" Click="note_new_Click"/>
                     </MenuItem>
-                    <MenuItem Header="快捷启动" Name="LaunchMenu" Loaded="LaunchMenu_Loaded">
-                    </MenuItem>
-                    <Separator/>
                     <MenuItem Name="mi_feed" Header="Feed Reader" Click="mi_feed_Click"/>
                     <MenuItem Name="calendar" Header="日历" Click="calendar_Click"/>
                     <MenuItem Name="alarm" Header="闹钟" Click="alarm_Click"/>
