@@ -106,6 +106,9 @@
       <DependentUpon>EditEventDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="SharingData\SharingData.cs" />
+    <Compile Include="Start\EditWindow.xaml.cs">
+      <DependentUpon>EditWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="Alarms\AlarmDialogBase.xaml" />
     <Page Include="Alarms\AlarmsWindow.xaml" />
     <Page Include="Alarms\CustomDaysDialog.xaml" />
@@ -185,6 +188,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Start\EditWindow.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Notes\MenuNote.xaml.cs">
@@ -293,6 +297,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="config\start.txt" />
     <Content Include="Resources\logo.ico" />
     <Content Include="Resources\tablepet.sql" />
   </ItemGroup>

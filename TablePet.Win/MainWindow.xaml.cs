@@ -13,7 +13,6 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using XamlAnimatedGif;
 using TablePet.Win.Chat;
@@ -39,6 +38,8 @@ using MessageBox = System.Windows.MessageBox;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 using System.IO;
 using TablePet.Win.Alarm;
+using TablePet.Win.Start;
+using MenuItem = System.Windows.Controls.MenuItem;
 
 
 namespace TablePet.Win
@@ -72,6 +73,9 @@ namespace TablePet.Win
         FeedReaderService feedReaderService = new FeedReaderService();
         private CalendarWindow calendarWindow;
         private AlarmsWindow alarmsWindow;
+        
+        private string ConfigFilePath => System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\config", "start.txt");
+        public ObservableCollection<LaunchItem> LaunchItems { get; set; } = new ObservableCollection<LaunchItem>();
 
         // 全部动画资源的路径 -- 只用一次的
         public Uri[] ResourceOnce = {
@@ -579,7 +583,100 @@ namespace TablePet.Win
             alarmsWindow = new AlarmsWindow();
             alarmsWindow.Show();
         }
+        
+        //快捷启动
+        private void LoadLaunchItems()
+        {
+            // 检查配置文件是否存在
+            if (File.Exists(ConfigFilePath))
+            {
+                var lines = File.ReadAllLines(ConfigFilePath);
+                foreach (var line in lines)
+                {
+                    var parts = line.Split('|');
+                    if (parts.Length == 2)
+                    {
+                        LaunchItems.Add(new LaunchItem { Name = parts[0], Path = parts[1] });
+                    }
+                }
+            }
+        }
+        
+        private void SaveLaunchItems()
+        {
+            var directory = System.IO.Path.GetDirectoryName(ConfigFilePath);
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
 
+            var lines = new List<string>();
+            foreach (var item in LaunchItems)
+            {
+                lines.Add($"{item.Name}|{item.Path}");
+            }
+
+            File.WriteAllLines(ConfigFilePath, lines);
+        }
+
+
+        // 动态填充菜单
+        private void LaunchMenu_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (sender is MenuItem menuItem)
+            {
+                menuItem.Items.Clear();
+
+                // 动态添加启动项
+                foreach (var item in LaunchItems)
+                {
+                    var menuItemEntry = new MenuItem
+                    {
+                        Header = item.Name,
+                        Tag = item.Path
+                    };
+                    menuItemEntry.Click += LaunchApp_Click;
+                    menuItem.Items.Add(menuItemEntry);
+                }
+                
+                //编辑选项
+                menuItem.Items.Add(new Separator());
+                var editItem = new MenuItem
+                {
+                    Header = "编辑启动项"
+                };
+                editItem.Click += EditLaunchItems_Click;
+                menuItem.Items.Add(editItem);
+            }
+        }
+        
+        private void LaunchApp_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is MenuItem menuItem && menuItem.Tag is string appPath)
+            {
+                try
+                {
+                    Process.Start(appPath);
+                }
+                catch (System.Exception ex)
+                {
+                    MessageBox.Show($"无法启动应用: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        // 编辑启动项
+        private void EditLaunchItems_Click(object sender, RoutedEventArgs e)
+        {
+            var editorWindow = new EditWindow(LaunchItems, SaveLaunchItems);
+            editorWindow.ShowDialog();
+        }
+        
+        public class LaunchItem
+        {
+            public string Name { get; set; }
+            public string Path { get; set; }
+        }
 
         // 测试功能时用，后续需删除
         private void test_Click(object sender, RoutedEventArgs e)

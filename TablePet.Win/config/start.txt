@@ -1,0 +1,2 @@
+此电脑|explorer.exe
+计算器|calc.exe
