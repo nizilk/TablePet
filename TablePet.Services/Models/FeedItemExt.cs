@@ -51,6 +51,17 @@ namespace TablePet.Services.Models
                 feedReaderService.StarItems.Remove(this);
         }
 
+        public ICommand DelCommand
+        {
+            get
+            {
+                return new RelayCommand((o) =>
+                {
+                    Parent.Items.Remove(this);
+                });
+            }
+        }
+
         public FeedItemExt(FeedItem feedItem, string feedTitle, FeedExt parent=null, FeedReaderService service=null)
         {            
             FeedItem = feedItem;

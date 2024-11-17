@@ -127,7 +127,7 @@
                         </Image>
                     </Button>
 
-                    <Button Grid.Row="1" Grid.Column="7" Height="20" Width="20" Name="bt_delEntry" Background="Transparent"  BorderThickness="0">
+                    <Button Grid.Row="1" Grid.Column="7" Height="20" Width="20" Name="bt_delEntry" Background="Transparent"  BorderThickness="0" Command="{Binding DelCommand}">
                         <Path x:Name="bt_delEntry_Path" Data="{DynamicResource DelGeometry}" Fill="#999999" Stretch="Uniform"/>
                     </Button>
 
