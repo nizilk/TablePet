@@ -1,0 +1,2 @@
+Xmind|C:\Users\PR0PHECY\AppData\Local\Programs\Xmind\Xmind.exe
+cmd|C:\WINDOWS\system32\cmd.exe
