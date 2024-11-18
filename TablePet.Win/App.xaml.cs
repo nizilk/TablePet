@@ -12,6 +12,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Media;
 using static System.Windows.Forms.LinkLabel;
+using TablePet.Win.CustomCon;
 
 namespace TablePet.Win
 {
@@ -24,6 +25,13 @@ namespace TablePet.Win
         {
             var hp = sender as Hyperlink;
             Process.Start(new ProcessStartInfo(hp.NavigateUri.AbsoluteUri));
+        }
+
+        private void ComboBoxWithCommand_DropDownClosed(object sender, EventArgs e)
+        {
+            var obj = sender as ComboBoxWithCommand;
+            obj.SelectedIndex = -1;
+            obj.Text = "转发";
         }
     }
 }

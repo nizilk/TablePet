@@ -105,6 +105,7 @@
     <Compile Include="Calendar\EditEventDialog.xaml.cs">
       <DependentUpon>EditEventDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomCon\ComboBoxWithCommand.cs" />
     <Compile Include="SharingData\SharingData.cs" />
     <Compile Include="Start\EditWindow.xaml.cs">
       <DependentUpon>EditWindow.xaml</DependentUpon>

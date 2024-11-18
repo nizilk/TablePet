@@ -5,6 +5,7 @@
              xmlns:conv ="clr-namespace:TablePet.Win.CustomCon"
              xmlns:alarms="clr-namespace:TablePet.Win.Alarms"
              xmlns:feed="clr-namespace:TablePet.Win.FeedReader"
+             xmlns:models="clr-namespace:TablePet.Services.Models"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
@@ -151,9 +152,13 @@
                         </RichTextBox.Resources>
                     </conv:BindableRichTextBox>
 
-                    <Button Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="5" Content="转发" Background="Transparent" BorderThickness="0" 
-                              HorizontalAlignment="Left" Padding="0" Margin="15,0,0,10"
-                              Command="{Binding TwiCommand}"/>
+                    <conv:ComboBoxWithCommand Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="5" Text="转发" IsEditable="True" IsReadOnly="True" 
+                                              BorderThickness="0" HorizontalAlignment="Left" Padding="0" Margin="5,0,0,1" 
+                                              Command="{Binding ShareCommand}" CommandParameter="{Binding SelectedIndex, RelativeSource={RelativeSource Self}}"
+                                              DropDownClosed="ComboBoxWithCommand_DropDownClosed">
+                        <ComboBoxItem Name="cb_weibo" Content="Weibo"/>
+                        <ComboBoxItem Name="cb_twi" Content="Twitter"/>
+                    </conv:ComboBoxWithCommand>
                     <CheckBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="5" Content=" 保持未读" HorizontalAlignment="Left" Padding="0" Margin="65,0,0,0"/>
                     <Button Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="5" Height="20" Width="20" Name="bt_tagEntry" Background="Transparent"  BorderThickness="0" HorizontalAlignment="Left" Margin="150,0,0,0" Padding="1,-1,1,3">
                         <Path x:Name="bt_tagEntry_Path" Data="{DynamicResource TagGeometry}" Fill="Gray" Stretch="Uniform"/>

@@ -1,4 +1,5 @@
 ﻿using CodeHollow.FeedReader;
+using Org.BouncyCastle.Asn1.X509;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -62,14 +63,28 @@ namespace TablePet.Services.Models
             }
         }
 
-        public ICommand TwiCommand
+        public ICommand ShareCommand
         {
             get
             {
                 return new RelayCommand((o) =>
                 {
-                    string url = "https://twitter.com/intent/tweet?text=我的分享：\n" + FeedItem.Title + "\n" + FeedItem.Link;
-                    System.Diagnostics.Process.Start(url);
+                    var idx = (Int32)o;
+                    string url = "";
+                    string cnt = "我的分享：\r\n" + FeedItem.Title + "\r\n" + FeedItem.Link;
+                    switch (idx)
+                    {
+                        case 0:
+                            url = "http://service.weibo.com/share/share.php?url=" + cnt;
+                            System.Diagnostics.Process.Start(url);
+                            break;
+                        case 1:
+                            url = "https://twitter.com/intent/tweet?text=" + cnt;
+                            System.Diagnostics.Process.Start(url);
+                            break;
+                        default:
+                            break;
+                    }
                 });
             }
         }
