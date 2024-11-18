@@ -114,6 +114,12 @@ namespace TablePet.Win.Chat
                             alarmsWindow.Show();
                         }));
                         break;
+                    case "Web Browser":
+                        this.Dispatcher.Invoke(new Action(() =>
+                        {
+                            System.Diagnostics.Process.Start("https://www.baidu.com");
+                        }));
+                        break;
                     case "End":
                         this.Dispatcher.Invoke(new Action(() =>
                         {
