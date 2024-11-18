@@ -142,8 +142,7 @@ namespace TablePet.Win.Calendar
 
         private void AddEvent_Click(object sender, RoutedEventArgs e)
         {
-            var selectedDate = DateTime.Today;
-            var dialog = new AddEventDialog(selectedDate);
+            var dialog = new AddEventDialog(SelectedDate);
 
             if (dialog.ShowDialog() == true)
             {
@@ -155,7 +154,7 @@ namespace TablePet.Win.Calendar
 
                 // 调用 CalendarService 中的方法保存事件到数据库
                 calendarService.AddEvent(newEvent);
-                ShowEventsForDate(selectedDate);
+                ShowEventsForDate(SelectedDate);
             }
         }
 
