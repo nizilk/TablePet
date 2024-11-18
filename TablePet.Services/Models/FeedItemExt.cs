@@ -62,6 +62,18 @@ namespace TablePet.Services.Models
             }
         }
 
+        public ICommand TwiCommand
+        {
+            get
+            {
+                return new RelayCommand((o) =>
+                {
+                    string url = "https://twitter.com/intent/tweet?text=我的分享：\n" + FeedItem.Title + "\n" + FeedItem.Link;
+                    System.Diagnostics.Process.Start(url);
+                });
+            }
+        }
+
         public FeedItemExt(FeedItem feedItem, string feedTitle, FeedExt parent=null, FeedReaderService service=null)
         {            
             FeedItem = feedItem;
